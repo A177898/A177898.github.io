@@ -1,0 +1,42 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  description: string;
+  href: string;
+  domains?: string[];
+  architectureType?: string;
+  draft?: boolean;
+}
+
+const {
+  title,
+  subtitle,
+  description,
+  href,
+  domains = [],
+  architectureType,
+  draft = false,
+} = Astro.props;
+
+const meta = [architectureType, domains.slice(0, 2).join(' · ')].filter(Boolean).join(' · ');
+---
+
+<article class="card-quiet">
+  <div class="flex flex-wrap items-center gap-3">
+    {architectureType && <p class="eyebrow">{architectureType}</p>}
+    {
+      draft && (
+        <span class="perspective-draft-badge" role="status">
+          Draft
+        </span>
+      )
+    }
+  </div>
+  <h3 class="mt-2 text-xl">
+    <a href={href} class="text-ink no-underline hover:underline">{title}</a>
+  </h3>
+  {subtitle && <p class="mt-2 font-serif text-base italic text-muted">{subtitle}</p>}
+  <p class="mt-3 text-sm text-muted">{description}</p>
+  {meta && <p class="mt-4 text-xs text-muted">{meta}</p>}
+</article>
