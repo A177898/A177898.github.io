@@ -16,18 +16,42 @@ jobs:
       - name: Assemble package-lock.json
         run: |
           set -euo pipefail
-          count=$(ls .lock-gz/part_*.b64 2>/dev/null | wc -l | tr -d ' ')
+          # Concatenate subchunks into full parts when present
+          for i in 06 07; do
+            if ls .lock-gz/part_${i}_*.b64 >/dev/null 2>&1; then
+              cat .lock-gz/part_${i}_*.b64 > .lock-gz/part_${i}.b64
+              rm -f .lock-gz/part_${i}_*.b64
+            fi
+          done
+          count=$(ls .lock-gz/part_0[0-8].b64 2>/dev/null | wc -l | tr -d ' ')
           echo "parts=$count"
           if [ "$count" -lt 9 ]; then
             echo "Incomplete parts set; waiting for remaining uploads."
             exit 0
           fi
-          cat .lock-gz/part_*.b64 | tr -d '\n' | base64 -d | gzip -d > package-lock.json
-          EXPECTED=a9c94b8304a2f92792dbcd557e2ff918d7b4ea4c86bfbd15bd3c2838ca0190e8
+          # Verify expected blob shas
+          declare -A EXPECTED=(
+            [part_00.b64]=45bdab9b0f37c54227e134c59b6619e6510174c1
+            [part_01.b64]=be41b3f3a262bbe877f848ccea6fe95d4dad6691
+            [part_02.b64]=3fd4694fcee5c613aef7eda2bcc6350721fc7bec
+            [part_03.b64]=662194a7b645f556ce7329f990573fb758620ba7
+            [part_04.b64]=48478a4b97e8ebaf5dae65c8ac864134547963a3
+            [part_05.b64]=28cee8963b8e7a8be78fc50fbaa89f57490d11c9
+            [part_06.b64]=f5974c47f3464245262154b8770937268bd02043
+            [part_07.b64]=89a9d11cfdfcfa74bbad43e7eb3e81a6d8123303
+            [part_08.b64]=f07ed12b916649fd1366c7d35846203289a6cc4d
+          )
+          for f in part_0{0..8}.b64; do
+            actual=$(git hash-object ".lock-gz/$f")
+            echo "$f blob=$actual"
+            test "$actual" = "${EXPECTED[$f]}"
+          done
+          cat .lock-gz/part_0{0..8}.b64 | tr -d '\n' | base64 -d | gzip -d > package-lock.json
+          EXPECTED_SHA=a9c94b8304a2f92792dbcd557e2ff918d7b4ea4c86bfbd15bd3c2838ca0190e8
           ACTUAL=$(sha256sum package-lock.json | awk '{print $1}')
           echo "size=$(wc -c < package-lock.json)"
           echo "sha256=$ACTUAL"
-          test "$ACTUAL" = "$EXPECTED"
+          test "$ACTUAL" = "$EXPECTED_SHA"
           rm -rf .lock-gz .lock-b64 .lock-parts
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
