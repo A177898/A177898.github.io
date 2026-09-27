@@ -1,0 +1,83 @@
+---
+/**
+ * Architecture Decision Record register — tabular, not a dashboard.
+ * Four-column layout (ID / Decision / Direction / Traceability).
+ * Optional refs link to stable section / principle anchors in the same document.
+ */
+export type AdrRef = {
+  label: string;
+  href: string;
+};
+
+export type AdrRow = {
+  id: string;
+  decision: string;
+  direction: string;
+  refs?: AdrRef[];
+};
+
+interface Props {
+  rows: AdrRow[];
+  title?: string;
+  /** When false, rely on an external heading (e.g. MDX ## Architecture decisions). */
+  showHeading?: boolean;
+  labelledBy?: string;
+}
+
+const {
+  rows,
+  title = 'Architecture decision register',
+  showHeading = true,
+  labelledBy = 'adr-register-heading',
+} = Astro.props;
+
+const headingId = labelledBy;
+---
+
+<section class="arch-register arch-register--adr" aria-labelledby={headingId}>
+  {
+    showHeading && (
+      <h2 id={headingId} class="arch-register__heading">
+        {title}
+      </h2>
+    )
+  }
+  <div class="arch-register__table" role="table" aria-label={title}>
+    <div class="arch-register__head" role="row">
+      <span class="arch-register__cell arch-register__cell--id" role="columnheader">ID</span>
+      <span class="arch-register__cell arch-register__cell--title" role="columnheader">Decision</span>
+      <span class="arch-register__cell arch-register__cell--text" role="columnheader">Direction</span>
+      <span class="arch-register__cell arch-register__cell--refs" role="columnheader">Traceability</span>
+    </div>
+    {
+      rows.map((row) => (
+        <div class="arch-register__row" role="row" id={row.id.toLowerCase()}>
+          <span class="arch-register__cell arch-register__cell--id" role="cell">
+            <a class="arch-register__self" href={`#${row.id.toLowerCase()}`}>
+              {row.id}
+            </a>
+          </span>
+          <span class="arch-register__cell arch-register__cell--title" role="cell">
+            {row.decision}
+          </span>
+          <span class="arch-register__cell arch-register__cell--text" role="cell">
+            {row.direction}
+          </span>
+          <span class="arch-register__cell arch-register__cell--refs" role="cell">
+            {row.refs && row.refs.length > 0 ? (
+              <ul class="arch-register__refs">
+                {row.refs.map((ref) => (
+                  <li>
+                    <a href={ref.href}>{ref.label}</a>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <span class="text-muted">—</span>
+            )}
+          </span>
+        </div>
+      ))
+    }
+  </div>
+</section>
