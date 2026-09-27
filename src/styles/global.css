@@ -1,0 +1,1019 @@
+@import "@fontsource-variable/source-serif-4";
+@import "@fontsource-variable/source-sans-3";
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Source Sans 3 Variable", "Source Sans 3", ui-sans-serif, sans-serif;
+  --font-serif: "Source Serif 4 Variable", "Source Serif 4", ui-serif, Georgia, serif;
+
+  --color-canvas: var(--yk-canvas);
+  --color-surface: var(--yk-surface);
+  --color-ink: var(--yk-ink);
+  --color-muted: var(--yk-muted);
+  --color-border: var(--yk-border);
+  --color-accent: var(--yk-accent);
+  --color-accent-soft: var(--yk-accent-soft);
+  --color-focus: var(--yk-focus);
+  --color-band: var(--yk-band);
+}
+
+/*
+  Visual direction: executive architecture portfolio.
+  Flat surfaces + typography hierarchy — not purple gradients, not cream/terracotta.
+*/
+:root {
+  color-scheme: light;
+  --yk-canvas: #f7f8fa;
+  --yk-surface: #ffffff;
+  --yk-band: #eef1f4;
+  --yk-ink: #15202b;
+  --yk-muted: #5b6775;
+  --yk-border: #d5dce0;
+  --yk-accent: #1a4f73;
+  --yk-accent-soft: #e6eef4;
+  --yk-focus: #1a4f73;
+}
+
+.dark {
+  color-scheme: dark;
+  --yk-canvas: #0f1217;
+  --yk-surface: #171b22;
+  --yk-band: #141820;
+  --yk-ink: #e8eef4;
+  --yk-muted: #9aa7b5;
+  --yk-border: #2a3340;
+  --yk-accent: #7eb6d6;
+  --yk-accent-soft: #1a2834;
+  --yk-focus: #7eb6d6;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    @apply bg-canvas text-ink font-sans antialiased;
+    font-optical-sizing: auto;
+    min-height: 100vh;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--yk-focus);
+    outline-offset: 3px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-serif text-ink;
+    font-optical-sizing: auto;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  a {
+    @apply text-accent underline-offset-4;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+}
+
+@layer components {
+  .site-shell {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+
+  .section-space {
+    @apply py-16 sm:py-24;
+  }
+
+  .section-band {
+    @apply border-y border-border/70 bg-surface py-16 sm:py-24;
+  }
+
+  .section-band--contrast {
+    @apply bg-band;
+  }
+
+  .section-header {
+    @apply max-w-3xl;
+  }
+
+  .eyebrow {
+    @apply font-sans text-xs font-semibold uppercase tracking-[0.16em] text-muted;
+  }
+
+  .prose-portfolio {
+    @apply max-w-3xl text-base leading-relaxed text-ink sm:text-lg;
+  }
+
+  .prose-portfolio p + p {
+    @apply mt-4;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-sm px-5 py-2.5 text-sm font-semibold no-underline transition-colors bg-accent text-white dark:text-ink;
+  }
+
+  .btn-primary:hover {
+    @apply no-underline opacity-90;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-sm border border-border bg-transparent px-5 py-2.5 text-sm font-semibold text-ink no-underline transition-colors;
+  }
+
+  .btn-secondary:hover {
+    @apply no-underline bg-accent-soft;
+  }
+
+  .btn-text {
+    @apply inline-flex items-center gap-1 text-sm font-semibold text-ink no-underline;
+  }
+
+  .btn-text:hover {
+    @apply underline;
+  }
+
+  .card-quiet {
+    @apply border border-border bg-surface p-6 sm:p-7;
+  }
+
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-surface focus:px-4 focus:py-2 focus:text-ink;
+  }
+
+  .lifecycle-flow {
+    @apply flex list-none flex-wrap items-start gap-x-1 gap-y-5 p-0 m-0;
+  }
+
+  .lifecycle-flow__item {
+    @apply relative flex min-w-[9.5rem] flex-1 basis-[calc(50%-0.5rem)] flex-col gap-2 sm:basis-[calc(33.333%-0.5rem)] lg:basis-0;
+  }
+
+  .lifecycle-flow__index {
+    @apply font-sans text-[0.7rem] font-semibold tracking-[0.14em] text-muted;
+  }
+
+  .lifecycle-flow__label {
+    @apply font-serif text-lg leading-snug text-ink sm:text-xl;
+  }
+
+  .lifecycle-flow__connector {
+    @apply absolute right-0 top-7 hidden text-muted lg:block;
+  }
+
+  .approach-list {
+    @apply m-0 grid list-none gap-0 border-t border-border p-0 md:grid-cols-2;
+  }
+
+  .approach-list__item {
+    @apply grid grid-cols-[3rem_1fr] gap-4 border-b border-border py-7 md:px-4 lg:px-6;
+  }
+
+  .approach-list__step {
+    @apply m-0 font-sans text-sm font-semibold tracking-[0.12em] text-muted;
+  }
+
+  .approach-list__title {
+    @apply m-0 font-serif text-xl text-ink;
+  }
+
+  .approach-list__text {
+    @apply mt-2 text-sm leading-relaxed text-muted sm:text-[0.95rem];
+  }
+
+  .capability-card {
+    @apply border border-border bg-surface p-6 sm:p-7;
+  }
+
+  .capability-card__list {
+    @apply mt-5 space-y-4 border-t border-border pt-5;
+  }
+
+  .capability-card__name {
+    @apply text-sm font-semibold text-ink;
+  }
+
+  .capability-card__desc {
+    @apply mt-1 text-sm leading-relaxed text-muted;
+  }
+
+  .progression-pair {
+    @apply mt-10 grid gap-8 border border-border bg-surface p-6 sm:grid-cols-2 sm:p-8;
+  }
+
+  .progression-pair__list {
+    @apply m-0 space-y-4 list-none p-0;
+  }
+
+  .progression-pair__item {
+    @apply flex items-baseline gap-3 border-l border-border pl-4;
+  }
+
+  .experience-timeline {
+    @apply relative m-0 list-none border-l border-border p-0 pl-6 sm:pl-8;
+  }
+
+  .experience-timeline__item {
+    @apply relative pb-12 last:pb-0;
+  }
+
+  .experience-timeline__item--detailed {
+    @apply pb-14 sm:pb-16;
+  }
+
+  .experience-timeline__item--concise {
+    @apply pb-8 sm:pb-10;
+  }
+
+  .experience-timeline__marker {
+    @apply absolute -left-[1.91rem] top-1.5 h-3 w-3 rounded-full border-2 border-accent bg-surface sm:-left-[2.16rem];
+  }
+
+  .experience-timeline__meta {
+    @apply flex flex-wrap items-center gap-3;
+  }
+
+  .experience-timeline__draft {
+    @apply rounded-sm border border-border px-2 py-0.5 font-sans text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-muted;
+  }
+
+  .experience-timeline__role {
+    @apply mt-2 font-serif text-2xl text-ink sm:text-3xl;
+  }
+
+  .experience-timeline__role--prominent {
+    @apply text-3xl sm:text-4xl;
+  }
+
+  .experience-timeline__role--concise {
+    @apply text-xl sm:text-2xl;
+  }
+
+  .experience-timeline__org {
+    @apply mt-1 text-sm font-medium text-muted;
+  }
+
+  .experience-timeline__summary {
+    @apply mt-4 max-w-3xl space-y-3 text-base leading-relaxed text-ink;
+  }
+
+  .experience-timeline__summary--concise {
+    @apply mt-3 max-w-2xl text-sm text-muted sm:text-base;
+  }
+
+  .experience-timeline__focus {
+    @apply mt-5 max-w-3xl text-[0.95rem] leading-7 text-ink/80 sm:mt-6 sm:text-base sm:leading-8;
+  }
+
+  .experience-timeline__focus-label {
+    @apply mr-2 inline font-sans text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-muted;
+  }
+
+  .experience-timeline__focus-list {
+    @apply text-ink/80;
+  }
+
+  .experience-scope {
+    @apply leading-relaxed;
+  }
+
+  .perspective-subtitle {
+    @apply font-serif font-normal leading-snug;
+  }
+
+  .perspective-draft-badge {
+    @apply rounded-sm border border-border px-2 py-0.5 font-sans text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-muted;
+  }
+
+  .perspective-tags {
+    @apply font-sans;
+  }
+
+  .perspective-meta {
+    @apply border-b border-border pb-6;
+  }
+
+  .prose-perspective {
+    @apply text-[1.05rem] leading-[1.75] sm:text-lg sm:leading-[1.8];
+  }
+
+  .prose-perspective h2 {
+    @apply mt-14 scroll-mt-24 text-2xl sm:text-3xl;
+  }
+
+  .prose-perspective h2:first-child {
+    @apply mt-0;
+  }
+
+  .prose-perspective h3 {
+    @apply mt-10 text-xl sm:text-2xl;
+  }
+
+  .prose-perspective ul {
+    @apply my-6 list-disc space-y-2 pl-5 text-[0.98em] text-ink;
+  }
+
+  .prose-perspective li::marker {
+    color: var(--yk-muted);
+  }
+
+  .prose-perspective blockquote {
+    @apply my-6 border-l border-border pl-4 text-[0.98em] text-muted;
+  }
+
+  .prose-perspective strong {
+    @apply font-semibold text-ink;
+  }
+
+  .prose-perspective hr {
+    @apply my-12 border-border;
+  }
+
+  .arch-flow {
+    @apply my-8 border border-border bg-band/60 px-4 py-5 sm:px-6 sm:py-6;
+  }
+
+  .arch-flow__list {
+    @apply m-0 flex list-none flex-wrap items-center gap-x-2 gap-y-3 p-0;
+  }
+
+  .arch-flow--vertical .arch-flow__list {
+    @apply flex-col items-stretch gap-y-0;
+  }
+
+  .arch-flow__step {
+    @apply flex items-center gap-2;
+  }
+
+  .arch-flow--vertical .arch-flow__step {
+    @apply flex-col items-start gap-1;
+  }
+
+  .arch-flow__label {
+    @apply inline-flex min-h-[2.5rem] items-center border border-border bg-surface px-3 py-2 font-sans text-xs font-semibold uppercase tracking-[0.08em] text-ink sm:text-[0.8rem];
+  }
+
+  .arch-flow__connector {
+    @apply font-sans text-muted;
+  }
+
+  .arch-flow--vertical .arch-flow__connector {
+    @apply ml-4 py-1 text-base leading-none;
+  }
+
+  .arch-flow__connector--cycle {
+    @apply ml-4;
+  }
+
+  .arch-flow__cycle-note {
+    @apply mt-3 ml-1 font-sans text-xs text-muted;
+  }
+
+  .arch-flow__label--result,
+  .arch-flow__label--root {
+    @apply border-accent/40 bg-accent-soft/50;
+  }
+
+  .arch-flow--compose .arch-flow__connector {
+    @apply font-semibold text-ink;
+  }
+
+  .arch-flow--branch .arch-flow__root {
+    @apply mb-1 flex flex-col items-start gap-1;
+  }
+
+  .arch-flow__list--trunk {
+    @apply mb-1 flex-col items-stretch;
+  }
+
+  .arch-flow__branches {
+    @apply m-0 grid list-none grid-cols-1 gap-3 p-0 sm:grid-cols-2 lg:grid-cols-3;
+  }
+
+  .arch-flow__branches--paired {
+    @apply sm:grid-cols-3;
+  }
+
+  .arch-flow__branch {
+    @apply flex flex-col items-start gap-1;
+  }
+
+  .arch-compare {
+    @apply grid gap-6 sm:grid-cols-2 sm:gap-8;
+  }
+
+  .arch-compare__column {
+    @apply min-w-0;
+  }
+
+  .arch-compare__title {
+    @apply mb-4 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-muted;
+  }
+
+  .arch-flow__sources {
+    @apply mt-5 border-t border-border/80 pt-4;
+  }
+
+  .arch-flow__sources-label {
+    @apply mb-3 font-sans text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-muted;
+  }
+
+  .prose-perspective pre {
+    @apply my-6 overflow-x-auto border border-border bg-band/70 px-4 py-4 font-mono text-[0.82rem] leading-relaxed text-ink sm:text-sm;
+  }
+
+  .prose-perspective code {
+    @apply font-mono text-[0.9em];
+  }
+
+  .prose-perspective pre code {
+    @apply text-inherit;
+  }
+
+  .arch-balance {
+    @apply grid grid-cols-[auto_1fr] gap-3 sm:gap-4;
+  }
+
+  .arch-balance__axis-y {
+    @apply m-0 flex flex-col items-center justify-center gap-2 self-stretch py-2;
+  }
+
+  .arch-balance__axis-label {
+    @apply max-w-[6.5rem] text-center font-sans text-[0.65rem] font-semibold uppercase tracking-[0.1em] text-muted [writing-mode:vertical-rl] rotate-180 sm:max-w-none sm:text-[0.7rem] sm:[writing-mode:horizontal-tb] sm:rotate-0;
+  }
+
+  .arch-balance__axis-arrow {
+    @apply text-muted;
+  }
+
+  .arch-balance__plot {
+    @apply flex min-w-0 flex-col gap-3;
+  }
+
+  .arch-balance__zone {
+    @apply m-0 border border-border bg-surface px-3 py-3 text-center font-sans text-xs font-semibold uppercase tracking-[0.08em] text-ink sm:text-[0.8rem];
+  }
+
+  .arch-balance__cross {
+    @apply relative flex items-center justify-end py-2;
+  }
+
+  .arch-balance__hline {
+    @apply absolute inset-x-0 top-1/2 h-px bg-border;
+  }
+
+  .arch-balance__vline {
+    @apply absolute left-1/2 top-[-0.75rem] bottom-[-0.75rem] w-px bg-border;
+  }
+
+  .arch-balance__autonomy {
+    @apply relative z-[1] bg-band px-2 font-sans text-[0.65rem] font-semibold uppercase tracking-[0.1em] text-muted sm:text-[0.7rem];
+  }
+
+  .principle-callout {
+    @apply my-8 border-l-2 border-accent bg-accent-soft/40 px-5 py-4;
+  }
+
+  .principle-callout__text {
+    @apply m-0 font-serif text-lg leading-snug text-ink sm:text-xl;
+  }
+
+  .perspective-checklist {
+    @apply my-14;
+  }
+
+  .perspective-checklist__title {
+    @apply m-0 text-2xl sm:text-3xl;
+  }
+
+  .perspective-checklist__lead {
+    @apply mt-4 max-w-2xl text-base text-muted sm:text-lg;
+  }
+
+  .perspective-checklist__grid {
+    @apply mt-8 m-0 grid list-none grid-cols-1 gap-0 border-t border-border p-0 md:grid-cols-2;
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .perspective-checklist__grid > .perspective-checklist__item {
+    list-style: none;
+  }
+
+  .prose-perspective .perspective-checklist__grid {
+    @apply my-0 list-none pl-0;
+  }
+
+  .prose-perspective .perspective-checklist__item {
+    @apply pl-0;
+  }
+
+  .prose-perspective .principle-callout,
+  .prose-perspective .arch-flow,
+  .prose-perspective .perspective-checklist {
+    @apply text-base;
+  }
+
+  .prose-perspective .principle-callout__text {
+    @apply font-serif text-lg leading-snug text-ink sm:text-xl;
+  }
+
+  .perspective-checklist__item {
+    @apply border-b border-border py-5 md:px-4;
+  }
+
+  .perspective-checklist__label {
+    @apply block font-sans text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-muted;
+  }
+
+  .perspective-checklist__text {
+    @apply mt-2 block text-[0.98rem] leading-relaxed text-ink;
+  }
+
+  .prose-architecture {
+    @apply text-base leading-relaxed sm:text-[1.05rem] sm:leading-[1.75];
+  }
+
+  .prose-architecture h2 {
+    @apply mt-16 scroll-mt-24 border-t border-border pt-10 text-2xl sm:text-3xl;
+  }
+
+  .prose-architecture h2:first-child {
+    @apply mt-0 border-t-0 pt-0;
+  }
+
+  .prose-architecture h3 {
+    @apply mt-10 text-xl sm:text-2xl;
+  }
+
+  .prose-architecture h4 {
+    @apply mt-8 text-lg;
+  }
+
+  .prose-architecture ul {
+    @apply my-5 list-disc space-y-2 pl-5;
+  }
+
+  .prose-architecture blockquote {
+    @apply my-6 border-l-2 border-accent bg-accent-soft/30 px-5 py-4 font-serif text-lg leading-snug text-ink;
+  }
+
+  .prose-architecture pre {
+    @apply my-6 overflow-x-auto border border-border bg-band/70 px-4 py-4 font-mono text-[0.82rem] leading-relaxed text-ink sm:text-sm;
+  }
+
+  .prose-architecture table {
+    @apply my-8 w-full border-collapse text-sm;
+  }
+
+  .prose-architecture th,
+  .prose-architecture td {
+    @apply border-b border-border px-3 py-3 text-left align-top;
+  }
+
+  .prose-architecture th {
+    @apply font-sans text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-muted;
+  }
+
+  .arch-register {
+    @apply my-10;
+  }
+
+  .arch-register__heading {
+    @apply m-0 text-2xl sm:text-3xl;
+  }
+
+  .arch-register__table {
+    @apply mt-6 border-t border-border;
+  }
+
+  .arch-register__head,
+  .arch-register__row {
+    @apply grid gap-3 border-b border-border py-4 md:gap-4;
+  }
+
+  @media (max-width: 767px) {
+    .arch-register__head {
+      @apply sr-only;
+    }
+
+    .arch-register__row {
+      @apply gap-2 py-5;
+    }
+
+    .arch-register__cell--title {
+      @apply text-base;
+    }
+
+    .arch-register__cell--text {
+      @apply text-sm leading-relaxed;
+    }
+  }
+
+  .arch-register--principles .arch-register__head,
+  .arch-register--principles .arch-register__row {
+    @apply md:grid-cols-[4.5rem_minmax(10rem,1fr)_minmax(12rem,2fr)];
+  }
+
+  .arch-register--adr .arch-register__head,
+  .arch-register--adr .arch-register__row {
+    @apply md:grid-cols-[4.5rem_minmax(8rem,1fr)_minmax(9rem,1.2fr)_minmax(8rem,1fr)];
+  }
+
+  .arch-register__cell--id {
+    @apply font-sans text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-muted;
+  }
+
+  .arch-register__cell--title {
+    @apply font-medium text-ink;
+  }
+
+  .arch-register__cell--text {
+    @apply text-sm leading-relaxed text-muted md:text-[0.95rem];
+  }
+
+  .arch-register__head .arch-register__cell {
+    @apply text-[0.65rem] uppercase tracking-[0.14em] text-muted;
+  }
+
+  .arch-spec__layers {
+    @apply m-0 flex list-none flex-col gap-1 p-0;
+  }
+
+  .arch-spec__layer {
+    @apply flex flex-col items-stretch gap-1;
+  }
+
+  .arch-spec__box {
+    @apply border border-border bg-surface px-4 py-3;
+  }
+
+  .arch-spec__label {
+    @apply m-0 font-sans text-xs font-semibold uppercase tracking-[0.1em] text-ink;
+  }
+
+  .arch-spec__note {
+    @apply mt-1 text-sm text-muted;
+  }
+
+  .arch-spec__items {
+    @apply mt-3 list-none space-y-1 p-0 text-sm text-muted;
+  }
+
+  .arch-spec__surround {
+    @apply mt-5 border-t border-border/80 pt-4;
+  }
+
+  .arch-spec__surround-label {
+    @apply mb-2 font-sans text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-muted;
+  }
+
+  .arch-spec__surround-list {
+    @apply m-0 flex list-none flex-wrap gap-x-4 gap-y-1 p-0 text-sm text-muted;
+  }
+
+  .arch-register__cell--refs {
+    @apply text-sm text-muted;
+  }
+
+  .arch-register__refs {
+    @apply m-0 list-none space-y-1 p-0;
+  }
+
+  .arch-register__refs a,
+  .arch-register__self {
+    @apply text-ink underline decoration-border underline-offset-2 hover:decoration-ink;
+  }
+
+  .authz-logical__plane-label,
+  .authz-runtime__branch-title,
+  .authz-runtime__path-label {
+    @apply mb-2 font-sans text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-muted;
+  }
+
+  .authz-logical__note,
+  .authz-runtime__branch-text,
+  .authz-runtime__rules {
+    @apply text-sm leading-relaxed text-muted;
+  }
+
+  .authz-logical__control {
+    @apply m-0 flex list-none flex-col gap-0 p-0;
+  }
+
+  .authz-logical__node {
+    @apply flex flex-col items-stretch;
+  }
+
+  .authz-logical__box,
+  .authz-runtime__box {
+    @apply border border-border bg-surface px-4 py-3 font-sans text-xs font-semibold uppercase tracking-[0.08em] text-ink sm:text-[0.8rem];
+  }
+
+  .authz-logical__box--emphasis,
+  .authz-runtime__box--emphasis {
+    @apply border-ink/30;
+  }
+
+  .authz-logical__box--result,
+  .authz-runtime__box--result {
+    @apply border-accent/40 bg-accent-soft/50;
+  }
+
+  .authz-runtime__box--terminal {
+    @apply border-border bg-band;
+  }
+
+  .authz-runtime__box--loop {
+    @apply border-dashed border-ink/40;
+  }
+
+  .authz-logical__hint,
+  .authz-runtime__hint {
+    @apply mt-2 block font-sans text-[0.8rem] font-normal normal-case tracking-normal text-muted;
+  }
+
+  .authz-logical__edge,
+  .authz-runtime__arrow {
+    @apply my-1 ml-3 flex flex-col items-start gap-0.5 text-muted;
+  }
+
+  .authz-logical__edge-label {
+    @apply font-sans text-[0.7rem] normal-case tracking-normal text-muted;
+  }
+
+  .authz-logical__arrow {
+    @apply text-base leading-none;
+  }
+
+  .authz-logical__deps,
+  .authz-logical__control-plane,
+  .authz-logical__legend,
+  .authz-runtime__branches {
+    @apply mt-6 border-t border-border/80 pt-4;
+  }
+
+  .authz-logical__dep-grid {
+    @apply mt-4 grid gap-3 sm:grid-cols-2;
+  }
+
+  .authz-logical__dep {
+    @apply border border-border bg-surface px-3 py-3;
+  }
+
+  .authz-logical__dep--context {
+    @apply sm:col-span-2;
+  }
+
+  .authz-logical__dep-title {
+    @apply m-0 font-sans text-xs font-semibold uppercase tracking-[0.1em] text-ink;
+  }
+
+  .authz-logical__dep-text,
+  .authz-logical__connector-note {
+    @apply mt-1 text-sm text-muted;
+  }
+
+  .authz-logical__dep-list {
+    @apply mt-2 list-disc space-y-1 pl-5 text-sm text-muted;
+  }
+
+  .authz-logical__pap {
+    @apply m-0 mt-3 flex list-none flex-col items-stretch gap-2 p-0 sm:flex-row sm:flex-wrap sm:items-center;
+  }
+
+  .authz-logical__pap > li:not(.authz-logical__pap-edge) {
+    @apply min-w-0 sm:max-w-xs;
+  }
+
+  .authz-logical__pap-edge {
+    @apply flex flex-row items-center gap-2 text-muted sm:px-1;
+  }
+
+  .authz-logical__legend-list {
+    @apply m-0 list-disc space-y-1 pl-5 text-sm text-muted;
+  }
+
+  .authz-runtime__trunk {
+    @apply m-0 flex list-none flex-col p-0;
+  }
+
+  .authz-runtime__node {
+    @apply flex flex-col;
+  }
+
+  .authz-runtime__branches {
+    @apply grid gap-5;
+  }
+
+  .authz-runtime__branch {
+    @apply border border-border bg-surface px-4 py-4;
+  }
+
+  .authz-runtime__split {
+    @apply mt-3 grid gap-4 lg:grid-cols-2;
+  }
+
+  .authz-runtime__path {
+    @apply border border-border/80 bg-band/40 px-3 py-3;
+  }
+
+  .authz-runtime__path-steps {
+    @apply mb-3 mt-2 list-decimal space-y-2 pl-5 text-sm text-ink;
+  }
+
+  .authz-runtime__return {
+    @apply mt-3 flex flex-col items-start gap-2 border-t border-dashed border-border/80 pt-3;
+  }
+
+  .authz-runtime__return-connector {
+    @apply flex flex-col items-start gap-0.5 text-muted;
+  }
+
+  .authz-runtime__return-label {
+    @apply font-sans text-[0.7rem] normal-case tracking-normal text-muted;
+  }
+
+  .authz-runtime__return-arrow {
+    @apply text-base leading-none;
+  }
+
+  .authz-runtime__return-link {
+    @apply font-sans text-sm text-ink underline decoration-border underline-offset-2 hover:decoration-ink;
+  }
+
+  .authz-runtime__rules {
+    @apply mt-5 list-disc space-y-2 border-t border-border/80 pt-4 pl-5;
+  }
+
+  .related-artifacts {
+    @apply my-10 border-t border-border pt-8;
+  }
+
+  .related-artifacts--compact {
+    @apply my-6 border-t border-border/80 pt-5;
+  }
+
+  .related-artifacts__heading {
+    @apply m-0 text-2xl sm:text-3xl;
+  }
+
+  .related-artifacts__heading--compact {
+    @apply font-sans text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-muted;
+  }
+
+  .related-artifacts__note {
+    @apply mt-3 max-w-2xl text-sm leading-relaxed text-muted;
+  }
+
+  .related-artifacts__list {
+    @apply mt-5 list-none space-y-3 p-0;
+  }
+
+  .related-artifacts--compact .related-artifacts__list {
+    @apply mt-3 space-y-2;
+  }
+
+  .related-artifacts__list li {
+    @apply flex flex-wrap items-baseline gap-x-3 gap-y-1;
+  }
+
+  .related-artifacts__kind {
+    @apply font-sans text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-muted;
+  }
+
+  .related-artifacts a {
+    @apply text-sm font-medium text-ink underline decoration-border underline-offset-2 hover:decoration-ink;
+  }
+
+  .evidence-flow {
+    @apply m-0 list-none space-y-5 border-l border-border pl-5;
+  }
+
+  .evidence-flow__item {
+    @apply relative;
+  }
+
+  .evidence-flow__item::before {
+    content: '';
+    @apply absolute -left-[1.4rem] top-1.5 h-2 w-2 rounded-full border border-border bg-surface;
+  }
+
+  .evidence-flow__label {
+    @apply m-0 font-sans text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-muted;
+  }
+
+  .evidence-flow__text {
+    @apply mt-1 text-sm leading-relaxed text-muted;
+  }
+
+  .nav-disclosure__trigger {
+    @apply inline-flex items-center gap-1.5;
+  }
+
+  .nav-disclosure__chevron {
+    @apply text-[0.65rem] opacity-70;
+  }
+
+  .nav-disclosure__panel {
+    @apply invisible absolute left-0 top-full z-40 mt-1 min-w-[14rem] border border-border bg-surface py-1 opacity-0 shadow-sm transition-opacity;
+  }
+
+  .nav-disclosure:hover .nav-disclosure__panel,
+  .nav-disclosure:focus-within .nav-disclosure__panel,
+  .nav-disclosure--open .nav-disclosure__panel {
+    @apply visible opacity-100;
+  }
+
+  .page-toc {
+    @apply mt-8 max-w-xl border border-border bg-band/40;
+  }
+
+  .page-toc__details {
+    @apply p-0;
+  }
+
+  .page-toc__summary {
+    @apply cursor-pointer list-none px-4 py-3 font-sans text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-muted;
+  }
+
+  .page-toc__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .page-toc__list {
+    @apply m-0 max-h-[min(50vh,22rem)] list-none space-y-1 overflow-y-auto border-t border-border px-4 py-3;
+  }
+
+  .page-toc__list a {
+    @apply block py-1 text-sm text-muted no-underline hover:text-ink;
+  }
+
+  .page-toc__list a:focus-visible {
+    @apply outline outline-2 outline-offset-2 outline-focus;
+  }
+
+  @media (min-width: 1024px) {
+    .page-toc {
+      @apply bg-transparent;
+    }
+
+    .page-toc__list {
+      @apply max-h-none overflow-visible;
+    }
+  }
+
+  .arch-responsibility {
+    @apply my-8 border-t border-border pt-6;
+  }
+
+  .arch-responsibility__title {
+    @apply m-0 text-xl sm:text-2xl;
+  }
+
+  .arch-responsibility__grid {
+    @apply mt-5 grid gap-6 sm:grid-cols-2;
+  }
+
+  .arch-responsibility__label {
+    @apply m-0 font-sans text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-muted;
+  }
+
+  .arch-responsibility__list {
+    @apply mt-3 list-disc space-y-2 pl-5 text-sm text-ink;
+  }
+
+  .prose-architecture .principle-callout,
+  .prose-architecture .arch-flow,
+  .prose-architecture .perspective-checklist,
+  .prose-architecture .arch-register,
+  .prose-architecture .arch-responsibility {
+    @apply text-base;
+  }
+}
