@@ -1,0 +1,30 @@
+name: Fix lock part 05
+on:
+  push:
+    branches: [feature/portfolio-foundation]
+    paths: ['.github/workflows/fix-part05.yml']
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/portfolio-foundation
+      - name: Fix Amppre typo in part_05
+        run: |
+          set -euo pipefail
+          f=.lock-gz/part_05.b64
+          test -f "$f"
+          if grep -q Amppre "$f"; then
+            sed -i 's/Amppre/Bagpre/' "$f"
+          fi
+          actual=$(git hash-object "$f")
+          echo "blob=$actual"
+          test "$actual" = "28cee8963b8e7a8be78fc50fbaa89f57490d11c9"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$f"
+          git commit -m "chore: fix gz lock part 05 Amppre typo" || echo "no change"
+          git push
