@@ -2,7 +2,7 @@ name: Assemble package-lock
 on:
   push:
     branches: [feature/portfolio-foundation]
-    paths: ['.lock-b64/**']
+    paths: ['.lock-parts/**']
   workflow_dispatch:
 permissions:
   contents: write
@@ -16,19 +16,19 @@ jobs:
       - name: Assemble package-lock.json
         run: |
           set -euo pipefail
-          count=$(ls .lock-b64/part_*.b64 2>/dev/null | wc -l | tr -d ' ')
+          count=$(ls .lock-parts/part_*.txt 2>/dev/null | wc -l | tr -d ' ')
           echo "parts=$count"
-          if [ "$count" -lt 138 ]; then
+          if [ "$count" -lt 6 ]; then
             echo "Incomplete parts set; waiting for remaining uploads."
             exit 0
           fi
-          cat .lock-b64/part_*.b64 | tr -d '\n' | base64 -d > package-lock.json
+          cat .lock-parts/part_*.txt > package-lock.json
           EXPECTED=a9c94b8304a2f92792dbcd557e2ff918d7b4ea4c86bfbd15bd3c2838ca0190e8
           ACTUAL=$(sha256sum package-lock.json | awk '{print $1}')
           echo "size=$(wc -c < package-lock.json)"
           echo "sha256=$ACTUAL"
           test "$ACTUAL" = "$EXPECTED"
-          rm -rf .lock-b64 .lock-parts
+          rm -rf .lock-parts .lock-b64
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
