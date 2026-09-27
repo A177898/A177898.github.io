@@ -1,0 +1,82 @@
+---
+/**
+ * Side-by-side conceptual comparison — presentation-only.
+ * Used for paired architecture models (e.g. assignment vs evaluation).
+ */
+interface Props {
+  leftTitle: string;
+  rightTitle: string;
+  leftSteps: string[];
+  rightSteps: string[];
+  leftJoin?: 'arrow' | 'plus';
+  rightJoin?: 'arrow' | 'plus';
+  rightResult?: string;
+  label?: string;
+}
+
+const {
+  leftTitle,
+  rightTitle,
+  leftSteps,
+  rightSteps,
+  leftJoin = 'arrow',
+  rightJoin = 'plus',
+  rightResult,
+  label,
+} = Astro.props;
+
+function connector(join: 'arrow' | 'plus'): string {
+  return join === 'plus' ? '+' : '↓';
+}
+---
+
+<figure class="arch-flow arch-flow--compare" aria-label={label ?? `${leftTitle} versus ${rightTitle}`}>
+  <div class="arch-compare">
+    <div class="arch-compare__column">
+      <p class="arch-compare__title">{leftTitle}</p>
+      <ol class="arch-flow__list arch-flow__list--trunk">
+        {
+          leftSteps.map((step, index) => (
+            <li class="arch-flow__step">
+              <span class="arch-flow__label">{step}</span>
+              {index < leftSteps.length - 1 && (
+                <span class="arch-flow__connector" aria-hidden="true">
+                  {connector(leftJoin)}
+                </span>
+              )}
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+    <div class="arch-compare__column">
+      <p class="arch-compare__title">{rightTitle}</p>
+      <ol class="arch-flow__list arch-flow__list--trunk">
+        {
+          rightSteps.map((step, index) => (
+            <li class="arch-flow__step">
+              <span class="arch-flow__label">{step}</span>
+              {index < rightSteps.length - 1 && (
+                <span class="arch-flow__connector" aria-hidden="true">
+                  {connector(rightJoin)}
+                </span>
+              )}
+              {rightResult && index === rightSteps.length - 1 && (
+                <span class="arch-flow__connector" aria-hidden="true">
+                  ↓
+                </span>
+              )}
+            </li>
+          ))
+        }
+        {
+          rightResult && (
+            <li class="arch-flow__step">
+              <span class="arch-flow__label arch-flow__label--result">{rightResult}</span>
+            </li>
+          )
+        }
+      </ol>
+    </div>
+  </div>
+</figure>
