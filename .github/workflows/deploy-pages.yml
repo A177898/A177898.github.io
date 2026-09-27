@@ -1,0 +1,82 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+# Zero-cost static hosting: GitHub Actions → Astro build → GitHub Pages.
+# No third-party hosts, backends, databases, or paid CDN.
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.19.0'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Require PUBLIC_SITE_URL
+        env:
+          PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL }}
+        run: |
+          if [ -z "${PUBLIC_SITE_URL}" ]; then
+            echo "::error::Set repository variable PUBLIC_SITE_URL to your GitHub Pages URL (e.g. https://<user>.github.io or https://<user>.github.io/<repo>)."
+            exit 1
+          fi
+          case "${PUBLIC_SITE_URL}" in
+            *example.com*|*portfolio.invalid*)
+              echo "::error::PUBLIC_SITE_URL must not use placeholder hosts (example.com / portfolio.invalid)."
+              exit 1
+              ;;
+          esac
+
+      - name: Validate content
+        run: npm run validate
+
+      - name: Publication tests
+        run: npm run test:publication
+
+      - name: Type / Astro check
+        run: npm run check
+
+      - name: Production build
+        env:
+          PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL }}
+          PUBLIC_BASE_PATH: ${{ vars.PUBLIC_BASE_PATH }}
+          SITE_URL: ${{ vars.SITE_URL }}
+        run: npm run build
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
