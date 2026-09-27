@@ -37,4 +37,1247 @@ relatedResearch:
 relatedArchitectures: []
 ---
 
-PLACEHOLDER_WILL_REPLACE_WITH_FULL
+import ArchitectureFlow from '../../components/ArchitectureFlow.astro';
+import ArchitectureCompare from '../../components/ArchitectureCompare.astro';
+import ArchitectureSpec from '../../components/ArchitectureSpec.astro';
+import ArchitectureRegister from '../../components/ArchitectureRegister.astro';
+import ArchitectureAdrTable from '../../components/ArchitectureAdrTable.astro';
+import ArchitectureResponsibility from '../../components/ArchitectureResponsibility.astro';
+import AuthorizationLogicalModel from '../../components/AuthorizationLogicalModel.astro';
+import AuthorizationRuntimeFlow from '../../components/AuthorizationRuntimeFlow.astro';
+import PrincipleCallout from '../../components/PrincipleCallout.astro';
+import PerspectiveChecklist from '../../components/PerspectiveChecklist.astro';
+
+## Architecture position
+
+
+<PrincipleCallout>
+  Enterprise authorization should be treated as a reusable decision capability that evaluates assigned authority, trusted context and policy without assuming ownership of every domain involved in the decision.
+</PrincipleCallout>
+
+Five key boundaries establish the architecture before component detail:
+
+```text
+Authentication
+      ≠
+Authorization
+
+Entitlement Assignment
+      ≠
+Authorization Evaluation
+
+Policy Decision
+      ≠
+Policy Enforcement
+
+Authorization Context
+      ≠
+Domain Ownership
+
+Authorization
+      ≠
+Domain Invariants
+```
+
+Governing principle:
+
+<PrincipleCallout>
+  Centralise what needs to be consistent. Federate what needs to remain authoritative within its domain.
+</PrincipleCallout>
+
+## Purpose
+
+This reference architecture defines a **logical** model for enterprise authorization as a reusable decision capability.
+
+It separates:
+
+- proving identity from determining authority;
+- assigned authority from effective authority;
+- policy decision from policy enforcement;
+- decision-relevant context from domain ownership;
+- authority to attempt an action from domain validity of that action.
+
+The architecture is vendor-neutral and product-agnostic. It does not prescribe a specific policy language, identity provider, entitlement store or runtime technology.
+
+## Problem
+
+Enterprise authorization frequently begins with a simple permission model and expands under business pressure into role proliferation, inconsistent application-embedded rules, unclear ownership of decision attributes, and fragile synchronous dependency chains.
+
+Without explicit boundaries, authorization becomes either:
+
+- too centralised — extracting domain authority into a bottleneck; or
+- too fragmented — embedding the same business rule differently across applications, APIs and interfaces.
+
+## Objectives
+
+- Establish authorization as a **decision capability**, not only a permission lookup.
+- Keep domain information **domain-owned**.
+- Separate **assignment**, **evaluation** and **enforcement**.
+- Support **contextual** decisions with explainable outcomes and obligations.
+- Enable policy evolution independent of application release cycles where appropriate.
+- Fail securely when sufficient authority cannot be established.
+- Provide a deployment-agnostic logical model from which implementation patterns can be derived.
+
+## Architecture principles
+
+<ArchitectureRegister
+  title="Architecture principles"
+  showHeading={false}
+  labelledBy="architecture-principles"
+  principles={[
+    {
+      id: 'AP-01',
+      title: 'Authentication and authorization are separate',
+      text: 'Authentication establishes identity. Authorization determines whether that identity may perform an action.',
+    },
+    {
+      id: 'AP-02',
+      title: 'Deny by default',
+      text: 'Authority must be positively established. Missing, invalid or insufficient decision information must not silently broaden authority.',
+    },
+    {
+      id: 'AP-03',
+      title: 'Assignment and evaluation are separate',
+      text: 'Entitlements describe assigned authority. Authorization determines whether that authority applies under the current conditions.',
+    },
+    {
+      id: 'AP-04',
+      title: 'Decision and enforcement are separate',
+      text: 'The PDP evaluates. The PEP enforces.',
+    },
+    {
+      id: 'AP-05',
+      title: 'Domain information remains domain-owned',
+      text: 'Consuming information does not transfer ownership.',
+    },
+    {
+      id: 'AP-06',
+      title: 'Authorization is contextual',
+      text: 'Authority may depend on Subject + Action + Resource + Context rather than User + Permission.',
+    },
+    {
+      id: 'AP-07',
+      title: 'Minimise synchronous dependencies',
+      text: 'The PDP evaluates policy. It should not become an enterprise orchestration layer.',
+    },
+    {
+      id: 'AP-08',
+      title: 'Decision information requires verifiable provenance',
+      text: 'An authorization attribute should influence a decision only where its source, authority and integrity satisfy the trust requirements of the policy evaluating it.',
+    },
+    {
+      id: 'AP-09',
+      title: 'Decisions should be explainable',
+      text: 'Significant authorization decisions should be explainable.',
+    },
+    {
+      id: 'AP-10',
+      title: 'Policy should evolve independently',
+      text: 'Policy lifecycle and application lifecycle should not be unnecessarily coupled.',
+    },
+    {
+      id: 'AP-11',
+      title: 'Fail securely',
+      text: 'Technical failure must not inadvertently increase authority.',
+    },
+    {
+      id: 'AP-12',
+      title: 'Logical capabilities do not imply microservices',
+      text: 'PDP, PEP, PIP, PAP and related concepts describe responsibilities, not mandatory independently deployed services.',
+    },
+    {
+      id: 'AP-13',
+      title: 'Centralise authorization semantics selectively',
+      text: 'Standardise reusable decision semantics and cross-cutting policy where consistency creates enterprise value without extracting domain-specific authority from the owning domain.',
+    },
+    {
+      id: 'AP-14',
+      title: 'Authorization does not replace domain invariants',
+      text: 'Authorization establishes authority to attempt an action. The owning domain remains responsible for determining whether that action is valid according to domain state and invariants.',
+    },
+    {
+      id: 'AP-15',
+      title: 'Decision semantics form part of the consumer contract',
+      text: 'Consumers must consistently interpret decisions, reasons, obligations, failure behaviour and validity semantics.',
+    },
+  ]}
+/>
+
+## Core decision contract
+
+The decision contract is a formal architecture interface — not an OpenAPI specification.
+
+### Hybrid authorization model
+
+This reference adopts a **hybrid** authorization model. The mechanisms below are complementary, not interchangeable substitutes:
+
+- **Roles** represent broad assigned responsibility (what class of authority a subject holds).
+- **Attributes** constrain when that authority applies (conditions on subject, resource or environment).
+- **Relationships** establish relevant subject/resource association or delegated scope (who relates to what, and with what mandate).
+- **Contextual policy** evaluates the combination of assigned authority, attributes, relationships and request context for a specific action.
+
+Together they support decisions of the form Subject + Action + Resource + Context, without prescribing a particular policy engine, policy language or storage schema.
+
+```text
+AUTHORIZATION REQUEST
+
+Subject
+Action
+Resource
+Context
+
+        ↓
+
+AUTHORIZATION EVALUATION
+
+Applicable Authority
+Trusted Context
+Applicable Policy
+
+        ↓
+
+AUTHORIZATION RESPONSE
+
+Decision
+Reason
+Obligations
+Decision Reference
+Policy Reference
+Validity Context
+```
+
+Conceptual expression:
+
+```text
+authorize(
+    subject,
+    action,
+    resource,
+    context
+)
+→
+decision,
+reason,
+obligations,
+decisionReference
+```
+
+### Decision semantics
+
+```text
+Decision:
+ALLOW | DENY
+```
+
+Conceptual reasons:
+
+```text
+INSUFFICIENT_AUTHORITY
+RESOURCE_OUT_OF_SCOPE
+LIMIT_EXCEEDED
+MANDATE_NOT_SATISFIED
+SOD_VIOLATION
+CONTEXT_INSUFFICIENT
+```
+
+Conceptual obligations:
+
+```text
+STEP_UP
+REQUIRE_APPROVAL
+REQUIRE_SECOND_AUTHORIZER
+```
+
+```text
+Decision ≠ Reason ≠ Obligation
+```
+
+Blocking-obligation semantics are shown in the [runtime decision flow](#runtime-architecture). ALLOW with an unmet blocking obligation does **not** permit execution.
+
+## Logical reference architecture
+
+
+This is the primary logical model. It communicates **responsibility**, not physical topology.
+
+Authorization Context is not a database and not necessarily a service. PDP is not necessarily one central physical service. Domain Authorization is not automatically central policy. Domain Invariants remain domain-owned. PEP, PDP, PIP and PAP are architectural responsibilities.
+
+The diagram below separates protected-action control flow, decision request/response, decision-information dependencies, and policy lifecycle publication. Labelled connectors distinguish lookup requests from information returned to evaluation.
+
+<AuthorizationLogicalModel label="Enterprise authorization logical reference architecture" />
+
+## Capability responsibilities
+
+
+<ArchitectureResponsibility
+  title="PEP — Policy Enforcement Point"
+  owns={[
+    'Interception of protected actions',
+    'Decision-request initiation',
+    'Trusted context presentation',
+    'Decision enforcement',
+    'Blocking-obligation recognition',
+    'Obligation coordination',
+    'Re-evaluation where required',
+    'Correlation',
+  ]}
+  doesNotOwn={[
+    'Central policy definition',
+    'Entitlement truth',
+    'Independent reinterpretation of common decision semantics',
+  ]}
+/>
+
+### Enforcement placement
+
+Illustrative PEP placements include a gateway, BFF, service, middleware, application or domain component. Placement depends on the protected action and the relevant trust boundary.
+
+A UI-only check must not substitute for authoritative enforcement closer to the protected resource or operation. Logical PEP responsibility does not require a separately deployed `pep-service`.
+
+<ArchitectureResponsibility
+  title="PDP — Policy Decision Point"
+  owns={[
+    'Policy evaluation',
+    'Common decision semantics',
+    'Authority and context evaluation',
+    'Decisions, reasons and obligations',
+    'Policy / version association',
+    'Explainability',
+  ]}
+  doesNotOwn={[
+    'Authentication',
+    'Business transaction execution',
+    'Every domain attribute',
+    'Workflow execution',
+    'Domain invariants',
+    'Enterprise orchestration',
+  ]}
+/>
+
+### Entitlements
+
+Entitlements represent **assigned** authority:
+
+```text
+Subject
+  ├── Role
+  │    └── Permission
+  ├── Resource Scope
+  └── Delegated Authority
+```
+
+### PIP — Policy Information Point
+
+PIP provides trusted decision-relevant information.
+
+PIP is an **architectural role**, not necessarily a `pip-service`.
+
+### PAP — Policy Administration Point
+
+PAP manages policy lifecycle:
+
+```text
+Author
+→ Validate
+→ Test / Simulate
+→ Review
+→ Approve
+→ Publish
+→ Active
+→ Retire
+```
+
+## Static vs dynamic segregation of duties
+
+<ArchitectureCompare
+  leftTitle="Static SoD"
+  rightTitle="Dynamic SoD"
+  leftSteps={['Role A + Role B', 'Invalid Assignment']}
+  rightSteps={['Subject initiated Action X', 'Subject attempts approval', 'DENY']}
+  leftJoin="arrow"
+  rightJoin="arrow"
+  label="Static versus dynamic segregation of duties"
+/>
+
+```text
+STATIC SoD — Primary concern: Entitlement governance
+
+DYNAMIC SoD — Primary concern: Runtime authorization
+```
+
+## Authorization context
+
+
+> The trusted, decision-relevant information available to a specific authorization evaluation.
+
+Authorization Context is **not** inherently:
+
+- a database;
+- a system of record;
+- a microservice;
+- a central customer store;
+- an enterprise replication platform.
+
+<ArchitectureFlow
+  steps={['Trusted Request Context', 'Decision Projection', 'Authoritative Lookup']}
+  direction="vertical"
+  join="plus"
+  result="Authorization Context → PDP"
+  label="Authorization Context composition"
+/>
+
+## Attribute acquisition patterns
+
+
+### A — Authoritative lookup
+
+```text
+PDP → Authoritative Domain
+```
+
+Freshness advantage; runtime dependency and latency trade-off.
+
+### B — Trusted request context
+
+```text
+Trusted Caller
+      ↓
+Authorization Request
+      ↓
+PDP
+```
+
+Low retrieval overhead; provenance and trust are critical.
+
+### C — Decision projection
+
+```text
+Authoritative Domain
+      ↓
+Domain Change
+      ↓
+Decision Projection
+      ↓
+PDP
+```
+
+Performance and resilience advantage; freshness and consistency trade-off.
+
+### D — Hybrid
+
+```text
+Trusted Request Context
+          +
+Decision Projection
+          +
+Selective Authoritative Lookup
+          ↓
+Authorization Context
+```
+
+No single pattern is universally preferred.
+
+## Attribute provenance
+
+
+```text
+Attribute
+   ├── Value
+   ├── Provenance
+   ├── Authoritative Source
+   ├── Freshness
+   └── Integrity Evidence
+              ↓
+       Trust Determination
+```
+
+```text
+Caller-supplied claim
+        ≠
+Trusted authorization attribute
+```
+
+## Attribute classification and correctness
+
+
+| Characteristic | Question |
+|---|---|
+| Authority | Which domain owns it? |
+| Provenance | Can its source be established? |
+| Trust | Can the source be trusted for this decision? |
+| Freshness | How current must it be? |
+| Volatility | How frequently does it change? |
+| Sensitivity | What security/privacy constraints apply? |
+| Latency | How quickly must it be available? |
+| Availability | What happens when its source is unavailable? |
+| Correctness | What is the consequence of stale information? |
+
+These correctness classes are **conceptual categories**, not mandatory industry standards. Classification guides selection among trusted request context, authoritative lookup, projection and caching. No acquisition mechanism automatically guarantees correctness.
+
+Authorization information has a **correctness window**, not merely a technical cache TTL. An operationally healthy cache may still contain information that is too stale for the protected decision. Freshness requirements depend on the consequence of stale information.
+
+Trust derives from source authority, provenance and integrity controls; callers cannot simply assert trust. The provenance model above is conceptual, not a prescribed payload schema.
+
+### Class A — Request-bound
+
+Information must represent the exact protected request.
+
+Examples: transaction amount, target resource, requested action.
+
+### Class B — Immediate or near-immediate revocation
+
+Changes require a tightly bounded correctness window.
+
+Examples: suspended authority, revoked relationship, emergency access removal.
+
+### Class C — Bounded stale
+
+Some propagation delay may be acceptable, with the acceptable window explicitly defined by the implementation context.
+
+### Class D — Versioned reference
+
+Information changes through controlled publication.
+
+Examples: policy definitions, permission taxonomy, reference configuration.
+
+```text
+Technical Cache Validity
+          ≠
+Authorization Correctness
+```
+
+## Runtime architecture
+
+
+<AuthorizationRuntimeFlow label="Runtime authorization decision flow" />
+
+## Enterprise vs domain authorization
+
+<ArchitectureFlow
+  steps={[
+    'Shared / Enterprise Authorization',
+    'Domain Authorization',
+    'Domain Invariants',
+    'Protected Action',
+  ]}
+  direction="vertical"
+  label="Enterprise versus domain authorization boundary"
+/>
+
+Enterprise/shared authorization covers reusable concerns and cross-cutting policy.
+
+Domain authorization handles authority requiring domain-specific semantics.
+
+Domain invariants determine whether the action itself is valid according to resource state.
+
+```text
+AUTHORITY TO ATTEMPT
+        ≠
+VALIDITY OF ACTION
+```
+
+Domain invariants must not be moved into the central authorization model.
+
+## Trust and information
+
+### Trust boundaries
+
+```text
+UNTRUSTED / EXTERNAL CONTEXT
+             │
+             ▼
+    Authentication Boundary
+             │
+             ▼
+AUTHENTICATED SUBJECT CONTEXT
+             │
+             ▼
+       Policy Enforcement
+             │
+             ▼
+      Authorization Decision
+             │
+             ▼
+        Domain Boundary
+             │
+             ▼
+      Protected Business Action
+```
+
+Authenticated context is **not** automatically authoritative context.
+
+## Policy lifecycle
+
+
+Control plane and runtime plane are distinct. The runtime should not require the policy-authoring interface to be available for every decision.
+
+```text
+CONTROL PLANE
+
+Policy Author
+     ↓
+Policy Administration
+     ↓
+Validation
+     ↓
+Simulation / Testing
+     ↓
+Review
+     ↓
+Approval
+     ↓
+Publication
+     ↓
+Published Policy
+
+────────────────────────
+
+RUNTIME PLANE
+
+Published Policy
+     ↓
+PDP
+     ↓
+Runtime Decisions
+```
+
+### Policy versioning
+
+Published policy should be **identifiable by version** so that:
+
+- runtime evaluation uses a known published version;
+- decisions and decision evidence can be associated with the version actually evaluated;
+- distribution and activation of new versions are controlled;
+- distributed evaluators can reason about propagation and consistency windows;
+- rollback targets an approved prior version under governance.
+
+This reference does not prescribe version-number syntax, rollout technology or universal propagation deadlines. Those belong to the implementation context.
+
+## Decision validity
+
+
+Authorization decisions may be:
+
+- request-scoped;
+- operation-scoped;
+- valid for a bounded period;
+- invalidated by material context change.
+
+This reference does **not** invent a default TTL.
+
+Architecture question:
+
+> What is the validity scope and lifetime of this authorization decision?
+
+```text
+NEW AUTHORIZATION REQUEST
+
+Cannot establish authority
+        ↓
+Do not grant
+```
+
+```text
+EXISTING AUTHORISED PROCESS
+
+Authorization dependency changes
+        ↓
+Evaluate:
+Decision validity
+Revocation semantics
+Workflow state
+Risk
+Protected action
+```
+
+## Resilience
+
+
+Failure modes include:
+
+```text
+PDP unavailable
+Published policy unavailable
+Entitlement context unavailable
+Authorization context unavailable
+Authoritative source unavailable
+Projection stale
+Partial context
+Audit unavailable
+Policy propagation failure
+```
+
+> If sufficient authority cannot be established, authority should not be granted.
+
+> Fail closed is a security posture, not a complete resilience strategy.
+
+Possible implementation considerations (options, not mandates):
+
+- replicated decision capability;
+- replicated published policy;
+- local decision information;
+- bounded caching;
+- decision projections;
+- timeout budgets;
+- circuit breaking;
+- regional evaluation;
+- controlled degradation.
+
+### Quality attribute tension
+
+```text
+             AVAILABILITY
+                  ▲
+                  │
+SECURITY ◄────────┼────────► FRESHNESS
+                  │
+                  ▼
+                LATENCY
+```
+
+This is a conceptual tension model — not a quantitative chart.
+
+## Deployment patterns
+
+
+Four implementation-neutral patterns. None is ranked as universally preferred.
+
+### Central decision service
+
+```text
+Consumers → Central PDP
+```
+
+Strengths: consistent evaluation, central governance. Trade-offs: latency, availability concentration, blast radius.
+
+### Distributed decision nodes
+
+```text
+Policy Distribution
+        │
+  ┌─────┼─────┐
+  ▼     ▼     ▼
+PDP A PDP B PDP C
+```
+
+Strengths: locality, scale, failure isolation. Trade-offs: policy propagation, consistency windows, operational complexity.
+
+### Embedded evaluation
+
+```text
+Application
+    └── Local Policy Evaluator
+```
+
+Strengths: low latency, local autonomy. Trade-offs: policy distribution, drift risk, governance overhead.
+
+### Hybrid
+
+Different authorization classes may use different deployment patterns.
+
+### Deployment decision flow
+
+```text
+Authorization Requirements
+          ↓
+Latency / Availability / Scale
+          ↓
+Data Residency / Failure Domains
+          ↓
+Policy Consistency
+          ↓
+Attribute Correctness / Freshness
+          ↓
+Operational Model
+          ↓
+Deployment Pattern
+          ↓
+Technology Selection
+```
+
+Technology selection comes **after** architecture requirements.
+
+### Platform criticality
+
+```text
+More Consumers
+      ↓
+Greater Reuse
+      ↓
+Greater Enterprise Leverage
+      ↓
+Greater Criticality
+      ↓
+Greater Blast Radius
+```
+
+Increased adoption typically increases expectations around availability, capacity, disaster recovery, regional architecture, change governance, compatibility, policy rollout, rollback, observability and incident response.
+
+## Consumer contract
+
+
+```text
+AUTHORIZATION CONSUMER CONTRACT
+
+Decision semantics
+Request schema
+Resource semantics
+Action taxonomy
+Context expectations
+Attribute trust rules
+Reason semantics
+Obligation semantics
+Failure semantics
+Decision validity
+Timeout behaviour
+Versioning
+Compatibility
+Observability expectations
+```
+
+### Resource and action taxonomy
+
+
+```text
+Enterprise Vocabulary
+        │
+        ├── Common Actions
+        └── Common Resource Concepts
+                    │
+                    ▼
+              Domain Extensions
+```
+
+Principle: **governed consistency with domain extensibility.**
+
+This reference does not invent the enterprise vocabulary itself.
+
+## Audit and explainability
+
+
+```text
+Authorization Decision
+       │
+       ├───────────► Runtime Response
+       │
+       └───────────► Decision Evidence
+                           │
+                           ▼
+                    Audit / Observability
+```
+
+Potential evidence:
+
+- subject reference;
+- action;
+- resource reference;
+- decision;
+- reason;
+- obligations;
+- policy ID/version;
+- relevant decision context;
+- correlation identifier;
+- timestamp.
+
+Avoid:
+
+- raw tokens;
+- secrets;
+- complete sensitive payloads;
+- unnecessary PII.
+
+```text
+Internal Decision Evidence
+          ≠
+External Error Response
+```
+
+### Observability
+
+Operational observability is distinct from decision audit evidence.
+
+Useful operational categories include:
+
+- decision latency and errors;
+- dependency availability (PDP, published policy, context sources);
+- stale or missing context signals;
+- policy-version distribution health;
+- obligation coordination and re-evaluation failures;
+- correlation across evaluation and enforcement.
+
+Numerical latency or availability targets remain implementation-specific. Observability must respect the same data-minimisation expectations as audit evidence.
+
+### Security considerations
+
+This architecture’s security position synthesises existing principles rather than introducing a separate control catalogue:
+
+- **Deny by default** ([AP-02](#ap-02)) — authority must be positively established.
+- **Authoritative enforcement** — PEP placement must protect the real action; UI-only checks are insufficient ([Enforcement placement](#enforcement-placement)).
+- **Trusted subject and context** — provenance and integrity controls; callers cannot simply assert trust ([Attribute provenance](#attribute-provenance), [AP-08](#ap-08)).
+- **Request and resource binding with decision validity** — decisions apply to a defined request/validity scope ([Decision validity](#decision-validity)).
+- **Secure handling of obligations and failures** — unmet blocking obligations and evaluation failures must not broaden authority ([Runtime architecture](#runtime-architecture), [Resilience](#resilience)).
+- **Protected policy administration** — control-plane publication is governed and distinct from runtime evaluation ([Policy lifecycle](#policy-lifecycle)).
+- **Minimised audit data and limited external error detail** — evidence retention without unnecessary secrets or PII ([Audit and explainability](#audit-and-explainability)).
+
+This synthesis does not invent employer-specific controls, protocols, token formats or mandatory infrastructure.
+
+## Architecture decisions
+
+<ArchitectureAdrTable
+  title="Architecture decision register"
+  showHeading={false}
+  labelledBy="architecture-decisions"
+  rows={[
+    {
+      id: 'ADR-01',
+      decision: 'Authorization model',
+      direction: 'Hybrid roles, attributes, relationships and contextual policy',
+      refs: [
+        { label: 'Hybrid authorization model', href: '#hybrid-authorization-model' },
+        { label: 'AP-03', href: '#ap-03' },
+        { label: 'AP-06', href: '#ap-06' },
+        { label: 'Core decision contract', href: '#core-decision-contract' },
+      ],
+    },
+    {
+      id: 'ADR-02',
+      decision: 'Runtime abstraction',
+      direction: 'Decision-oriented authorization',
+      refs: [
+        { label: 'Logical model', href: '#logical-reference-architecture' },
+        { label: 'Runtime flow', href: '#runtime-architecture' },
+      ],
+    },
+    {
+      id: 'ADR-03',
+      decision: 'Assignment vs evaluation',
+      direction: 'Separate',
+      refs: [
+        { label: 'AP-03', href: '#ap-03' },
+        { label: 'Architecture position', href: '#architecture-position' },
+      ],
+    },
+    {
+      id: 'ADR-04',
+      decision: 'Decision vs enforcement',
+      direction: 'Separate',
+      refs: [
+        { label: 'AP-04', href: '#ap-04' },
+        { label: 'Capability responsibilities', href: '#capability-responsibilities' },
+      ],
+    },
+    {
+      id: 'ADR-05',
+      decision: 'Domain information',
+      direction: 'Remains domain-owned',
+      refs: [
+        { label: 'AP-05', href: '#ap-05' },
+        { label: 'Logical model', href: '#logical-reference-architecture' },
+      ],
+    },
+    {
+      id: 'ADR-06',
+      decision: 'Decision information',
+      direction: 'Trusted context / PIP patterns',
+      refs: [
+        { label: 'Authorization Context', href: '#authorization-context' },
+        { label: 'Attribute acquisition', href: '#attribute-acquisition-patterns' },
+        { label: 'AP-08', href: '#ap-08' },
+      ],
+    },
+    {
+      id: 'ADR-07',
+      decision: 'PDP responsibility',
+      direction: 'Evaluate; do not become enterprise orchestrator',
+      refs: [
+        { label: 'AP-07', href: '#ap-07' },
+        { label: 'Capability responsibilities', href: '#capability-responsibilities' },
+      ],
+    },
+    {
+      id: 'ADR-08',
+      decision: 'Policy lifecycle',
+      direction: 'Separate control and runtime planes',
+      refs: [
+        { label: 'Policy lifecycle', href: '#policy-lifecycle' },
+        { label: 'Policy versioning', href: '#policy-versioning' },
+        { label: 'AP-10', href: '#ap-10' },
+      ],
+    },
+    {
+      id: 'ADR-09',
+      decision: 'Failure semantics',
+      direction: 'Do not grant when sufficient authority cannot be established',
+      refs: [
+        { label: 'Resilience', href: '#resilience' },
+        { label: 'AP-02', href: '#ap-02' },
+        { label: 'AP-11', href: '#ap-11' },
+      ],
+    },
+    {
+      id: 'ADR-10',
+      decision: 'Obligations',
+      direction: 'PDP declares; responsible capability fulfils; re-evaluate where context changes',
+      refs: [
+        { label: 'Blocking obligations', href: '#blocking-obligations' },
+        { label: 'Runtime re-evaluation', href: '#runtime-evaluation' },
+        { label: 'Runtime architecture', href: '#runtime-architecture' },
+      ],
+    },
+    {
+      id: 'ADR-11',
+      decision: 'Audit',
+      direction: 'Explainable evidence with data minimisation',
+      refs: [
+        { label: 'Audit and explainability', href: '#audit-and-explainability' },
+        { label: 'AP-09', href: '#ap-09' },
+      ],
+    },
+    {
+      id: 'ADR-12',
+      decision: 'Deployment',
+      direction: 'Driven by NFRs',
+      refs: [{ label: 'Deployment patterns', href: '#deployment-patterns' }],
+    },
+    {
+      id: 'ADR-13',
+      decision: 'Technology',
+      direction: 'Selected after logical architecture',
+      refs: [
+        { label: 'Deployment patterns', href: '#deployment-patterns' },
+        { label: 'Implementation guidance', href: '#implementation-guidance' },
+      ],
+    },
+    {
+      id: 'ADR-14',
+      decision: 'Authorization Context',
+      direction: 'Logical decision model, not mandatory store/service',
+      refs: [
+        { label: 'Authorization Context', href: '#authorization-context' },
+        { label: 'Logical model', href: '#logical-reference-architecture' },
+      ],
+    },
+    {
+      id: 'ADR-15',
+      decision: 'Domain invariants',
+      direction: 'Remain domain responsibility',
+      refs: [
+        { label: 'AP-14', href: '#ap-14' },
+        { label: 'Enterprise vs domain', href: '#enterprise-vs-domain-authorization' },
+      ],
+    },
+    {
+      id: 'ADR-16',
+      decision: 'Enterprise policy',
+      direction: 'Centralised selectively',
+      refs: [
+        { label: 'AP-13', href: '#ap-13' },
+        { label: 'Enterprise vs domain', href: '#enterprise-vs-domain-authorization' },
+      ],
+    },
+    {
+      id: 'ADR-17',
+      decision: 'Decision information',
+      direction: 'Classified by correctness requirement',
+      refs: [
+        { label: 'Correctness classes', href: '#attribute-classification-and-correctness' },
+        { label: 'Attribute provenance', href: '#attribute-provenance' },
+      ],
+    },
+    {
+      id: 'ADR-18',
+      decision: 'Consumer semantics',
+      direction: 'Governed as part of authorization contract',
+      refs: [
+        { label: 'Consumer contract', href: '#consumer-contract' },
+        { label: 'AP-15', href: '#ap-15' },
+      ],
+    },
+    {
+      id: 'ADR-19',
+      decision: 'Resource/action vocabulary',
+      direction: 'Common semantics with domain extensibility',
+      refs: [
+        { label: 'Resource and action taxonomy', href: '#resource-and-action-taxonomy' },
+        { label: 'Consumer contract', href: '#consumer-contract' },
+      ],
+    },
+    {
+      id: 'ADR-20',
+      decision: 'Decision validity',
+      direction: 'Explicitly defined by implementation context',
+      refs: [{ label: 'Decision validity', href: '#decision-validity' }],
+    },
+  ]}
+/>
+
+## Quality attributes
+
+Quality attributes for this architecture include:
+
+- Performance
+- Availability
+- Scalability
+- Consistency
+- Freshness
+- Correctness
+- Resilience
+- Security
+- Auditability
+- Explainability
+- Operability
+- Compatibility
+
+Measurable targets belong to the **implementation context**. This reference does not invent numerical thresholds.
+
+## Architecture trade-offs
+
+These tensions have no single correct answer:
+
+### Centralisation vs autonomy
+
+Consistency versus dependency and bottleneck risk.
+
+### Freshness vs availability
+
+Authoritative retrieval versus local decision resilience.
+
+### Consistency vs latency
+
+Central evaluation versus distributed evaluation.
+
+### Rich policy vs explainability
+
+Expressiveness versus understandable, testable and governable policy.
+
+### Context richness vs privacy
+
+Decision quality versus sensitive-data processing.
+
+### Reuse vs blast radius
+
+Enterprise leverage versus consequence of failure.
+
+### Enterprise consistency vs domain authority
+
+Common semantics versus keeping decisions with the domain best placed to make them.
+
+## Implementation guidance
+
+
+Recommended implementation sequence for this reference architecture:
+
+```text
+1. Protected actions
+        ↓
+2. Subjects
+        ↓
+3. Resources
+        ↓
+4. Authority model
+        ↓
+5. Enterprise vs domain authorization boundary
+        ↓
+6. Required context
+        ↓
+7. Domain ownership
+        ↓
+8. Correctness requirements
+        ↓
+9. Policies
+        ↓
+10. Decision contract
+        ↓
+11. Enforcement points
+        ↓
+12. Obligation semantics
+        ↓
+13. Decision validity
+        ↓
+14. Failure semantics
+        ↓
+15. Quality attributes
+        ↓
+16. Deployment pattern
+        ↓
+17. Technology selection
+```
+
+This is the sequence recommended by this reference architecture — not a mandatory industry methodology.
+
+## Architecture test
+
+<PerspectiveChecklist
+  title="Architecture test"
+  showHeading={false}
+  headingId="architecture-test"
+  lead="Before treating an authorization capability as enterprise-ready against this reference, answer:"
+  items={[
+    { label: 'Protection', text: 'What are we protecting?' },
+    { label: 'Actors', text: 'Who or what can act upon it?' },
+    { label: 'Authority', text: 'What constitutes authority?' },
+    { label: 'Assignment', text: 'Where is authority assigned?' },
+    { label: 'Enterprise scope', text: 'Which authorization concerns should be reusable across the enterprise?' },
+    { label: 'Domain scope', text: 'Which authorization concerns belong within the domain?' },
+    { label: 'Invariants', text: 'Which rules are domain invariants rather than authorization policy?' },
+    { label: 'Ownership', text: 'Which domain owns each decision attribute?' },
+    { label: 'Provenance', text: 'What establishes provenance?' },
+    { label: 'Trust', text: 'Which attributes can be trusted?' },
+    { label: 'Freshness', text: 'How fresh must each attribute be?' },
+    { label: 'Correctness', text: 'What correctness class applies?' },
+    { label: 'Policy', text: 'What policies determine effective authority?' },
+    { label: 'Decision point', text: 'Where are decisions made?' },
+    { label: 'Enforcement', text: 'Where are decisions enforced?' },
+    { label: 'Obligations', text: 'Which obligations may be returned?' },
+    { label: 'Blocking', text: 'Which obligations are blocking?' },
+    { label: 'Fulfilment', text: 'Who fulfils each obligation?' },
+    { label: 'Re-evaluation', text: 'Does fulfilment require re-evaluation?' },
+    { label: 'Validity', text: 'What is the validity scope and lifetime of a decision?' },
+    { label: 'Information failure', text: 'What happens when decision information is unavailable?' },
+    { label: 'PDP failure', text: 'What happens when the PDP is unavailable?' },
+    { label: 'In-flight failure', text: 'What happens to an already-authorised process if authorization becomes unavailable?' },
+    { label: 'Policy lifecycle', text: 'How are policies versioned and propagated?' },
+    { label: 'Taxonomy', text: 'How are resources and actions named consistently?' },
+    { label: 'Explainability', text: 'How are decisions explained?' },
+    { label: 'Evidence', text: 'What evidence must be retained?' },
+    { label: 'Minimisation', text: 'What information must not be logged?' },
+    { label: 'NFRs', text: 'What are the latency and availability requirements?' },
+    { label: 'Blast radius', text: 'What is the blast radius?' },
+    { label: 'Adoption', text: 'How will adoption change NFRs?' },
+    { label: 'Evolution', text: 'How can the implementation evolve or be replaced?' },
+  ]}
+/>
+
+## Final reference model
+
+
+The final model remains an abstraction of responsibilities. It must not visually imply that DENY or unmet blocking obligations can reach the protected action.
+
+<ArchitectureSpec
+  label="Final enterprise authorization reference model"
+  surrounding={[
+    'Policy Governance',
+    'Decision Evidence',
+    'Audit',
+    'Observability',
+    'Trust',
+    'Resilience',
+  ]}
+  layers={[
+    { label: 'Who? — Identity → Subject' },
+    {
+      label: 'What authority? / What conditions?',
+      items: ['Entitlements', 'Context'],
+    },
+    { label: 'Policy' },
+    { label: 'Decision (ALLOW | DENY) + Reason + Obligations' },
+    {
+      label: 'Enforcement',
+      note: 'DENY stops. Unmet blocking obligations do not permit execution; re-evaluate when context changes.',
+    },
+    {
+      label: 'Domain authorization + Domain invariants',
+      note: 'Only after effective ALLOW with required blocking obligations satisfied',
+    },
+    { label: 'Protected action' },
+  ]}
+/>
