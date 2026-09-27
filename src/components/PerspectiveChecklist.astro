@@ -1,0 +1,57 @@
+---
+/**
+ * Reusable Architecture Perspective decision checklist.
+ * Presentation-only — labels and questions are supplied by the article.
+ */
+export type ChecklistItem = {
+  label: string;
+  text: string;
+};
+
+interface Props {
+  items: ChecklistItem[];
+  title: string;
+  lead: string;
+  closingPrinciple?: string;
+  headingId?: string;
+  /** When false, rely on an external MDX section heading. */
+  showHeading?: boolean;
+}
+
+const {
+  items,
+  title,
+  lead,
+  closingPrinciple,
+  headingId = 'perspective-checklist-heading',
+  showHeading = true,
+} = Astro.props;
+---
+
+<section class="perspective-checklist" aria-labelledby={headingId}>
+  {
+    showHeading && (
+      <h2 id={headingId} class="perspective-checklist__title">
+        {title}
+      </h2>
+    )
+  }
+  <p class="perspective-checklist__lead">{lead}</p>
+  <ul class="perspective-checklist__grid">
+    {
+      items.map((item) => (
+        <li class="perspective-checklist__item">
+          <span class="perspective-checklist__label">{item.label}</span>
+          <span class="perspective-checklist__text">{item.text}</span>
+        </li>
+      ))
+    }
+  </ul>
+  {
+    closingPrinciple && (
+      <aside class="principle-callout mt-8" aria-label="Architecture principle">
+        <p class="principle-callout__text">{closingPrinciple}</p>
+      </aside>
+    )
+  }
+</section>

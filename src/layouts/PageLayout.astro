@@ -1,0 +1,48 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { defaultNavVisibility } from '../data/navigation';
+import { getCollection } from 'astro:content';
+import { isVisibleForReview } from '../utils/publication';
+import { hasPublishedRadarEntries } from '../data/technologies';
+
+interface Props {
+  title: string;
+  description: string;
+  canonicalPath?: string;
+}
+
+const { title, description, canonicalPath } = Astro.props;
+
+const allowDrafts = import.meta.env.DEV && !import.meta.env.PROD;
+const experience = await getCollection('experience');
+const perspectives = await getCollection('perspectives');
+const architectures = await getCollection('architectures');
+
+const visibility = {
+  ...defaultNavVisibility(),
+  hasPublishedExperience: experience.some((entry) =>
+    isVisibleForReview(entry.data, { allowDrafts }),
+  ),
+  hasPublishedPerspectives: perspectives.some((entry) =>
+    isVisibleForReview(entry.data, { allowDrafts }),
+  ),
+  hasPublishedArchitectures: architectures.some((entry) =>
+    isVisibleForReview(entry.data, { allowDrafts }),
+  ),
+  hasPublishedRadar: hasPublishedRadarEntries(),
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalPath={canonicalPath}
+>
+  <Header visibility={visibility} />
+  <main id="main">
+    <slot />
+  </main>
+  <Footer />
+</BaseLayout>
