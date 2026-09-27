@@ -2,7 +2,7 @@ name: Assemble package-lock
 on:
   push:
     branches: [feature/portfolio-foundation]
-    paths: ['.lock-gz/**']
+    paths: ['.lock-gz/**', '.github/workflows/assemble-lockfile.yml']
   workflow_dispatch:
 permissions:
   contents: write
@@ -16,7 +16,6 @@ jobs:
       - name: Assemble package-lock.json
         run: |
           set -euo pipefail
-          # Concatenate subchunks into full parts when present
           for i in 06 07; do
             if ls .lock-gz/part_${i}_*.b64 >/dev/null 2>&1; then
               cat .lock-gz/part_${i}_*.b64 > .lock-gz/part_${i}.b64
@@ -25,14 +24,14 @@ jobs:
           done
           count=$(ls .lock-gz/part_0[0-8].b64 2>/dev/null | wc -l | tr -d ' ')
           echo "parts=$count"
+          ls -la .lock-gz/
           if [ "$count" -lt 9 ]; then
             echo "Incomplete parts set; waiting for remaining uploads."
             exit 0
           fi
-          # Verify expected blob shas
           declare -A EXPECTED=(
             [part_00.b64]=45bdab9b0f37c54227e134c59b6619e6510174c1
-            [part_01.b64]=be41b3f3a262bbe877f848ccea6fe95d4dad6691
+            [part_01.b64]=bfb996dec605c17e38bbac9486b9428b3eaebbbd
             [part_02.b64]=3fd4694fcee5c613aef7eda2bcc6350721fc7bec
             [part_03.b64]=662194a7b645f556ce7329f990573fb758620ba7
             [part_04.b64]=48478a4b97e8ebaf5dae65c8ac864134547963a3
