@@ -1,0 +1,30 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import TechnologyRadar from '../../components/TechnologyRadar.astro';
+import { pageTitle } from '../../data/seo';
+import { hasPublishedRadarEntries } from '../../data/technologies';
+
+if (import.meta.env.PROD && !hasPublishedRadarEntries()) {
+  return new Response(null, { status: 404, statusText: 'Not Found' });
+}
+---
+
+<PageLayout
+  title={pageTitle('Technology Radar')}
+  description="Independent technology radar — classifications represent Yusuf Kader’s professional assessment only."
+>
+  <Breadcrumb
+    items={[
+      { label: 'Home', href: '/' },
+      { label: 'Architecture', href: '/architecture' },
+      { label: 'Radar', href: '/architecture/radar' },
+    ]}
+  />
+
+  <section class="section-space">
+    <div class="site-shell">
+      <TechnologyRadar />
+    </div>
+  </section>
+</PageLayout>
