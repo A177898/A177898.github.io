@@ -1,0 +1,36 @@
+---
+/**
+ * Conceptual consistency ↔ autonomy balance diagram.
+ * Not a quantitative model — presentation of supplied zone labels only.
+ */
+interface Props {
+  consistency: string;
+  autonomy: string;
+  upperZone: string;
+  lowerZone: string;
+  label?: string;
+}
+
+const { consistency, autonomy, upperZone, lowerZone, label } = Astro.props;
+---
+
+<figure
+  class="arch-flow arch-flow--balance"
+  aria-label={label ?? `${consistency} versus ${autonomy}`}
+>
+  <div class="arch-balance">
+    <p class="arch-balance__axis-y">
+      <span class="arch-balance__axis-label">{consistency}</span>
+      <span class="arch-balance__axis-arrow" aria-hidden="true">▲</span>
+    </p>
+    <div class="arch-balance__plot">
+      <p class="arch-balance__zone">{upperZone}</p>
+      <div class="arch-balance__cross" aria-hidden="true">
+        <span class="arch-balance__hline"></span>
+        <span class="arch-balance__vline"></span>
+        <span class="arch-balance__autonomy">{autonomy} →</span>
+      </div>
+      <p class="arch-balance__zone">{lowerZone}</p>
+    </div>
+  </div>
+</figure>
