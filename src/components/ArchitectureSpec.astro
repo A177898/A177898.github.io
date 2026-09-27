@@ -1,0 +1,57 @@
+---
+/**
+ * Layered logical architecture figure — responsibilities, not topology.
+ */
+export type ArchLayer = {
+  label: string;
+  note?: string;
+  items?: string[];
+};
+
+interface Props {
+  layers: ArchLayer[];
+  surrounding?: string[];
+  label?: string;
+}
+
+const { layers, surrounding = [], label } = Astro.props;
+---
+
+<figure class="arch-flow arch-spec" aria-label={label ?? 'Logical reference architecture'}>
+  <ol class="arch-spec__layers">
+    {
+      layers.map((layer, index) => (
+        <li class="arch-spec__layer">
+          <div class="arch-spec__box">
+            <p class="arch-spec__label">{layer.label}</p>
+            {layer.note && <p class="arch-spec__note">{layer.note}</p>}
+            {layer.items && layer.items.length > 0 && (
+              <ul class="arch-spec__items">
+                {layer.items.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+          {index < layers.length - 1 && (
+            <span class="arch-flow__connector" aria-hidden="true">
+              ↓
+            </span>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+  {
+    surrounding.length > 0 && (
+      <div class="arch-spec__surround">
+        <p class="arch-spec__surround-label">Surrounding concerns</p>
+        <ul class="arch-spec__surround-list">
+          {surrounding.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+</figure>
