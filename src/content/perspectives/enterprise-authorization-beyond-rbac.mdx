@@ -280,3 +280,610 @@ Conceptually:
 />
 
 An entitlement repository can tell us what authority has been assigned.
+
+Enterprise authorization still needs to determine whether that authority applies to the action currently being attempted.
+
+> **Assigned authority and effective authority are not necessarily the same thing.**
+
+## 5. Use multiple authorization models together
+
+I do not view RBAC and ABAC as competing approaches where one needs to replace the other.
+
+Mature authorization architectures can combine multiple mechanisms because they solve different aspects of the problem.
+
+**RBAC — broad responsibility**
+
+> This subject is an Approver.
+
+**ABAC — attribute-based constraints**
+
+> This subject belongs to Business A and may operate Account X.
+
+**Policy — contextual rules**
+
+> An approver cannot approve a transaction they initiated.
+
+**Limits — quantitative authority**
+
+> This subject may approve transactions up to 500,000.
+
+**Mandates — business authority**
+
+> Two authorised approvers are required.
+
+**Relationship — authority over a resource**
+
+> This subject acts on behalf of Organisation Y.
+
+Together:
+
+<ArchitectureFlow
+  steps={['RBAC', 'ABAC', 'Relationship', 'Mandate', 'Limits', 'Context', 'Policy']}
+  direction="vertical"
+  join="plus"
+  result="Authorization Decision"
+  label="Combined authorization model"
+/>
+
+These mechanisms solve different parts of the authorization problem.
+
+> **Treating them as interchangeable can create unnecessary complexity.**
+
+The objective is not to select the most sophisticated authorization model.
+
+It is to use the appropriate mechanism for each dimension of authority.
+
+## 6. The subject is not the customer record
+
+Enterprise environments often contain many identifiers:
+
+```text
+Authentication Subject
+Customer Identifier
+Business Identifier
+Employee Identifier
+Account Identifier
+Relationship Identifier
+Correlation Identifier
+```
+
+These identifiers represent different concepts.
+
+They should not be treated as interchangeable.
+
+Authorization requires a stable representation of the **subject making the request**.
+
+That subject can then be related to customers, organisations, accounts or other resources.
+
+My principle is:
+
+> **Identity, customer identity and business relationship are related concepts, but they should not be collapsed into a single identifier.**
+
+This distinction also allows an authenticated subject to exist before every downstream business identifier or relationship has necessarily been established.
+
+The authorization model remains centred on the subject while relationships to business resources are managed independently.
+
+## 7. Resource scope matters
+
+A permission without scope may be significantly broader than intended.
+
+For example:
+
+`ACCOUNT_VIEW`
+
+should not automatically mean:
+
+> View every account.
+
+Likewise:
+
+`PAYMENT_APPROVE`
+
+should not automatically mean:
+
+> Approve every payment.
+
+Authority frequently requires both a permission and the resources to which that permission applies.
+
+<ArchitectureFlow
+  steps={['Permission', 'Resource Scope']}
+  direction="vertical"
+  join="plus"
+  result="Effective Authority"
+  label="Permission plus resource scope"
+/>
+
+For example:
+
+```text
+ACCOUNT_VIEW
+     │
+     ▼
+  Business A
+     │
+     ├── Account 1
+     └── Account 3
+```
+
+This is where attributes and business relationships become particularly important.
+
+The permission describes **what** the subject may potentially do.
+
+Scope constrains **where that authority applies**.
+
+## 8. Context changes the answer
+
+The same subject may perform the same action against the same resource and still receive a different authorization decision depending on context.
+
+```text
+Same Subject
+Same Action
+Same Resource
+Different Context
+      ↓
+Different Decision
+```
+
+Context might include:
+
+- transaction amount;
+- authentication strength;
+- channel;
+- jurisdiction;
+- time;
+- device trust;
+- transaction state;
+- risk indicators;
+- initiator identity.
+
+This is why static permissions alone are not always sufficient.
+
+Authorization may need to evaluate the conditions under which authority is being exercised, not simply whether authority was previously assigned.
+
+## 9. ALLOW and DENY are sometimes insufficient
+
+Traditional authorization is often represented as:
+
+```text
+ALLOW
+DENY
+```
+
+For many use cases, that remains appropriate.
+
+But enterprise processes may require additional conditions before an action can proceed.
+
+Examples include:
+
+```text
+STEP_UP_REQUIRED
+APPROVAL_REQUIRED
+ADDITIONAL_AUTHORIZATION_REQUIRED
+LIMIT_EXCEEDED
+```
+
+I prefer to distinguish the **decision**, the **obligations associated with that decision**, and the **reason**.
+
+For example:
+
+```text
+Decision:
+    ALLOW | DENY
+
+Obligations:
+    STEP_UP
+    REQUIRE_APPROVAL
+    REQUIRE_SECOND_AUTHORIZER
+
+Reason:
+    LIMIT_EXCEEDED
+    MANDATE_NOT_SATISFIED
+    SOD_VIOLATION
+```
+
+This distinction prevents every business condition from becoming a new decision type.
+
+My principle is:
+
+> **Authorization should be able to express not only whether an action is permitted, but what conditions must be satisfied before it can proceed.**
+
+The exact decision model may vary by domain, but the distinction between outcome, obligation and reason is valuable.
+
+## 10. Separate policy decision from enforcement
+
+A reusable authorization architecture benefits from separating the point at which a decision is made from the point at which it is enforced.
+
+Conceptually:
+
+<ArchitectureDecision
+  steps={[
+    'Request',
+    'PEP — Enforcement',
+    'PDP — Decision',
+    'Decision',
+    'PEP — Enforcement',
+  ]}
+  sources={['Policies', 'Attributes (PIP)', 'Policy Administration (PAP)']}
+  sourcesLabel="Architectural roles supporting the decision"
+  label="Policy enforcement and decision"
+/>
+
+The standard architectural concepts are:
+
+**PEP — Policy Enforcement Point**  
+Intercepts the action and enforces the authorization decision.
+
+**PDP — Policy Decision Point**  
+Evaluates the authorization request and produces the decision.
+
+**PIP — Policy Information Point**  
+Provides attributes required during policy evaluation.
+
+**PAP — Policy Administration Point**  
+Supports policy definition, administration and lifecycle.
+
+The value of this separation is architectural consistency.
+
+> **Policy can evolve without requiring authorization logic to be repeatedly embedded throughout every consuming application.**
+
+## 11. The hardest question: where do attributes come from?
+
+The PDP requires information in order to make a decision.
+
+The difficult architectural question is where that information comes from.
+
+A simplistic implementation might synchronously retrieve everything:
+
+<ArchitectureBranch
+  root="PDP"
+  branches={[
+    'Identity',
+    'Customer',
+    'Relationship',
+    'Account',
+    'Mandate',
+    'Limits',
+    'Risk',
+    'Policy',
+  ]}
+  label="Policy Information Problem — potential dependencies"
+/>
+
+The problem is that authorization then becomes dependent on the latency and availability of every downstream capability.
+
+Decision latency increases.
+
+Availability becomes constrained by multiple dependencies.
+
+The authorization capability begins to behave like a distributed orchestration layer.
+
+I think of this as the **Policy Information Problem**.
+
+There are several broad approaches.
+
+### A. Synchronous retrieval
+
+Retrieve authoritative information when the decision is made.
+
+This provides strong freshness but can introduce latency and availability dependencies.
+
+### B. Caller-supplied context
+
+Allow trusted context to accompany the authorization request.
+
+This can improve performance, but the trust boundary becomes critical. The PDP must know which supplied attributes it is permitted to trust.
+
+### C. Authorization projection
+
+Maintain decision-relevant attributes closer to the authorization capability.
+
+This can improve performance and resilience but introduces questions around freshness, synchronisation and consistency.
+
+### D. Hybrid
+
+Combine trusted request context, locally available decision information and selective authoritative retrieval based on the characteristics of the attribute.
+
+My principle is:
+
+<PrincipleCallout>
+  The PDP should evaluate policy, not become an orchestration engine for the enterprise.
+</PrincipleCallout>
+
+The right information strategy depends on the correctness, freshness and availability requirements of each attribute.
+
+## 12. Attribute freshness is part of authorization correctness
+
+Caching authorization information is not merely a performance decision.
+
+Consider what happens when:
+
+- authority is revoked;
+- a mandate changes;
+- a relationship changes;
+- an approval limit is reduced.
+
+If authorization continues evaluating against stale information, authority that no longer exists may continue to be granted.
+
+That means:
+
+> **Authorization data has a correctness window, not merely a cache TTL.**
+
+Different attributes can tolerate different levels of freshness.
+
+For example:
+
+```text
+Policy definitions      → Version controlled
+Role definitions        → Relatively stable
+Relationship status     → Higher freshness requirement
+Transaction amount      → Request-time context
+Risk signal             → Potentially real-time
+```
+
+The architecture should therefore not apply one caching strategy indiscriminately to every authorization attribute.
+
+Freshness is part of the authorization model itself.
+
+## 13. Deny by default
+
+The baseline remains simple.
+
+If sufficient authority cannot be established:
+
+```text
+DENY
+```
+
+Not:
+
+> “The system could not evaluate the request, therefore allow it.”
+
+Missing information should not silently broaden authority.
+
+My principle is:
+
+<PrincipleCallout>
+  Uncertainty in authorization should reduce authority, not expand it.
+</PrincipleCallout>
+
+That principle should influence policy design, failure handling and dependency behaviour.
+
+## 14. Authorization decisions must be explainable
+
+A decision should not simply produce:
+
+```json
+{
+  "decision": "DENY"
+}
+```
+
+For operational, governance and audit purposes, the organisation may need additional decision evidence:
+
+```text
+Decision
+Reason
+Policy
+Policy Version
+Relevant Context
+Obligations
+Correlation
+Timestamp
+```
+
+Not all of this information should necessarily be returned to the end user.
+
+But the organisation should be able to answer questions such as:
+
+> Why was this action permitted?
+
+or:
+
+> Why was this action denied?
+
+My principle is:
+
+> **If an authorization decision affects significant business activity, the organisation should be able to explain how that decision was reached.**
+
+Explainability is therefore not simply an operational convenience.
+
+It is part of designing authorization as a governable enterprise capability.
+
+## 15. Audit the decision without creating a surveillance database
+
+Authorization decisions generate valuable audit evidence.
+
+But indiscriminately logging every token, attribute and request payload creates additional security and privacy risk.
+
+An authorization audit may need to capture:
+
+- subject reference;
+- action;
+- resource reference;
+- decision;
+- reason;
+- policy version;
+- relevant decision context;
+- correlation identifier;
+- timestamp.
+
+It should avoid unnecessarily storing:
+
+- raw access tokens;
+- unnecessary personal information;
+- secrets;
+- complete sensitive payloads.
+
+My principle is:
+
+> **Authorization audit should preserve decision evidence without unnecessarily duplicating sensitive data.**
+
+Auditability and data minimisation should coexist.
+
+## 16. Centralise decision consistency, not every piece of data
+
+This connects directly to the platform architecture discussion.
+
+A reusable authorization capability does not require centralising all user, customer, account, mandate and transaction information.
+
+We may choose to centralise concerns such as:
+
+- decision semantics;
+- policy evaluation;
+- permission taxonomy;
+- policy governance;
+- audit expectations.
+
+While authoritative business information remains within the domains responsible for it.
+
+Conceptually:
+
+<ArchitectureBranch
+  root="Authorization Policy"
+  branches={['Identity Domain', 'Business Domain', 'Resource Domain']}
+  label="Centralise authorization, not domain data"
+/>
+
+My principle is:
+
+> **Centralising authorization does not require centralising the data used to make authorization decisions.**
+
+That is an important platform boundary.
+
+The authorization capability needs access to decision-relevant information.
+
+It does not necessarily need to become the system of record for that information.
+
+## 17. Authorization itself is a platform capability
+
+This is where the broader architecture perspectives connect.
+
+A mature enterprise authorization capability can provide:
+
+- consistent decision semantics;
+- policy evaluation;
+- a common permission vocabulary;
+- reusable enforcement patterns;
+- auditability;
+- governance;
+- decision interfaces;
+- policy lifecycle management.
+
+Without this consistency, applications may independently implement logic such as:
+
+```text
+if user.role == ...
+if amount < ...
+if business == ...
+if approver != initiator ...
+```
+
+Over time, authorization policy becomes fragmented across applications, APIs and user interfaces.
+
+The same business rule may be implemented differently in multiple places.
+
+But the opposite extreme is also problematic.
+
+A central authorization capability should not attempt to own every piece of domain authority or business logic.
+
+My principle is:
+
+<PrincipleCallout>
+  Centralise the decision framework and reusable policy concerns. Keep domain authority with the domain that owns it.
+</PrincipleCallout>
+
+This preserves the value of a shared authorization capability without turning it into a centralised repository for every business rule in the enterprise.
+
+<PerspectiveChecklist
+  title="18. My enterprise authorization test"
+  lead="Before I consider an authorization capability enterprise-ready, I want clear answers to several questions."
+  items={[
+    { label: 'Subject', text: 'How is the requesting subject identified?' },
+    { label: 'Action', text: 'What exactly are they attempting to do?' },
+    { label: 'Resource', text: 'What are they attempting to act upon?' },
+    { label: 'Scope', text: 'Which resources does their authority cover?' },
+    { label: 'Relationship', text: 'What gives them authority over this resource?' },
+    { label: 'Role', text: 'What broad responsibility has been assigned?' },
+    { label: 'Attributes', text: 'Which characteristics constrain that responsibility?' },
+    { label: 'Policy', text: 'Which rules apply?' },
+    { label: 'Limits', text: 'Are quantitative constraints relevant?' },
+    { label: 'Mandates', text: 'Is additional authority required?' },
+    { label: 'Context', text: 'What request-time information changes the decision?' },
+    { label: 'Obligations', text: 'Are additional conditions required?' },
+    { label: 'Enforcement', text: 'Where is the decision enforced?' },
+    { label: 'Freshness', text: 'How current must decision information be?' },
+    { label: 'Resilience', text: 'What happens if decision dependencies are unavailable?' },
+    { label: 'Explainability', text: 'Can we explain how the decision was reached?' },
+    {
+      label: 'Audit',
+      text: 'Can we demonstrate what happened without unnecessarily collecting sensitive information?',
+    },
+    { label: 'Governance', text: 'Who owns policy and its lifecycle?' },
+  ]}
+/>
+
+This does not need to become an unnecessarily complex authorization framework.
+
+The purpose is to make the architecture explicit.
+
+> **If authorization logic is scattered across applications, APIs and user interfaces, the enterprise does not have a coherent authorization architecture. It has distributed business rules that happen to control access.**
+
+## The role of Enterprise Architecture, as I see it
+
+Enterprise authorization extends beyond Identity and Access Management.
+
+Identity concerns authentication.
+
+Security concerns access control.
+
+Product teams understand business rules.
+
+Platform teams care about reusable capabilities.
+
+Domains own business authority.
+
+All of these concerns intersect in authorization.
+
+The Enterprise Architect's responsibility is not to define every authorization policy.
+
+It is to help establish the boundaries.
+
+Conceptually:
+
+<ArchitectureFlow
+  steps={['Identity', 'Subject', 'Entitlement + Context', 'Policy', 'Decision', 'Enforcement']}
+  direction="vertical"
+  label="Enterprise authorization boundary"
+/>
+
+The architecture needs to make clear:
+
+- who owns identity;
+- who owns relationships;
+- who owns entitlements;
+- who owns domain attributes;
+- who defines policy;
+- who evaluates policy;
+- who enforces decisions;
+- how authorization is governed;
+- how decisions are audited.
+
+The objective is not to create the most sophisticated authorization engine possible.
+
+It is to establish a model where authority can be **expressed clearly, evaluated consistently, enforced reliably and evolved without embedding policy throughout the enterprise**.
+
+That is the outcome I care about.
+
+Not whether the architecture can claim to use RBAC, ABAC or a particular policy engine.
+
+Not how sophisticated the rules language is.
+
+But whether the organisation can reliably answer a fundamental question:
+
+> **May this subject perform this action against this resource under these conditions?**
+
+And whether it can trust and explain the answer.
+
+Because ultimately:
+
+> **Enterprise authorization is not about roles, attributes or policy engines. It is about establishing who may do what, to which resource, under which conditions—and being able to trust and explain the decision.**
