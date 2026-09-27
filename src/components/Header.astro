@@ -1,0 +1,254 @@
+---
+import type { NavItem, NavVisibility } from '../data/navigation';
+import { buildPrimaryNavigation } from '../data/navigation';
+import ThemeToggle from './ThemeToggle.astro';
+import { profile } from '../data/profile';
+import { withBase } from '../utils/urls';
+
+interface Props {
+  visibility: NavVisibility;
+}
+
+const { visibility } = Astro.props;
+const items: NavItem[] = buildPrimaryNavigation(visibility);
+const pathname = Astro.url.pathname;
+const base = import.meta.env.BASE_URL || '/';
+const baseNormalized = base.endsWith('/') ? base.slice(0, -1) : base;
+
+function stripBase(pathnameValue: string): string {
+  if (baseNormalized && (pathnameValue === baseNormalized || pathnameValue.startsWith(`${baseNormalized}/`))) {
+    return pathnameValue.slice(baseNormalized.length) || '/';
+  }
+  return pathnameValue;
+}
+
+const sitePath = stripBase(pathname);
+
+function pathMatches(href: string): boolean {
+  if (href === '/') return sitePath === '/' || sitePath === '';
+  return sitePath === href || sitePath.startsWith(`${href}/`);
+}
+
+function isItemActive(item: NavItem): boolean {
+  if (pathMatches(item.href)) return true;
+  return Boolean(item.children?.some((child) => pathMatches(child.href)));
+}
+---
+
+<header class="border-b border-border/80 bg-surface/80 backdrop-blur-md">
+  <div class="site-shell flex items-center justify-between gap-4 py-4">
+    <a href={withBase('/')} class="group no-underline">
+      <span class="font-serif text-lg tracking-tight text-ink sm:text-xl">{profile.fullName}</span>
+      <span class="mt-0.5 block text-xs text-muted">{profile.headline}</span>
+    </a>
+
+    <div class="flex items-center gap-2">
+      <nav class="hidden lg:block" aria-label="Primary">
+        <ul class="flex items-center gap-1">
+          {
+            items.map((item) => {
+              const active = isItemActive(item);
+              const hasChildren = Boolean(item.children && item.children.length > 0);
+
+              if (!hasChildren) {
+                return (
+                  <li>
+                    <a
+                      href={withBase(item.href)}
+                      class:list={[
+                        'rounded-sm px-3 py-2 text-sm font-medium no-underline transition-colors',
+                        active
+                          ? 'bg-accent-soft text-ink'
+                          : 'text-muted hover:bg-accent-soft/70 hover:text-ink',
+                      ]}
+                      aria-current={pathMatches(item.href) ? 'page' : undefined}
+                    >
+                      {item.label}
+                    </a>
+                  </li>
+                );
+              }
+
+              return (
+                <li class="nav-disclosure relative">
+                  <a
+                    href={withBase(item.href)}
+                    class:list={[
+                      'nav-disclosure__trigger rounded-sm px-3 py-2 text-sm font-medium no-underline transition-colors',
+                      active
+                        ? 'bg-accent-soft text-ink'
+                        : 'text-muted hover:bg-accent-soft/70 hover:text-ink',
+                    ]}
+                    aria-current={pathMatches(item.href) ? 'page' : undefined}
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    data-nav-disclosure-trigger
+                  >
+                    {item.label}
+                    <span class="nav-disclosure__chevron" aria-hidden="true">▾</span>
+                  </a>
+                  <ul class="nav-disclosure__panel" data-nav-disclosure-panel>
+                    {item.children!.map((child) => (
+                      <li>
+                        <a
+                          href={withBase(child.href)}
+                          class:list={[
+                            'block rounded-sm px-3 py-2 text-sm no-underline transition-colors',
+                            pathMatches(child.href)
+                              ? 'bg-accent-soft text-ink'
+                              : 'text-muted hover:bg-accent-soft/70 hover:text-ink',
+                          ]}
+                          aria-current={pathMatches(child.href) ? 'page' : undefined}
+                        >
+                          {child.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              );
+            })
+          }
+        </ul>
+      </nav>
+
+      <ThemeToggle />
+
+      <button
+        type="button"
+        class="no-print inline-flex h-9 w-9 items-center justify-center rounded-sm border border-border bg-surface lg:hidden"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+        data-mobile-nav-toggle
+        aria-label="Open menu"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-nav" class="hidden border-t border-border lg:hidden" hidden>
+    <nav class="site-shell py-3" aria-label="Primary mobile">
+      <ul class="flex flex-col gap-1">
+        {
+          items.map((item) => (
+            <li>
+              <a
+                href={withBase(item.href)}
+                class:list={[
+                  'block rounded-sm px-3 py-2 text-sm font-medium no-underline',
+                  isItemActive(item) ? 'bg-accent-soft text-ink' : 'text-muted',
+                ]}
+                aria-current={pathMatches(item.href) ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+              {item.children && item.children.length > 0 && (
+                <ul class="mb-2 ml-3 border-l border-border pl-3">
+                  {item.children.map((child) => (
+                    <li>
+                      <a
+                        href={withBase(child.href)}
+                        class:list={[
+                          'block rounded-sm px-2 py-1.5 text-sm no-underline',
+                          pathMatches(child.href) ? 'text-ink' : 'text-muted',
+                        ]}
+                        aria-current={pathMatches(child.href) ? 'page' : undefined}
+                      >
+                        {child.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  function bindMobileNav() {
+    const toggle = document.querySelector('[data-mobile-nav-toggle]');
+    const panel = document.getElementById('mobile-nav');
+    if (!toggle || !panel) return;
+
+    toggle.addEventListener('click', () => {
+      const open = panel.hasAttribute('hidden') === false && !panel.classList.contains('hidden');
+      if (open) {
+        panel.hidden = true;
+        panel.classList.add('hidden');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.setAttribute('aria-label', 'Open menu');
+      } else {
+        panel.hidden = false;
+        panel.classList.remove('hidden');
+        toggle.setAttribute('aria-expanded', 'true');
+        toggle.setAttribute('aria-label', 'Close menu');
+      }
+    });
+  }
+
+  function bindNavDisclosure() {
+    const roots = document.querySelectorAll('.nav-disclosure');
+
+    roots.forEach((root) => {
+      const trigger = root.querySelector('[data-nav-disclosure-trigger]');
+      const panel = root.querySelector('[data-nav-disclosure-panel]');
+      if (!(trigger instanceof HTMLElement) || !(panel instanceof HTMLElement)) return;
+
+      const syncExpanded = () => {
+        const open =
+          root.matches(':hover') ||
+          root.matches(':focus-within') ||
+          root.classList.contains('nav-disclosure--open');
+        trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      };
+
+      root.addEventListener('mouseenter', syncExpanded);
+      root.addEventListener('mouseleave', () => {
+        root.classList.remove('nav-disclosure--open');
+        syncExpanded();
+      });
+      root.addEventListener('focusin', syncExpanded);
+      root.addEventListener('focusout', () => {
+        window.setTimeout(syncExpanded, 0);
+      });
+
+      trigger.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          root.classList.remove('nav-disclosure--open');
+          trigger.blur();
+          syncExpanded();
+        }
+        if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          root.classList.add('nav-disclosure--open');
+          syncExpanded();
+          const first = panel.querySelector('a');
+          if (first instanceof HTMLElement) first.focus();
+        }
+      });
+
+      panel.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          event.preventDefault();
+          root.classList.remove('nav-disclosure--open');
+          trigger.focus();
+          syncExpanded();
+        }
+      });
+    });
+  }
+
+  bindMobileNav();
+  bindNavDisclosure();
+  document.addEventListener('astro:page-load', () => {
+    bindMobileNav();
+    bindNavDisclosure();
+  });
+</script>
