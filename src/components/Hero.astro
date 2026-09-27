@@ -1,0 +1,22 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  eyebrow?: string;
+  lead?: string;
+}
+
+const { title, subtitle, eyebrow, lead } = Astro.props;
+---
+
+<section class="hero-block section-space">
+  <div class="site-shell max-w-3xl">
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <h1 class="mt-4 text-4xl leading-tight sm:text-5xl lg:text-[3.25rem]">{title}</h1>
+    {subtitle && <p class="mt-6 font-serif text-2xl leading-snug text-ink sm:text-3xl">{subtitle}</p>}
+    {lead && <p class="mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">{lead}</p>}
+    <div class="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3">
+      <slot name="actions" />
+    </div>
+  </div>
+</section>
