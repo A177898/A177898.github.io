@@ -96,6 +96,7 @@ async function runExperiencePeriodTests(): Promise<void> {
 
 /** ---- Helper tests ---- */
 function runHelperTests(): void {
+  // Status / classification / approval combinations
   const combos: { fields: PublishableFields; published: boolean }[] = [
     { fields: { status: 'published', classification: 'green', approvedForPublication: true }, published: true },
     { fields: { status: 'published', classification: 'amber', approvedForPublication: true }, published: true },
@@ -119,6 +120,7 @@ function runHelperTests(): void {
     }
   }
 
+  // architectureVersion never grants eligibility
   assert(
     'architectureVersion does not publish drafts',
     !isPublished({
@@ -128,6 +130,7 @@ function runHelperTests(): void {
     }),
   );
 
+  // Unquoted / single-quoted / double-quoted
   expectFields(
     'unquoted status/classification',
     doc('status: published\nclassification: green\napprovedForPublication: true'),
@@ -144,6 +147,7 @@ function runHelperTests(): void {
     { status: 'published', classification: 'amber', approvedForPublication: true, published: true },
   );
 
+  // Inline YAML comments
   expectFields(
     'inline YAML comments',
     doc(
@@ -152,18 +156,21 @@ function runHelperTests(): void {
     { status: 'published', classification: 'green', approvedForPublication: false, published: false },
   );
 
+  // LF and CRLF
   expectFields(
     'CRLF frontmatter',
     '---\r\nstatus: draft\r\nclassification: green\r\napprovedForPublication: false\r\n---\r\nBody\r\n',
     { status: 'draft', classification: 'green', approvedForPublication: false, published: false },
   );
 
+  // Missing approval
   expectFields(
     'missing approval on published',
     doc('status: published\nclassification: green'),
     { status: 'published', classification: 'green', published: false },
   );
 
+  // Boolean false vs string "false"
   expectFields(
     'YAML boolean false',
     doc('status: published\nclassification: green\napprovedForPublication: false'),
@@ -175,6 +182,7 @@ function runHelperTests(): void {
     'boolean',
   );
 
+  // Malformed YAML / invalid fields
   expectParseError('malformed YAML', '---\nstatus: [published\nclassification: green\n---\n', 'Malformed');
   expectParseError(
     'invalid status',
@@ -188,6 +196,7 @@ function runHelperTests(): void {
   );
   expectParseError('missing frontmatter', 'No fence\n', 'Missing YAML frontmatter');
 
+  // Nested content ID consistency with Astro-style relative ids
   const collectionRoot = '/repo/src/content/architectures';
   assert(
     'flat content id',
@@ -205,6 +214,7 @@ function runHelperTests(): void {
   );
 }
 
+/** ---- Production-output simulation (disposable fixtures) ---- */
 async function runProductionOutputSimulation(): Promise<void> {
   const tmp = await mkdtemp(path.join(os.tmpdir(), 'portfolio-pub-'));
   const distRoot = path.join(tmp, 'dist');
@@ -240,6 +250,7 @@ async function runProductionOutputSimulation(): Promise<void> {
     published: false,
   };
 
+  // Nested path id
   const nestedDraft: ContentEntryMeta = {
     id: 'nested/draft-child',
     file: path.join(tmp, 'nested-draft.mdx'),
@@ -377,6 +388,7 @@ async function runProductionOutputSimulation(): Promise<void> {
   );
   assert('robots.txt has no example.com', !robots.includes('example.com'));
 
+  // Parser failure must not be treated as unpublished by prune listing
   const badPath = path.join(tmp, 'bad.mdx');
   await writeFile(badPath, '---\nstatus: [broken\n---\n');
   let threw = false;
