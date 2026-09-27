@@ -1,0 +1,30 @@
+---
+/**
+ * Owns / does not own responsibility pair for logical capabilities.
+ */
+interface Props {
+  title: string;
+  owns: string[];
+  doesNotOwn: string[];
+}
+
+const { title, owns, doesNotOwn } = Astro.props;
+---
+
+<section class="arch-responsibility">
+  <h3 class="arch-responsibility__title">{title}</h3>
+  <div class="arch-responsibility__grid">
+    <div>
+      <p class="arch-responsibility__label">Owns</p>
+      <ul class="arch-responsibility__list">
+        {owns.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+    <div>
+      <p class="arch-responsibility__label">Does not own</p>
+      <ul class="arch-responsibility__list">
+        {doesNotOwn.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+  </div>
+</section>
