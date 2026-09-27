@@ -1,0 +1,29 @@
+---
+/**
+ * Compatibility wrapper — prefer PerspectiveChecklist for new perspectives.
+ * Retains the Perspective 01 API surface without changing article body.
+ */
+import PerspectiveChecklist from './PerspectiveChecklist.astro';
+
+export type ChecklistItem = {
+  label: string;
+  text: string;
+};
+
+interface Props {
+  items: ChecklistItem[];
+  title?: string;
+}
+
+const {
+  items,
+  title = 'My transition architecture checklist',
+} = Astro.props;
+---
+
+<PerspectiveChecklist
+  items={items}
+  title={title}
+  lead="When evaluating a significant transition, I work through a set of questions:"
+  closingPrinciple="Prevent significant architectural consequences from disappearing behind a delivery milestone."
+/>
