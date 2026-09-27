@@ -1,0 +1,88 @@
+---
+import type { TimelineItem } from '../types/experience';
+
+interface Props {
+  items: TimelineItem[];
+}
+
+const { items } = Astro.props;
+
+function summaryParagraphs(summary: string): string[] {
+  return summary
+    .split(/\n\s*\n/)
+    .map((part) => part.replace(/\s+/g, ' ').trim())
+    .filter(Boolean);
+}
+---
+
+{
+  items.length > 0 && (
+    <ol class="experience-timeline">
+      {items.map((item) => {
+        const paragraphs = summaryParagraphs(item.summary);
+        const showFocusAreas = (item.focusAreas?.length ?? 0) > 0;
+        const isConcise = item.density === 'concise';
+        const isDetailed = item.density === 'detailed';
+        const hasNarrative = paragraphs.length > 0;
+
+        return (
+          <li
+            class:list={[
+              'experience-timeline__item',
+              `experience-timeline__item--${item.density}`,
+            ]}
+          >
+            <div class="experience-timeline__marker" aria-hidden="true" />
+
+            <div class="experience-timeline__body">
+              <div class="experience-timeline__meta">
+                <p class="eyebrow">{item.periodLabel}</p>
+                {item.showDraftIndicator && (
+                  <span class="experience-timeline__draft">Draft</span>
+                )}
+                {item.pendingAppointment && (
+                  <span class="experience-timeline__draft" role="status">
+                    Pending effective date
+                  </span>
+                )}
+              </div>
+
+              <h2
+                class:list={[
+                  'experience-timeline__role',
+                  isDetailed && 'experience-timeline__role--prominent',
+                  isConcise && 'experience-timeline__role--concise',
+                ]}
+              >
+                {item.role}
+              </h2>
+              <p class="experience-timeline__org">{item.organisation}</p>
+
+              {hasNarrative && (
+                <div
+                  class:list={[
+                    'experience-timeline__summary',
+                    isConcise ? 'experience-timeline__summary--concise' : undefined,
+                  ]}
+                >
+                  {paragraphs.map((paragraph) => (
+                    <p>{paragraph}</p>
+                  ))}
+                </div>
+              )}
+
+              {showFocusAreas && (
+                <p class="experience-timeline__focus">
+                  <span class="experience-timeline__focus-label">Focus</span>{' '}
+                  <span class="experience-timeline__focus-list">
+                    {item.focusAreas.join(' · ')}
+                  </span>
+                </p>
+              )}
+            </div>
+          </li>
+        );
+      })}
+    </ol>
+  )
+}
