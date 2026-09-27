@@ -1,0 +1,79 @@
+---
+/**
+ * Generic architecture flow diagram — presentation-only.
+ * Does not invent architecture; renders supplied step labels.
+ */
+interface Props {
+  steps: string[];
+  direction?: 'horizontal' | 'vertical';
+  label?: string;
+  cyclic?: boolean;
+  /** Shown when cyclic is true. */
+  cycleNote?: string;
+  /** Connector between steps. Default arrow. */
+  join?: 'arrow' | 'plus';
+  /** Optional outcome after the step sequence (e.g. compose → result). */
+  result?: string;
+}
+
+const {
+  steps,
+  direction = 'horizontal',
+  label,
+  cyclic = false,
+  cycleNote = 'returns to start',
+  join = 'arrow',
+  result,
+} = Astro.props;
+
+const arrow = direction === 'vertical' ? '↓' : '→';
+const between = join === 'plus' ? '+' : arrow;
+---
+
+<figure
+  class:list={[
+    'arch-flow',
+    `arch-flow--${direction}`,
+    join === 'plus' && 'arch-flow--compose',
+  ]}
+  aria-label={label ?? steps.join(join === 'plus' ? ' plus ' : direction === 'vertical' ? ' to ' : ' then ')}
+>
+  <ol class="arch-flow__list">
+    {
+      steps.map((step, index) => (
+        <li class="arch-flow__step">
+          <span class="arch-flow__label">{step}</span>
+          {index < steps.length - 1 && (
+            <span class="arch-flow__connector" aria-hidden="true">
+              {between}
+            </span>
+          )}
+          {cyclic && index === steps.length - 1 && !result && (
+            <span class="arch-flow__connector arch-flow__connector--cycle" aria-hidden="true">
+              ↓
+            </span>
+          )}
+          {result && index === steps.length - 1 && (
+            <span class="arch-flow__connector" aria-hidden="true">
+              ↓
+            </span>
+          )}
+        </li>
+      ))
+    }
+    {
+      result && (
+        <li class="arch-flow__step arch-flow__step--result">
+          <span class="arch-flow__label arch-flow__label--result">{result}</span>
+        </li>
+      )
+    }
+  </ol>
+  {
+    cyclic && (
+      <p class="arch-flow__cycle-note">
+        <span aria-hidden="true">↑</span> {cycleNote}
+      </p>
+    )
+  }
+</figure>

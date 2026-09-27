@@ -1,0 +1,67 @@
+---
+/**
+ * Restrained table of contents from Astro content headings.
+ * Prefer h2 only; keep visual weight low so architecture content remains primary.
+ */
+export type TocHeading = {
+  depth: number;
+  slug: string;
+  text: string;
+};
+
+interface Props {
+  headings: TocHeading[];
+  /** Include heading depths up to this value (default: 2). */
+  maxDepth?: number;
+  label?: string;
+}
+
+const { headings, maxDepth = 2, label = 'On this page' } = Astro.props;
+
+const items = headings
+  .filter((heading) => heading.depth >= 2 && heading.depth <= maxDepth && Boolean(heading.slug))
+  .map((heading) => ({
+    ...heading,
+    text: heading.text.replace(/\s+/g, ' ').trim(),
+  }))
+  .filter((heading) => heading.text.length > 0);
+
+/** Only show TOC when it materially helps — long documents with several sections. */
+const show = items.length >= 6;
+---
+
+{
+  show && (
+    <nav class="page-toc no-print" aria-label={label}>
+      <details class="page-toc__details" data-page-toc>
+        <summary class="page-toc__summary">{label}</summary>
+        <ol class="page-toc__list">
+          {items.map((item) => (
+            <li class:list={[`page-toc__item--h${item.depth}`]}>
+              <a href={`#${item.slug}`}>{item.text}</a>
+            </li>
+          ))}
+        </ol>
+      </details>
+    </nav>
+  )
+}
+
+{
+  show && (
+    <script>
+      function bindPageToc() {
+        const details = document.querySelector('[data-page-toc]');
+        if (!(details instanceof HTMLDetailsElement)) return;
+        const desktop = window.matchMedia('(min-width: 1024px)');
+        const sync = () => {
+          details.open = desktop.matches;
+        };
+        sync();
+        desktop.addEventListener('change', sync);
+      }
+      bindPageToc();
+      document.addEventListener('astro:page-load', bindPageToc);
+    </script>
+  )
+}

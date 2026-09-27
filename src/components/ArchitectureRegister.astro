@@ -1,0 +1,66 @@
+---
+/**
+ * Compact architecture principles register — not a card grid.
+ * Three-column layout (ID / Principle / Statement). Heading may be omitted when
+ * the surrounding MDX section already provides the section title.
+ */
+export type PrincipleRow = {
+  id: string;
+  title: string;
+  text: string;
+};
+
+interface Props {
+  principles: PrincipleRow[];
+  title?: string;
+  /** When false, rely on an external heading (e.g. MDX ## Architecture principles). */
+  showHeading?: boolean;
+  labelledBy?: string;
+}
+
+const {
+  principles,
+  title = 'Architecture principles',
+  showHeading = true,
+  labelledBy = 'arch-principles-heading',
+} = Astro.props;
+
+const headingId = labelledBy;
+---
+
+<section
+  class="arch-register arch-register--principles"
+  aria-labelledby={headingId}
+>
+  {
+    showHeading && (
+      <h2 id={headingId} class="arch-register__heading">
+        {title}
+      </h2>
+    )
+  }
+  <div class="arch-register__table" role="table" aria-label={title}>
+    <div class="arch-register__head" role="row">
+      <span class="arch-register__cell arch-register__cell--id" role="columnheader">ID</span>
+      <span class="arch-register__cell arch-register__cell--title" role="columnheader">Principle</span>
+      <span class="arch-register__cell arch-register__cell--text" role="columnheader">Statement</span>
+    </div>
+    {
+      principles.map((principle) => (
+        <div class="arch-register__row" role="row" id={principle.id.toLowerCase()}>
+          <span class="arch-register__cell arch-register__cell--id" role="cell">
+            <a class="arch-register__self" href={`#${principle.id.toLowerCase()}`}>
+              {principle.id}
+            </a>
+          </span>
+          <span class="arch-register__cell arch-register__cell--title" role="cell">
+            {principle.title}
+          </span>
+          <span class="arch-register__cell arch-register__cell--text" role="cell">
+            {principle.text}
+          </span>
+        </div>
+      ))
+    }
+  </div>
+</section>
