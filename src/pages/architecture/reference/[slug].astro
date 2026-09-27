@@ -1,0 +1,114 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import PageLayout from '../../../layouts/PageLayout.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import ResearchDisclaimer from '../../../components/ResearchDisclaimer.astro';
+import RelatedArtifacts from '../../../components/RelatedArtifacts.astro';
+import TableOfContents from '../../../components/TableOfContents.astro';
+import { pageTitle, normalizeSeoTitle } from '../../../data/seo';
+import { isVisibleForReview } from '../../../utils/publication';
+
+export async function getStaticPaths() {
+  const isProduction = import.meta.env.PROD;
+  const allowDrafts = import.meta.env.DEV && !isProduction;
+  const architectures = await getCollection('architectures');
+  return architectures
+    .filter((entry) => isVisibleForReview(entry.data, { allowDrafts }))
+    .map((entry) => ({
+      params: { slug: entry.id },
+      props: { entry },
+    }));
+}
+
+interface Props {
+  entry: CollectionEntry<'architectures'>;
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+const isDraft = entry.data.status === 'draft';
+const showDraftBanner = import.meta.env.DEV && !import.meta.env.PROD && isDraft;
+const documentTitle = entry.data.seo?.title
+  ? normalizeSeoTitle(entry.data.seo.title)
+  : pageTitle(entry.data.title);
+const metaBits = [
+  entry.data.architectureType,
+  entry.data.domains.join(' / '),
+  entry.data.architectureVersion ? `Version ${entry.data.architectureVersion}` : undefined,
+  isDraft ? 'Draft' : entry.data.status,
+].filter(Boolean);
+/** Long reference architectures benefit from a restrained TOC (e.g. RA01). */
+const showToc = headings.filter((heading) => heading.depth === 2).length >= 6;
+---
+
+<PageLayout title={documentTitle} description={entry.data.seo?.description ?? entry.data.description}>
+  <Breadcrumb
+    items={[
+      { label: 'Home', href: '/' },
+      { label: 'Architecture', href: '/architecture' },
+      { label: 'Reference', href: '/architecture/reference' },
+      { label: entry.data.title, href: `/architecture/reference/${entry.id}` },
+    ]}
+  />
+
+  <article class="section-space">
+    <div class="site-shell max-w-4xl">
+      <p class="eyebrow">Reference Architecture</p>
+      <h1 class="mt-3 text-4xl sm:text-5xl">{entry.data.title}</h1>
+      {
+        entry.data.subtitle && (
+          <p class="perspective-subtitle mt-4 text-xl text-muted sm:text-2xl">{entry.data.subtitle}</p>
+        )
+      }
+      <p class="mt-5 text-sm text-muted">{metaBits.join(' · ')}</p>
+      {
+        entry.data.posture && <p class="mt-2 text-sm text-muted">{entry.data.posture}</p>
+      }
+      <div class="perspective-meta mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted">
+        <span>{entry.data.author}</span>
+        {
+          showDraftBanner && (
+            <span class="perspective-draft-badge" role="status">
+              Draft — not published
+            </span>
+          )
+        }
+      </div>
+
+      {
+        showDraftBanner && (
+          <aside
+            class="mt-6 border border-border bg-band px-4 py-3 text-sm text-muted"
+            role="status"
+          >
+            Draft review mode. This reference architecture is not included in production builds until
+            explicitly approved for publication.
+          </aside>
+        )
+      }
+
+      {
+        entry.data.showDisclaimer !== false && (
+          <div class="mt-8">
+            <ResearchDisclaimer />
+          </div>
+        )
+      }
+
+      {showToc && <TableOfContents headings={headings} />}
+
+      <div class="prose-portfolio prose-architecture mt-10">
+        <Content />
+      </div>
+
+      <RelatedArtifacts
+        capabilityIds={entry.data.relatedCapabilities}
+        researchIds={entry.data.relatedResearch}
+        architectureIds={entry.data.relatedArchitectures}
+        title="Related"
+        note="Perspectives capture architectural thinking. Reference Architectures capture structured application. Both remain independently readable."
+      />
+    </div>
+  </article>
+</PageLayout>

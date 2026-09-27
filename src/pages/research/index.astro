@@ -1,0 +1,107 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import PerspectiveCard from '../../components/PerspectiveCard.astro';
+import ResearchDisclaimer from '../../components/ResearchDisclaimer.astro';
+import { pageTitle } from '../../data/seo';
+import { getCollection } from 'astro:content';
+import { isVisibleForReview } from '../../utils/publication';
+import { withBase } from '../../utils/urls';
+
+/**
+ * Draft perspectives are local-review only.
+ * Production builds never allow drafts — and never render DRAFT / review banners.
+ * Route remains /research; user-facing terminology is Perspectives.
+ */
+const isProduction = import.meta.env.PROD;
+const allowDrafts = import.meta.env.DEV && !isProduction;
+const showDraftIndicators = allowDrafts;
+
+const perspectives = (await getCollection('perspectives'))
+  .filter((entry) => isVisibleForReview(entry.data, { allowDrafts }))
+  .sort((a, b) => {
+    const aDate = a.data.pubDate?.valueOf() ?? 0;
+    const bDate = b.data.pubDate?.valueOf() ?? 0;
+    if (aDate !== bDate) return bDate - aDate;
+    return a.data.title.localeCompare(b.data.title);
+  });
+
+const draftCount = showDraftIndicators
+  ? perspectives.filter((entry) => entry.data.status === 'draft').length
+  : 0;
+
+if (import.meta.env.PROD && perspectives.length === 0) {
+  return new Response(null, { status: 404, statusText: 'Not Found' });
+}
+---
+
+<PageLayout
+  title={pageTitle('Architecture Perspectives')}
+  description="Independent architecture perspectives — how architectural problems are framed, evaluated and translated into principles and decisions."
+>
+  <Breadcrumb
+    items={[
+      { label: 'Home', href: '/' },
+      { label: 'Architecture', href: '/architecture' },
+      { label: 'Perspectives', href: '/research' },
+    ]}
+  />
+
+  <section class="section-space">
+    <div class="site-shell">
+      <p class="eyebrow">Architecture Perspectives</p>
+      <h1 class="mt-3 text-4xl sm:text-5xl">Architecture Perspectives</h1>
+      <p class="mt-4 max-w-2xl text-lg text-muted">
+        Architectural thinking between practice and structured reference models — framing
+        problems, weighing trade-offs and making principles executable.
+      </p>
+      <div class="mt-6 max-w-2xl">
+        <ResearchDisclaimer compact />
+      </div>
+
+      {
+        !isProduction && draftCount > 0 && (
+          <aside
+            class="mt-8 max-w-2xl border border-border bg-band px-4 py-3 text-sm text-muted"
+            role="status"
+          >
+            Draft review mode: {draftCount} perspective
+            {draftCount === 1 ? ' is' : 's are'} unpublished.
+            Drafts are not included in production builds until explicitly approved for publication.
+          </aside>
+        )
+      }
+
+      {
+        perspectives.length === 0 ? (
+          <p class="mt-10 text-sm text-muted">
+            No architecture perspectives are published yet.
+          </p>
+        ) : (
+          <div class="mt-12 grid gap-6 md:grid-cols-2">
+            {perspectives.map((entry) => (
+              <PerspectiveCard
+                title={entry.data.title}
+                subtitle={entry.data.subtitle}
+                description={entry.data.description}
+                href={withBase(`/research/${entry.id}`)}
+                category={entry.data.category}
+                tags={entry.data.tags}
+                draft={showDraftIndicators && entry.data.status === 'draft'}
+                pubDateLabel={
+                  entry.data.pubDate
+                    ? entry.data.pubDate.toLocaleDateString('en-GB', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                      })
+                    : undefined
+                }
+              />
+            ))}
+          </div>
+        )
+      }
+    </div>
+  </section>
+</PageLayout>
