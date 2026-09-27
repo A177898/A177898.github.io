@@ -1,0 +1,19 @@
+---
+/**
+ * Formal resume PDF download — rendered only when a PDF is available.
+ */
+interface Props {
+  href?: string | null;
+  available?: boolean;
+}
+
+const { href = '/resume/yusuf-kader-resume.pdf', available = false } = Astro.props;
+---
+
+{
+  available ? (
+    <a class="btn-primary no-print" href={href} download>
+      Download Resume
+    </a>
+  ) : null
+}
