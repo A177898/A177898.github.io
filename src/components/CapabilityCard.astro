@@ -4,16 +4,28 @@ import RelatedArtifacts from './RelatedArtifacts.astro';
 
 interface Props {
   domain: CapabilityDomain;
+  index?: number;
 }
 
-const { domain } = Astro.props;
+const { domain, index = 0 } = Astro.props;
 const relatedPerspectives = domain.relatedPerspectives ?? [];
 const relatedArchitectures = domain.relatedArchitectures ?? [];
 const hasRelated = relatedPerspectives.length > 0 || relatedArchitectures.length > 0;
 ---
 
-<article class="capability-card" id={domain.id}>
-  <h3 class="text-2xl leading-tight">{domain.title}</h3>
+<article
+  class="capability-card"
+  id={domain.id}
+  data-capability={domain.id}
+  data-reveal
+  style={`--card-i: ${index}`}
+>
+  <div class="capability-card__header">
+    <span class="capability-card__marker" aria-hidden="true">
+      {String(index + 1).padStart(2, '0')}
+    </span>
+    <h3 class="capability-card__title">{domain.title}</h3>
+  </div>
   <p class="mt-3 text-sm leading-relaxed text-muted">{domain.summary}</p>
   <ul class="capability-card__list">
     {
@@ -27,12 +39,14 @@ const hasRelated = relatedPerspectives.length > 0 || relatedArchitectures.length
   </ul>
   {
     hasRelated && (
-      <RelatedArtifacts
-        researchIds={relatedPerspectives}
-        architectureIds={relatedArchitectures}
-        title="Related"
-        compact
-      />
+      <div class="capability-card__related" data-capability-related>
+        <RelatedArtifacts
+          researchIds={relatedPerspectives}
+          architectureIds={relatedArchitectures}
+          title="Related"
+          compact
+        />
+      </div>
     )
   }
 </article>

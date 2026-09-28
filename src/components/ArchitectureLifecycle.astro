@@ -1,8 +1,8 @@
 ---
-import { architectureLifecycle } from '../data/profile';
+import ArchitectureModel from './ArchitectureModel.astro';
 ---
 
-<section class="section-band" aria-labelledby="lifecycle-heading">
+<section class="section-band" aria-labelledby="lifecycle-heading" data-reveal>
   <div class="site-shell">
     <div class="section-header">
       <p class="eyebrow">Architecture lifecycle</p>
@@ -14,22 +14,8 @@ import { architectureLifecycle } from '../data/profile';
       </p>
     </div>
 
-    <ol class="lifecycle-flow mt-12" aria-label="Architecture lifecycle">
-      {
-        architectureLifecycle.map((stage, index) => (
-          <li class="lifecycle-flow__item">
-            <span class="lifecycle-flow__index" aria-hidden="true">
-              {String(index + 1).padStart(2, '0')}
-            </span>
-            <span class="lifecycle-flow__label">{stage}</span>
-            {index < architectureLifecycle.length - 1 && (
-              <span class="lifecycle-flow__connector" aria-hidden="true">
-                →
-              </span>
-            )}
-          </li>
-        ))
-      }
-    </ol>
+    <div class="mt-12 max-w-3xl">
+      <ArchitectureModel variant="band" labelledBy="lifecycle-heading" />
+    </div>
   </div>
 </section>

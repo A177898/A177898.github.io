@@ -35,16 +35,16 @@ function isItemActive(item: NavItem): boolean {
 }
 ---
 
-<header class="border-b border-border/80 bg-surface/80 backdrop-blur-md">
+<header class="site-header border-b border-border/80 bg-surface/85 backdrop-blur-md">
   <div class="site-shell flex items-center justify-between gap-4 py-4">
-    <a href={withBase('/')} class="group no-underline">
+    <a href={withBase('/')} class="site-brand group no-underline">
       <span class="font-serif text-lg tracking-tight text-ink sm:text-xl">{profile.fullName}</span>
       <span class="mt-0.5 block text-xs text-muted">{profile.headline}</span>
     </a>
 
     <div class="flex items-center gap-2">
       <nav class="hidden lg:block" aria-label="Primary">
-        <ul class="flex items-center gap-1">
+        <ul class="flex items-center gap-0.5">
           {
             items.map((item) => {
               const active = isItemActive(item);
@@ -56,10 +56,8 @@ function isItemActive(item: NavItem): boolean {
                     <a
                       href={withBase(item.href)}
                       class:list={[
-                        'rounded-sm px-3 py-2 text-sm font-medium no-underline transition-colors',
-                        active
-                          ? 'bg-accent-soft text-ink'
-                          : 'text-muted hover:bg-accent-soft/70 hover:text-ink',
+                        'nav-link rounded-sm px-3 py-2 text-sm font-medium no-underline',
+                        active ? 'nav-link--active text-ink' : 'text-muted hover:text-ink',
                       ]}
                       aria-current={pathMatches(item.href) ? 'page' : undefined}
                     >
@@ -74,10 +72,8 @@ function isItemActive(item: NavItem): boolean {
                   <a
                     href={withBase(item.href)}
                     class:list={[
-                      'nav-disclosure__trigger rounded-sm px-3 py-2 text-sm font-medium no-underline transition-colors',
-                      active
-                        ? 'bg-accent-soft text-ink'
-                        : 'text-muted hover:bg-accent-soft/70 hover:text-ink',
+                      'nav-disclosure__trigger nav-link rounded-sm px-3 py-2 text-sm font-medium no-underline',
+                      active ? 'nav-link--active text-ink' : 'text-muted hover:text-ink',
                     ]}
                     aria-current={pathMatches(item.href) ? 'page' : undefined}
                     aria-haspopup="true"
@@ -176,6 +172,8 @@ function isItemActive(item: NavItem): boolean {
     const toggle = document.querySelector('[data-mobile-nav-toggle]');
     const panel = document.getElementById('mobile-nav');
     if (!toggle || !panel) return;
+    if (toggle.getAttribute('data-bound') === 'true') return;
+    toggle.setAttribute('data-bound', 'true');
 
     toggle.addEventListener('click', () => {
       const open = panel.hasAttribute('hidden') === false && !panel.classList.contains('hidden');
@@ -200,6 +198,8 @@ function isItemActive(item: NavItem): boolean {
       const trigger = root.querySelector('[data-nav-disclosure-trigger]');
       const panel = root.querySelector('[data-nav-disclosure-panel]');
       if (!(trigger instanceof HTMLElement) || !(panel instanceof HTMLElement)) return;
+      if (trigger.dataset.disclosureBound === 'true') return;
+      trigger.dataset.disclosureBound = 'true';
 
       const syncExpanded = () => {
         const open =

@@ -1,0 +1,32 @@
+---
+import { architectureLifecycle } from '../data/profile';
+
+interface Props {
+  /** Compact vertical model for hero; full for bands. */
+  variant?: 'hero' | 'band';
+  labelledBy?: string;
+}
+
+const { variant = 'hero', labelledBy } = Astro.props;
+const stages = architectureLifecycle;
+---
+
+<ol
+  class:list={['arch-model', `arch-model--${variant}`]}
+  aria-label="Architecture lifecycle model"
+  aria-labelledby={labelledBy}
+>
+  {
+    stages.map((stage, index) => (
+      <li class="arch-model__stage" style={`--stage-i: ${index}`}>
+        <span class="arch-model__index" aria-hidden="true">
+          {String(index + 1).padStart(2, '0')}
+        </span>
+        <span class="arch-model__label">{stage}</span>
+        {index < stages.length - 1 && (
+          <span class="arch-model__connector" aria-hidden="true" />
+        )}
+      </li>
+    ))
+  }
+</ol>

@@ -2,6 +2,7 @@
 import PageLayout from '../../layouts/PageLayout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import CapabilityCard from '../../components/CapabilityCard.astro';
+import RevealInit from '../../components/RevealInit.astro';
 import { capabilityDomains } from '../../data/capabilities';
 import { pageTitle } from '../../data/seo';
 ---
@@ -28,9 +29,14 @@ import { pageTitle } from '../../data/seo';
         Reference Architectures where those materials are available.
       </p>
 
-      <div class="mt-14 grid gap-6 lg:grid-cols-2">
-        {capabilityDomains.map((domain) => <CapabilityCard domain={domain} />)}
+      <div class="capability-grid mt-14">
+        {
+          capabilityDomains.map((domain, index) => (
+            <CapabilityCard domain={domain} index={index} />
+          ))
+        }
       </div>
     </div>
   </section>
+  <RevealInit />
 </PageLayout>

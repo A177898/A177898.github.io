@@ -2,6 +2,7 @@
 /**
  * Restrained table of contents from Astro content headings.
  * Prefer h2 only; keep visual weight low so architecture content remains primary.
+ * Optional grouping for RA-style documents (Architecture Position / Principles / ADRs).
  */
 export type TocHeading = {
   depth: number;
@@ -14,9 +15,11 @@ interface Props {
   /** Include heading depths up to this value (default: 2). */
   maxDepth?: number;
   label?: string;
+  /** When true, group headings into Position / Principles / ADR / Other. */
+  groupArchitecture?: boolean;
 }
 
-const { headings, maxDepth = 2, label = 'On this page' } = Astro.props;
+const { headings, maxDepth = 2, label = 'On this page', groupArchitecture = false } = Astro.props;
 
 const items = headings
   .filter((heading) => heading.depth >= 2 && heading.depth <= maxDepth && Boolean(heading.slug))
@@ -26,22 +29,69 @@ const items = headings
   }))
   .filter((heading) => heading.text.length > 0);
 
+type TocGroup = { id: string; label: string; items: typeof items };
+
+function groupItems(source: typeof items): TocGroup[] {
+  if (!groupArchitecture) {
+    return [{ id: 'all', label: '', items: source }];
+  }
+
+  const groups: TocGroup[] = [
+    { id: 'position', label: 'Architecture Position', items: [] },
+    { id: 'principles', label: 'Principles', items: [] },
+    { id: 'adrs', label: 'Architecture Decisions', items: [] },
+    { id: 'other', label: 'Sections', items: [] },
+  ];
+
+  for (const item of source) {
+    const t = item.text.toLowerCase();
+    if (
+      t.includes('architecture position') ||
+      t.includes('problem statement') ||
+      t.includes('scope') ||
+      t.includes('context') ||
+      t.includes('drivers') ||
+      t.includes('conclusion')
+    ) {
+      groups[0].items.push(item);
+    } else if (t.includes('principle') || /^ap-\d+/i.test(item.text)) {
+      groups[1].items.push(item);
+    } else if (t.includes('decision') || t.includes('adr') || /^adr-\d+/i.test(item.text)) {
+      groups[2].items.push(item);
+    } else {
+      groups[3].items.push(item);
+    }
+  }
+
+  return groups.filter((group) => group.items.length > 0);
+}
+
+const groups = groupItems(items);
 /** Only show TOC when it materially helps — long documents with several sections. */
 const show = items.length >= 6;
 ---
 
 {
   show && (
-    <nav class="page-toc no-print" aria-label={label}>
+    <nav class="page-toc no-print" aria-label={label} data-toc-root>
       <details class="page-toc__details" data-page-toc>
         <summary class="page-toc__summary">{label}</summary>
-        <ol class="page-toc__list">
-          {items.map((item) => (
-            <li class:list={[`page-toc__item--h${item.depth}`]}>
-              <a href={`#${item.slug}`}>{item.text}</a>
-            </li>
+        <div class="page-toc__body">
+          {groups.map((group) => (
+            <div class="page-toc__group">
+              {group.label && <p class="page-toc__group-label">{group.label}</p>}
+              <ol class="page-toc__list">
+                {group.items.map((item) => (
+                  <li class:list={[`page-toc__item--h${item.depth}`]}>
+                    <a href={`#${item.slug}`} data-toc-link={item.slug}>
+                      {item.text}
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </div>
           ))}
-        </ol>
+        </div>
       </details>
     </nav>
   )
@@ -59,6 +109,43 @@ const show = items.length >= 6;
         };
         sync();
         desktop.addEventListener('change', sync);
+
+        const links = Array.from(document.querySelectorAll('[data-toc-link]'));
+        if (!links.length || !('IntersectionObserver' in window)) return;
+
+        const map = new Map<string, HTMLElement>();
+        links.forEach((link) => {
+          if (!(link instanceof HTMLElement)) return;
+          const id = link.getAttribute('data-toc-link');
+          if (!id) return;
+          const target = document.getElementById(id);
+          if (target) map.set(id, link);
+        });
+
+        const setActive = (id: string) => {
+          links.forEach((link) => {
+            if (!(link instanceof HTMLElement)) return;
+            const match = link.getAttribute('data-toc-link') === id;
+            link.classList.toggle('is-active', match);
+            if (match) link.setAttribute('aria-current', 'location');
+            else link.removeAttribute('aria-current');
+          });
+        };
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            const visible = entries
+              .filter((entry) => entry.isIntersecting)
+              .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+            if (visible[0]?.target?.id) setActive(visible[0].target.id);
+          },
+          { rootMargin: '-20% 0px -60% 0px', threshold: [0, 1] },
+        );
+
+        map.forEach((_, id) => {
+          const el = document.getElementById(id);
+          if (el) observer.observe(el);
+        });
       }
       bindPageToc();
       document.addEventListener('astro:page-load', bindPageToc);

@@ -1,6 +1,8 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
+import CareerProgression from '../components/CareerProgression.astro';
+import RevealInit from '../components/RevealInit.astro';
 import { profile } from '../data/profile';
 import { pageTitle } from '../data/seo';
 import { getCollection } from 'astro:content';
@@ -29,7 +31,7 @@ const leadership = (await getCollection('leadership')).filter((entry) => isPubli
         “{profile.proposition}”
       </p>
 
-      <div class="prose-portfolio mt-10 space-y-4 text-muted">
+      <div class="prose-portfolio mt-10 space-y-4 text-muted" data-reveal>
         {profile.aboutSummary.map((paragraph) => <p>{paragraph}</p>)}
       </div>
 
@@ -39,34 +41,7 @@ const leadership = (await getCollection('leadership')).filter((entry) => isPubli
         enterprise technology direction.
       </p>
 
-      <div class="progression-pair">
-        <div>
-          <p class="eyebrow">Role progression</p>
-          <ol class="progression-pair__list mt-5">
-            {
-              profile.careerArc.map((stage, index) => (
-                <li class="progression-pair__item">
-                  <span class="eyebrow w-6 shrink-0">{String(index + 1).padStart(2, '0')}</span>
-                  <span class="font-serif text-lg text-ink sm:text-xl">{stage}</span>
-                </li>
-              ))
-            }
-          </ol>
-        </div>
-        <div>
-          <p class="eyebrow">Scope</p>
-          <ol class="progression-pair__list mt-5">
-            {
-              profile.scopeArc.map((stage, index) => (
-                <li class="progression-pair__item">
-                  <span class="eyebrow w-6 shrink-0">{String(index + 1).padStart(2, '0')}</span>
-                  <span class="font-serif text-lg text-ink sm:text-xl">{stage}</span>
-                </li>
-              ))
-            }
-          </ol>
-        </div>
-      </div>
+      <CareerProgression variant="pair" />
 
       {
         leadership.length > 0 && (
@@ -85,4 +60,5 @@ const leadership = (await getCollection('leadership')).filter((entry) => isPubli
       }
     </div>
   </section>
+  <RevealInit />
 </PageLayout>

@@ -6,6 +6,8 @@ import Breadcrumb from '../../../components/Breadcrumb.astro';
 import ResearchDisclaimer from '../../../components/ResearchDisclaimer.astro';
 import RelatedArtifacts from '../../../components/RelatedArtifacts.astro';
 import TableOfContents from '../../../components/TableOfContents.astro';
+import ReadingProgress from '../../../components/ReadingProgress.astro';
+import RevealInit from '../../../components/RevealInit.astro';
 import { pageTitle, normalizeSeoTitle } from '../../../data/seo';
 import { isVisibleForReview } from '../../../utils/publication';
 
@@ -43,6 +45,7 @@ const showToc = headings.filter((heading) => heading.depth === 2).length >= 6;
 ---
 
 <PageLayout title={documentTitle} description={entry.data.seo?.description ?? entry.data.description}>
+  <ReadingProgress />
   <Breadcrumb
     items={[
       { label: 'Home', href: '/' },
@@ -52,29 +55,31 @@ const showToc = headings.filter((heading) => heading.depth === 2).length >= 6;
     ]}
   />
 
-  <article class="section-space">
+  <article class="section-space longform-article longform-article--architecture">
     <div class="site-shell max-w-4xl">
-      <p class="eyebrow">Reference Architecture</p>
-      <h1 class="mt-3 text-4xl sm:text-5xl">{entry.data.title}</h1>
-      {
-        entry.data.subtitle && (
-          <p class="perspective-subtitle mt-4 text-xl text-muted sm:text-2xl">{entry.data.subtitle}</p>
-        )
-      }
-      <p class="mt-5 text-sm text-muted">{metaBits.join(' · ')}</p>
-      {
-        entry.data.posture && <p class="mt-2 text-sm text-muted">{entry.data.posture}</p>
-      }
-      <div class="perspective-meta mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted">
-        <span>{entry.data.author}</span>
+      <header class="longform-header" data-reveal>
+        <p class="eyebrow">Reference Architecture</p>
+        <h1 class="mt-3 text-4xl sm:text-5xl">{entry.data.title}</h1>
         {
-          showDraftBanner && (
-            <span class="perspective-draft-badge" role="status">
-              Draft — not published
-            </span>
+          entry.data.subtitle && (
+            <p class="perspective-subtitle mt-4 text-xl text-muted sm:text-2xl">{entry.data.subtitle}</p>
           )
         }
-      </div>
+        <p class="mt-5 text-sm text-muted">{metaBits.join(' · ')}</p>
+        {
+          entry.data.posture && <p class="mt-2 text-sm text-muted">{entry.data.posture}</p>
+        }
+        <div class="perspective-meta mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted">
+          <span>{entry.data.author}</span>
+          {
+            showDraftBanner && (
+              <span class="perspective-draft-badge" role="status">
+                Draft — not published
+              </span>
+            )
+          }
+        </div>
+      </header>
 
       {
         showDraftBanner && (
@@ -96,9 +101,9 @@ const showToc = headings.filter((heading) => heading.depth === 2).length >= 6;
         )
       }
 
-      {showToc && <TableOfContents headings={headings} />}
+      {showToc && <TableOfContents headings={headings} groupArchitecture />}
 
-      <div class="prose-portfolio prose-architecture mt-10">
+      <div class="prose-portfolio prose-architecture mt-10" data-reveal>
         <Content />
       </div>
 
@@ -111,4 +116,5 @@ const showToc = headings.filter((heading) => heading.depth === 2).length >= 6;
       />
     </div>
   </article>
+  <RevealInit />
 </PageLayout>

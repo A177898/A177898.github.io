@@ -2,7 +2,11 @@
 import { architectureApproach } from '../data/profile';
 ---
 
-<section class="section-band section-band--contrast" aria-labelledby="approach-heading">
+<section
+  class="section-band section-band--contrast"
+  aria-labelledby="approach-heading"
+  data-reveal
+>
   <div class="site-shell">
     <div class="section-header">
       <p class="eyebrow">Approach</p>
@@ -12,14 +16,19 @@ import { architectureApproach } from '../data/profile';
       </p>
     </div>
 
-    <ol class="approach-list mt-12">
+    <ol class="architect-journey mt-12" aria-label="Architectural approach">
       {
-        architectureApproach.map((item) => (
-          <li class="approach-list__item">
-            <p class="approach-list__step">{item.step}</p>
-            <div class="approach-list__body">
-              <h3 class="approach-list__title">{item.title}</h3>
-              <p class="approach-list__text">{item.description}</p>
+        architectureApproach.map((item, index) => (
+          <li class="architect-journey__step" style={`--step-i: ${index}`}>
+            <div class="architect-journey__rail" aria-hidden="true">
+              <span class="architect-journey__node">{item.step}</span>
+              {index < architectureApproach.length - 1 && (
+                <span class="architect-journey__line" />
+              )}
+            </div>
+            <div class="architect-journey__body">
+              <h3 class="architect-journey__title">{item.title}</h3>
+              <p class="architect-journey__text">{item.description}</p>
             </div>
           </li>
         ))

@@ -66,7 +66,7 @@ if (import.meta.env.PROD && architectures.length === 0) {
         architectures.length === 0 ? (
           <p class="mt-10 text-sm text-muted">No reference architectures are published yet.</p>
         ) : (
-          <div class="mt-12 grid gap-6 md:grid-cols-2">
+          <div class="spec-index mt-12">
             {architectures.map((entry) => (
               <ArchitectureCard
                 title={entry.data.title}

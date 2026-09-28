@@ -1,0 +1,56 @@
+---
+import { profile } from '../data/profile';
+
+interface Props {
+  /** Visual weight: about page pair vs compact experience cue. */
+  variant?: 'pair' | 'rail';
+}
+
+const { variant = 'pair' } = Astro.props;
+const roleArc = profile.careerArc;
+const scopeArc = profile.scopeArc;
+---
+
+{
+  variant === 'rail' ? (
+    <div class="career-rail" aria-label="Architectural scope progression">
+      <ol class="career-rail__list">
+        {scopeArc.map((stage, index) => (
+          <li class="career-rail__item" style={`--rail-i: ${index}`}>
+            <span class="career-rail__label">{stage}</span>
+            {index < scopeArc.length - 1 && (
+              <span class="career-rail__connector" aria-hidden="true">
+                →
+              </span>
+            )}
+          </li>
+        ))}
+      </ol>
+    </div>
+  ) : (
+    <div class="progression-pair" data-reveal>
+      <div>
+        <p class="eyebrow">Role progression</p>
+        <ol class="progression-pair__list mt-5">
+          {roleArc.map((stage, index) => (
+            <li class="progression-pair__item" style={`--prog-i: ${index}`}>
+              <span class="eyebrow w-6 shrink-0">{String(index + 1).padStart(2, '0')}</span>
+              <span class="font-serif text-lg text-ink sm:text-xl">{stage}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+      <div>
+        <p class="eyebrow">Scope</p>
+        <ol class="progression-pair__list mt-5">
+          {scopeArc.map((stage, index) => (
+            <li class="progression-pair__item" style={`--prog-i: ${index}`}>
+              <span class="eyebrow w-6 shrink-0">{String(index + 1).padStart(2, '0')}</span>
+              <span class="font-serif text-lg text-ink sm:text-xl">{stage}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  )
+}

@@ -5,18 +5,25 @@ import { getEnabledSocialLinks } from '../data/social';
 const links = getEnabledSocialLinks();
 ---
 
-<footer class="mt-auto border-t border-border/80 bg-surface">
+<footer class="site-footer mt-auto border-t border-border/80 bg-surface">
   <div class="site-shell flex flex-col gap-6 py-10 sm:flex-row sm:items-end sm:justify-between">
     <div>
       <p class="font-serif text-lg text-ink">{profile.fullName}</p>
       <p class="mt-1 text-sm text-muted">{profile.headline}</p>
+      <p class="site-footer__tagline mt-3 text-xs font-medium uppercase tracking-[0.14em] text-muted">
+        Architecture · Strategy · Platforms · Technology
+      </p>
     </div>
     {
       links.length > 0 && (
         <ul class="flex flex-wrap gap-4">
           {links.map((link) => (
             <li>
-              <a class="text-sm font-medium text-ink no-underline hover:underline" href={link.href!} rel="noopener noreferrer">
+              <a
+                class="text-sm font-medium text-ink no-underline hover:underline"
+                href={link.href!}
+                rel="noopener noreferrer"
+              >
                 {link.label}
               </a>
             </li>

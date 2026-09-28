@@ -4,19 +4,37 @@ interface Props {
   subtitle?: string;
   eyebrow?: string;
   lead?: string;
+  /** Split layout with architecture model on the right (homepage). */
+  split?: boolean;
 }
 
-const { title, subtitle, eyebrow, lead } = Astro.props;
+const { title, subtitle, eyebrow, lead, split = false } = Astro.props;
 ---
 
-<section class="hero-block section-space">
-  <div class="site-shell max-w-3xl">
-    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
-    <h1 class="mt-4 text-4xl leading-tight sm:text-5xl lg:text-[3.25rem]">{title}</h1>
-    {subtitle && <p class="mt-6 font-serif text-2xl leading-snug text-ink sm:text-3xl">{subtitle}</p>}
-    {lead && <p class="mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">{lead}</p>}
-    <div class="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3">
-      <slot name="actions" />
+<section class:list={['hero-block', 'section-space', split && 'hero-block--split']}>
+  <div class:list={['site-shell', split ? 'hero-block__grid' : 'max-w-3xl']}>
+    <div class="hero-block__copy">
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <h1 class="hero-block__title mt-4">{title}</h1>
+      {
+        subtitle && (
+          <p class="hero-block__proposition mt-6 font-serif text-ink">{subtitle}</p>
+        )
+      }
+      {lead && <p class="hero-block__lead mt-5 max-w-2xl text-muted">{lead}</p>}
+      <div class="hero-block__actions mt-10 flex flex-wrap items-center gap-x-6 gap-y-3">
+        <slot name="actions" />
+      </div>
     </div>
+    {
+      split && (
+        <aside class="hero-block__model" aria-label="Architecture model">
+          <p class="eyebrow">Architecture model</p>
+          <div class="mt-5">
+            <slot name="model" />
+          </div>
+        </aside>
+      )
+    }
   </div>
 </section>
