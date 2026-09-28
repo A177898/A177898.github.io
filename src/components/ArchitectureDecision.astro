@@ -1,0 +1,45 @@
+---
+/**
+ * Conceptual enforcement / decision path with supporting information sources.
+ * Presentation-only architectural roles — not a deployment topology.
+ */
+interface Props {
+  steps: string[];
+  sources?: string[];
+  sourcesLabel?: string;
+  label?: string;
+}
+
+const { steps, sources = [], sourcesLabel = 'Information sources', label } = Astro.props;
+---
+
+<figure class="arch-flow arch-flow--decision" aria-label={label ?? 'Policy decision and enforcement'}>
+  <ol class="arch-flow__list arch-flow__list--trunk">
+    {
+      steps.map((step, index) => (
+        <li class="arch-flow__step">
+          <span class="arch-flow__label">{step}</span>
+          {index < steps.length - 1 && (
+            <span class="arch-flow__connector" aria-hidden="true">
+              ↓
+            </span>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+  {
+    sources.length > 0 && (
+      <div class="arch-flow__sources">
+        <p class="arch-flow__sources-label">{sourcesLabel}</p>
+        <ul class="arch-flow__branches">
+          {sources.map((source) => (
+            <li class="arch-flow__branch">
+              <span class="arch-flow__label">{source}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+</figure>

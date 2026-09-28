@@ -1,0 +1,103 @@
+---
+/**
+ * Renders related Practice / Perspectives / Reference Architecture links using
+ * publication eligibility. Drafts appear in DEV review only.
+ */
+import { getCollection } from 'astro:content';
+import { capabilityDomains } from '../data/capabilities';
+import { isVisibleForReview } from '../utils/publication';
+import { withBase } from '../utils/urls';
+
+interface Props {
+  capabilityIds?: string[];
+  researchIds?: string[];
+  architectureIds?: string[];
+  title?: string;
+  note?: string;
+  /** Compact treatment for capability cards and inline blocks. */
+  compact?: boolean;
+}
+
+const {
+  capabilityIds = [],
+  researchIds = [],
+  architectureIds = [],
+  title = 'Related',
+  note,
+  compact = false,
+} = Astro.props;
+
+const allowDrafts = import.meta.env.DEV && !import.meta.env.PROD;
+
+const perspectives = await getCollection('perspectives');
+const architectures = await getCollection('architectures');
+
+const capabilityLinks = capabilityIds
+  .map((id) => capabilityDomains.find((domain) => domain.id === id))
+  .filter((domain): domain is NonNullable<typeof domain> => Boolean(domain))
+  .slice(0, 2)
+  .map((domain) => ({
+    href: withBase(`/architecture/practice#${domain.id}`),
+    title: domain.title,
+    draft: false,
+    kind: 'Architecture Practice' as const,
+  }));
+
+const researchLinks = researchIds
+  .map((id) => perspectives.find((entry) => entry.id === id))
+  .filter((entry): entry is NonNullable<typeof entry> => Boolean(entry))
+  .filter((entry) => isVisibleForReview(entry.data, { allowDrafts }))
+  .slice(0, 3)
+  .map((entry) => ({
+    href: withBase(`/research/${entry.id}`),
+    title: entry.data.title,
+    draft: entry.data.status === 'draft',
+    kind: 'Perspective' as const,
+  }));
+
+const architectureLinks = architectureIds
+  .map((id) => architectures.find((entry) => entry.id === id))
+  .filter((entry): entry is NonNullable<typeof entry> => Boolean(entry))
+  .filter((entry) => isVisibleForReview(entry.data, { allowDrafts }))
+  .slice(0, 3)
+  .map((entry) => ({
+    href: withBase(`/architecture/reference/${entry.id}`),
+    title: entry.data.title,
+    draft: entry.data.status === 'draft',
+    kind: 'Reference Architecture' as const,
+  }));
+
+const links = [...capabilityLinks, ...researchLinks, ...architectureLinks].slice(0, 3);
+---
+
+{
+  links.length > 0 && (
+    <aside
+      class:list={['related-artifacts', compact && 'related-artifacts--compact']}
+      aria-labelledby={compact ? undefined : 'related-artifacts-heading'}
+      aria-label={compact ? title : undefined}
+    >
+      {compact ? (
+        <p class="related-artifacts__heading related-artifacts__heading--compact">{title}</p>
+      ) : (
+        <h2 id="related-artifacts-heading" class="related-artifacts__heading">
+          {title}
+        </h2>
+      )}
+      {note && <p class="related-artifacts__note">{note}</p>}
+      <ul class="related-artifacts__list">
+        {links.map((link) => (
+          <li>
+            <span class="related-artifacts__kind">{link.kind}</span>
+            <a href={link.href}>{link.title}</a>
+            {allowDrafts && link.draft && (
+              <span class="perspective-draft-badge" role="status">
+                Draft — DEV review
+              </span>
+            )}
+          </li>
+        ))}
+      </ul>
+    </aside>
+  )
+}

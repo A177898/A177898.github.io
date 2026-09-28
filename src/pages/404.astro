@@ -1,0 +1,22 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { pageTitle } from '../data/seo';
+import { withBase } from '../utils/urls';
+---
+
+<PageLayout
+  title={pageTitle('Page not found')}
+  description="The requested page could not be found."
+>
+  <section class="section-space">
+    <div class="site-shell max-w-xl">
+      <p class="eyebrow">404</p>
+      <h1 class="mt-3 text-4xl">Page not found</h1>
+      <p class="mt-4 text-muted">
+        The page you requested is unavailable. It may not be published yet, or the address may be
+        incorrect.
+      </p>
+      <a class="btn-primary mt-8" href={withBase('/')}>Return home</a>
+    </div>
+  </section>
+</PageLayout>

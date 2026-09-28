@@ -1,0 +1,25 @@
+---
+/**
+ * Unobtrusive disclaimer for Architecture Perspectives / Reference Architectures only.
+ */
+interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+---
+
+<aside
+  class:list={[
+    'border-l border-border pl-4 text-muted',
+    compact ? 'text-xs leading-relaxed' : 'text-sm leading-relaxed',
+  ]}
+  aria-label="Independent architecture perspective notice"
+>
+  <p>
+    This material was independently developed for professional knowledge sharing. It presents
+    general architectural patterns and perspectives and does not describe the systems,
+    architecture, strategy, configuration or intellectual property of any current or former
+    employer.
+  </p>
+</aside>

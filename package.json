@@ -1,0 +1,39 @@
+{
+  "name": "yusuf-kader-portfolio",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build && tsx scripts/validate-content.ts --production && tsx scripts/prune-unpublished-routes.ts",
+    "preview": "astro preview",
+    "astro": "astro",
+    "validate": "tsx scripts/validate-content.ts",
+    "prune": "tsx scripts/prune-unpublished-routes.ts",
+    "test:publication": "tsx scripts/test-publication.ts",
+    "check": "astro check && tsc --noEmit"
+  },
+  "dependencies": {
+    "@astrojs/markdown-satteri": "^0.4.2",
+    "@astrojs/mdx": "^8.0.2",
+    "@astrojs/sitemap": "^3.7.4",
+    "@fontsource-variable/source-sans-3": "^5.3.0",
+    "@fontsource-variable/source-serif-4": "^5.3.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.3.5",
+    "tailwindcss": "^4.3.3",
+    "yaml": "^2.9.1",
+    "zod": "^4.6.5"
+  },
+  "allowScripts": {
+    "esbuild": true
+  },
+  "description": "Enterprise Architecture portfolio for Yusuf Kader",
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "tsx": "^4.23.15",
+    "typescript": "^6.0.3"
+  }
+}

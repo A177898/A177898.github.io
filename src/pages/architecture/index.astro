@@ -1,0 +1,127 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import { pageTitle } from '../../data/seo';
+import { hasPublishedRadarEntries } from '../../data/technologies';
+import { getCollection } from 'astro:content';
+import { isPublished, isVisibleForReview } from '../../utils/publication';
+import { withBase } from '../../utils/urls';
+
+const allowDrafts = import.meta.env.DEV && !import.meta.env.PROD;
+const perspectives = (await getCollection('perspectives')).filter((entry) =>
+  isVisibleForReview(entry.data, { allowDrafts }),
+);
+const architectures = (await getCollection('architectures')).filter((entry) =>
+  isVisibleForReview(entry.data, { allowDrafts }),
+);
+const publishedPerspectives = perspectives.filter((entry) => isPublished(entry.data));
+const publishedArchitectures = architectures.filter((entry) => isPublished(entry.data));
+const showPerspectives =
+  publishedPerspectives.length > 0 || (allowDrafts && perspectives.length > 0);
+const showReference =
+  publishedArchitectures.length > 0 || (allowDrafts && architectures.length > 0);
+const showRadar = hasPublishedRadarEntries();
+---
+
+<PageLayout
+  title={pageTitle('Architecture')}
+  description="Architecture Practice, Perspectives and Reference Architectures — how architectural disciplines, thinking and structured models connect."
+>
+  <Breadcrumb
+    items={[
+      { label: 'Home', href: '/' },
+      { label: 'Architecture', href: '/architecture' },
+    ]}
+  />
+
+  <section class="section-space">
+    <div class="site-shell">
+      <p class="eyebrow">Architecture</p>
+      <h1 class="mt-3 text-4xl sm:text-5xl">Architecture</h1>
+      <p class="mt-4 max-w-2xl text-lg text-muted">
+        Capability-led practice is the centrepiece — connected to how architectural problems are
+        framed, and how principles become structured reference models.
+      </p>
+
+      <ol class="evidence-flow mt-10 max-w-2xl" aria-label="Architecture evidence progression">
+        <li class="evidence-flow__item">
+          <p class="evidence-flow__label">Architecture Practice</p>
+          <p class="evidence-flow__text">
+            The architectural disciplines and principles applied across enterprise, platform,
+            cloud, integration, security and emerging technology.
+          </p>
+        </li>
+        <li class="evidence-flow__item">
+          <p class="evidence-flow__label">Perspectives</p>
+          <p class="evidence-flow__text">
+            How architectural problems are framed, evaluated and translated into principles and
+            decisions.
+          </p>
+        </li>
+        <li class="evidence-flow__item">
+          <p class="evidence-flow__label">Reference Architectures</p>
+          <p class="evidence-flow__text">
+            How those principles are structured into reusable logical architecture models.
+          </p>
+        </li>
+      </ol>
+
+      <div class="mt-12 grid gap-6 md:grid-cols-2">
+        <a href={withBase('/architecture/practice')} class="card-quiet block no-underline transition-colors hover:bg-accent-soft/40">
+          <p class="eyebrow">Centrepiece</p>
+          <h2 class="mt-2 text-2xl text-ink">Architecture Practice</h2>
+          <p class="mt-3 text-sm text-muted">
+            Capability domains framed around principles and architectural decision-making.
+          </p>
+        </a>
+
+        {
+          showPerspectives && (
+            <a
+              href={withBase('/research')}
+              class="card-quiet block no-underline transition-colors hover:bg-accent-soft/40"
+            >
+              <p class="eyebrow">Thinking</p>
+              <h2 class="mt-2 text-2xl text-ink">Perspectives</h2>
+              <p class="mt-3 text-sm text-muted">
+                Independent architecture perspectives on framing problems, trade-offs and
+                decisions.
+              </p>
+            </a>
+          )
+        }
+
+        {
+          showReference && (
+            <a
+              href={withBase('/architecture/reference')}
+              class="card-quiet block no-underline transition-colors hover:bg-accent-soft/40"
+            >
+              <p class="eyebrow">Structured models</p>
+              <h2 class="mt-2 text-2xl text-ink">Reference Architectures</h2>
+              <p class="mt-3 text-sm text-muted">
+                Vendor-neutral reference architectures that turn principles into reusable logical
+                models.
+              </p>
+            </a>
+          )
+        }
+
+        {
+          showRadar && (
+            <a
+              href={withBase('/architecture/radar')}
+              class="card-quiet block no-underline transition-colors hover:bg-accent-soft/40"
+            >
+              <p class="eyebrow">Independent assessment</p>
+              <h2 class="mt-2 text-2xl text-ink">Technology Radar</h2>
+              <p class="mt-3 text-sm text-muted">
+                Published radar classifications representing independent professional assessment.
+              </p>
+            </a>
+          )
+        }
+      </div>
+    </div>
+  </section>
+</PageLayout>

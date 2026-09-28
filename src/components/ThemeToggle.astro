@@ -1,0 +1,68 @@
+---
+interface Props {
+  label?: string;
+}
+
+const { label } = Astro.props;
+---
+
+<button
+  type="button"
+  class="theme-toggle inline-flex h-9 w-9 items-center justify-center rounded-sm border border-border bg-surface text-ink"
+  aria-label={label ?? 'Switch to light colour theme'}
+  data-theme-toggle
+>
+  <span class="dark:hidden" aria-hidden="true">
+    <!-- Shown in light mode: affordance to switch to dark -->
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+      <path d="M21 14.5A8.5 8.5 0 1 1 9.5 3 7 7 0 0 0 21 14.5z"></path>
+    </svg>
+  </span>
+  <span class="hidden dark:inline" aria-hidden="true">
+    <!-- Shown in dark mode: affordance to switch to light -->
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+      <circle cx="12" cy="12" r="4"></circle>
+      <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path>
+    </svg>
+  </span>
+</button>
+
+<script>
+  function applyTheme(theme: 'light' | 'dark') {
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+    try {
+      localStorage.setItem('theme', theme);
+    } catch {
+      /* ignore */
+    }
+    syncToggleLabels();
+  }
+
+  function currentTheme(): 'light' | 'dark' {
+    return document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+  }
+
+  function syncToggleLabels() {
+    const next = currentTheme() === 'dark' ? 'light' : 'dark';
+    document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
+      if (button instanceof HTMLElement) {
+        button.setAttribute('aria-label', `Switch to ${next} colour theme`);
+      }
+    });
+  }
+
+  function bindToggles() {
+    document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
+      if (!(button instanceof HTMLElement)) return;
+      if (button.dataset.themeBound === 'true') return;
+      button.dataset.themeBound = 'true';
+      button.addEventListener('click', () => {
+        applyTheme(currentTheme() === 'dark' ? 'light' : 'dark');
+      });
+    });
+    syncToggleLabels();
+  }
+
+  bindToggles();
+  document.addEventListener('astro:page-load', bindToggles);
+</script>

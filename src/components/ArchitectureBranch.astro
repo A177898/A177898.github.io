@@ -1,0 +1,68 @@
+---
+/**
+ * Branched architecture diagram — parent capability with child dimensions,
+ * or a trunk path that fans into parallel treatments.
+ * Presentation-only; labels are supplied by the article.
+ */
+interface Props {
+  root?: string;
+  trunk?: string[];
+  branches: string[] | { label: string; result?: string }[];
+  label?: string;
+  /** When true, branches are shown as label → result pairs. */
+  paired?: boolean;
+}
+
+const { root, trunk = [], branches, label, paired = false } = Astro.props;
+
+const normalised = branches.map((branch) =>
+  typeof branch === 'string' ? { label: branch } : branch,
+);
+---
+
+<figure class="arch-flow arch-flow--branch" aria-label={label ?? root ?? 'Architecture branch'}>
+  {
+    root && (
+      <div class="arch-flow__root">
+        <span class="arch-flow__label arch-flow__label--root">{root}</span>
+        <span class="arch-flow__connector" aria-hidden="true">│</span>
+      </div>
+    )
+  }
+  {
+    trunk.length > 0 && (
+      <ol class="arch-flow__list arch-flow__list--trunk">
+        {trunk.map((step, index) => (
+          <li class="arch-flow__step">
+            <span class="arch-flow__label">{step}</span>
+            {index < trunk.length - 1 && (
+              <span class="arch-flow__connector" aria-hidden="true">
+                ↓
+              </span>
+            )}
+          </li>
+        ))}
+        <li class="arch-flow__step" aria-hidden="true">
+          <span class="arch-flow__connector">↓</span>
+        </li>
+      </ol>
+    )
+  }
+  <ul class:list={['arch-flow__branches', paired && 'arch-flow__branches--paired']}>
+    {
+      normalised.map((branch) => (
+        <li class="arch-flow__branch">
+          <span class="arch-flow__label">{branch.label}</span>
+          {branch.result && (
+            <>
+              <span class="arch-flow__connector" aria-hidden="true">
+                ↓
+              </span>
+              <span class="arch-flow__label arch-flow__label--result">{branch.result}</span>
+            </>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+</figure>

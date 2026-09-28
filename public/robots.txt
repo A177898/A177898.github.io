@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+# Sitemap URL is rewritten at production build time from PUBLIC_SITE_URL / SITE_URL.
+# Do not hardcode a public hostname here.
+Sitemap: /sitemap-index.xml

@@ -1,0 +1,80 @@
+---
+import { radarDomains, radarEntries, radarRings } from '../data/technologies';
+import RadarDisclaimer from './RadarDisclaimer.astro';
+
+/**
+ * Technology Radar framework UI.
+ * Classifications remain empty until explicitly provided/approved.
+ */
+const published = radarEntries.filter((entry) => entry.approvedForPublication);
+---
+
+<section aria-labelledby="radar-heading">
+  <div class="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+    <div class="max-w-2xl">
+      <h2 id="radar-heading" class="text-3xl">Technology Radar</h2>
+      <p class="mt-3 text-muted">
+        A structured view of technologies and practices across Adopt, Trial, Assess, and Hold —
+        organised by architectural domain.
+      </p>
+    </div>
+    <div class="max-w-md">
+      <RadarDisclaimer compact />
+    </div>
+  </div>
+
+  {
+    published.length === 0 ? (
+      <div class="card-quiet mt-10 max-w-2xl">
+        <p class="text-sm text-muted">
+          Radar classifications have not been published yet. The framework is ready; entries will
+          appear only after explicit approval.
+        </p>
+        <div class="mt-6 grid gap-4 sm:grid-cols-2">
+          <div>
+            <p class="eyebrow">Rings</p>
+            <ul class="mt-2 space-y-1 text-sm text-ink">
+              {radarRings.map((ring) => (
+                <li>{ring}</li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <p class="eyebrow">Domains</p>
+            <ul class="mt-2 space-y-1 text-sm text-ink">
+              {radarDomains.map((domain) => (
+                <li>{domain}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    ) : (
+      <div class="mt-10 grid gap-6 md:grid-cols-2">
+        {radarRings.map((ring) => {
+          const items = published.filter((entry) => entry.ring === ring);
+          return (
+            <section class="card-quiet" aria-labelledby={`ring-${ring}`}>
+              <h3 id={`ring-${ring}`} class="text-xl">
+                {ring}
+              </h3>
+              {items.length === 0 ? (
+                <p class="mt-3 text-sm text-muted">No published entries in this ring.</p>
+              ) : (
+                <ul class="mt-4 space-y-3">
+                  {items.map((entry) => (
+                    <li>
+                      <p class="font-semibold text-ink">{entry.name}</p>
+                      <p class="text-xs text-muted">{entry.domain}</p>
+                      {entry.blurb && <p class="mt-1 text-sm text-muted">{entry.blurb}</p>}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          );
+        })}
+      </div>
+    )
+  }
+</section>

@@ -1,0 +1,179 @@
+---
+/**
+ * Logical enterprise-authorization model.
+ * Distinguishes control flow, decision exchange, information dependencies,
+ * and policy control-plane publication — not a single layered sequence.
+ */
+interface Props {
+  label?: string;
+}
+
+const { label = 'Enterprise authorization logical reference architecture' } = Astro.props;
+
+const surrounding = [
+  'Policy Governance',
+  'Decision Evidence',
+  'Audit',
+  'Observability',
+  'Trust',
+  'Resilience',
+];
+---
+
+<figure class="arch-flow authz-logical" aria-label={label}>
+  <p class="authz-logical__plane-label">Protected-action / control flow</p>
+  <ol class="authz-logical__control">
+    <li class="authz-logical__node">
+      <span class="authz-logical__box">Consumers</span>
+      <span class="authz-logical__edge" aria-hidden="true">
+        <span class="authz-logical__edge-label">encounters</span>
+        <span class="authz-logical__arrow">↓</span>
+      </span>
+    </li>
+    <li class="authz-logical__node">
+      <span class="authz-logical__box authz-logical__box--emphasis">
+        Policy Enforcement Point (PEP)
+        <span class="authz-logical__hint">Intercepts protected actions; enforces decisions</span>
+      </span>
+      <span class="authz-logical__edge" aria-hidden="true">
+        <span class="authz-logical__edge-label">decision request</span>
+        <span class="authz-logical__arrow">↓</span>
+      </span>
+    </li>
+    <li class="authz-logical__node">
+      <span class="authz-logical__box authz-logical__box--emphasis">
+        Policy Decision Point (PDP)
+        <span class="authz-logical__hint"
+          >Evaluates assigned authority, trusted context and published policy. Produces decision,
+          reason, obligations and references / validity context. Does not become a mandatory single
+          physical service.</span
+        >
+      </span>
+      <span class="authz-logical__edge" aria-hidden="true">
+        <span class="authz-logical__edge-label">decision response (to PEP)</span>
+        <span class="authz-logical__arrow">↓</span>
+      </span>
+    </li>
+    <li class="authz-logical__node">
+      <span class="authz-logical__box">PEP — Enforcement</span>
+      <span class="authz-logical__edge" aria-hidden="true">
+        <span class="authz-logical__edge-label"
+          >effective ALLOW only — then domain checks (where applicable)</span
+        >
+        <span class="authz-logical__arrow">↓</span>
+      </span>
+    </li>
+    <li class="authz-logical__node">
+      <span class="authz-logical__box">
+        Domain authorization + Domain invariants
+        <span class="authz-logical__hint"
+          >Domain-owned; precede the protected action where applicable. Authority to attempt ≠
+          validity of action.</span
+        >
+      </span>
+      <span class="authz-logical__edge" aria-hidden="true">
+        <span class="authz-logical__arrow">↓</span>
+      </span>
+    </li>
+    <li class="authz-logical__node">
+      <span class="authz-logical__box authz-logical__box--result">Protected action</span>
+    </li>
+  </ol>
+
+  <div class="authz-logical__deps" role="group" aria-label="Decision-information dependencies">
+    <p class="authz-logical__plane-label">Decision-information dependencies</p>
+    <p class="authz-logical__note">
+      Authorization Context is the logical information available to an evaluation — not a mandatory
+      store, service or sequential processing stage. Domain authorities supply authoritative
+      information; they do not produce the shared PDP’s decision. Entitlements and published policy
+      are evaluation inputs, not downstream execution stages. PIP is an information-provision
+      responsibility. Not every decision requires every acquisition pattern or a network lookup.
+    </p>
+    <div class="authz-logical__dep-grid">
+      <div class="authz-logical__dep">
+        <p class="authz-logical__dep-title">Assigned authority / Entitlements</p>
+        <p class="authz-logical__dep-text">Evaluation input to the PDP</p>
+        <p class="authz-logical__connector-note" aria-hidden="true">supplies → PDP</p>
+      </div>
+      <div class="authz-logical__dep authz-logical__dep--context">
+        <p class="authz-logical__dep-title">Authorization Context</p>
+        <ul class="authz-logical__dep-list">
+          <li>Trusted request context</li>
+          <li>Decision projections</li>
+          <li>Selective authoritative lookup (PIP)</li>
+        </ul>
+        <p class="authz-logical__connector-note" aria-hidden="true">
+          lookup request ⇄ information returned to evaluation
+        </p>
+      </div>
+      <div class="authz-logical__dep">
+        <p class="authz-logical__dep-title">Published policy</p>
+        <p class="authz-logical__dep-text">Runtime evaluation input</p>
+        <p class="authz-logical__connector-note" aria-hidden="true">supplies → PDP</p>
+      </div>
+      <div class="authz-logical__dep">
+        <p class="authz-logical__dep-title">Domain authorities</p>
+        <p class="authz-logical__dep-text">
+          Authoritative information sources — not the shared PDP decision-maker
+        </p>
+        <p class="authz-logical__connector-note" aria-hidden="true">
+          info → PIP / projection / context (not a PDP decision)
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="authz-logical__control-plane" role="group" aria-label="Policy lifecycle control plane">
+    <p class="authz-logical__plane-label">Policy lifecycle / control plane</p>
+    <p class="authz-logical__note">
+      PAP / control-plane activity publishes policy for runtime use. It is not a per-decision
+      dependency of the PDP.
+    </p>
+    <ol class="authz-logical__pap">
+      <li><span class="authz-logical__box">PAP / Policy Administration</span></li>
+      <li class="authz-logical__pap-edge" aria-hidden="true">
+        <span class="authz-logical__edge-label">publishes for runtime use</span>
+        <span class="authz-logical__arrow">→</span>
+      </li>
+      <li><span class="authz-logical__box">Published policy</span></li>
+      <li class="authz-logical__pap-edge" aria-hidden="true">
+        <span class="authz-logical__edge-label">available to</span>
+        <span class="authz-logical__arrow">→</span>
+      </li>
+      <li><span class="authz-logical__box">PDP (runtime)</span></li>
+    </ol>
+  </div>
+
+  <div class="authz-logical__legend">
+    <p class="authz-logical__plane-label">Legend</p>
+    <ul class="authz-logical__legend-list">
+      <li><strong>↓ / →</strong> control or decision-message direction</li>
+      <li><strong>supplies →</strong> information available to evaluation</li>
+      <li><strong>lookup ⇄</strong> request for information and information returned</li>
+      <li><strong>publishes →</strong> control-plane publication, not a runtime hop per decision</li>
+    </ul>
+  </div>
+
+  {
+    surrounding.length > 0 && (
+      <div class="arch-spec__surround">
+        <p class="arch-spec__surround-label">Surrounding concerns</p>
+        <ul class="arch-spec__surround-list">
+          {surrounding.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+
+  <figcaption class="sr-only">
+    Consumers encounter a PEP. The PEP requests a decision from the PDP. The PDP evaluates assigned
+    authority, trusted context and published policy, then returns decision, reason, obligations and
+    references to the PEP for enforcement. Domain authorization and invariants remain domain-owned
+    and precede the protected action where applicable. Authorization Context is logical evaluation
+    information, not a mandatory sequential component. Domain authorities inform evaluation; they do
+    not produce the shared PDP decision. PAP publishes policy for runtime use without becoming a
+    per-decision dependency.
+  </figcaption>
+</figure>

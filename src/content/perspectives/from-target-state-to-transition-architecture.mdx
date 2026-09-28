@@ -1,0 +1,454 @@
+---
+title: From Target State to Transition Architecture
+subtitle: Making Enterprise Architecture Executable
+description: >-
+  How transition architecture connects strategic intent to viable intermediate
+  states, dependencies, roadmaps and governed execution.
+author: Yusuf Kader
+category: Enterprise Architecture
+tags:
+  - Enterprise Architecture
+  - Transition Architecture
+  - Capability Architecture
+  - Technology Strategy
+  - Roadmapping
+  - Architecture Governance
+classification: green
+status: published
+approvedForPublication: true
+showDisclaimer: true
+seo:
+  title: From Target State to Transition Architecture | Yusuf Kader
+  description: >-
+    An Enterprise Architecture perspective on turning target-state architecture
+    into executable change through transition states, capability evolution,
+    dependencies, roadmaps and governance.
+relatedCapabilities:
+  - enterprise-architecture
+relatedResearch: []
+relatedArchitectures: []
+---
+
+import ArchitectureFlow from '../../components/ArchitectureFlow.astro';
+import PrincipleCallout from '../../components/PrincipleCallout.astro';
+import TransitionChecklist from '../../components/TransitionChecklist.astro';
+
+Enterprise Architecture is good at describing the future. In many ways, that is the easier part.
+
+We define the target state. We describe how capabilities, information, applications and technology should ultimately fit together. Done well, this creates alignment and provides a clear direction of travel.
+
+Useful, but incomplete.
+
+Because a target state does not tell us how to get there.
+
+Between where we are and where we want to be sits the reality of the enterprise: contractual commitments that cannot simply be abandoned, technical debt that cannot be ignored, regulatory obligations that must continue to be met, programmes already in flight, organisational dependencies, and systems that cannot simply be switched off.
+
+This is where **transition architecture** matters.
+
+For me, this is the difference between Enterprise Architecture that describes and Enterprise Architecture that enables execution. If we cannot define a credible, governable path from today to tomorrow, the target state remains an architectural aspiration rather than an executable direction.
+
+## 1. The target state is not the strategy
+
+The target state gives us direction.
+
+It may describe an enterprise with less duplication, clearer ownership, reusable platforms, well-defined information authority and technology that is easier to evolve.
+
+The problem begins when we treat that target-state diagram as the plan.
+
+<ArchitectureFlow
+  steps={['CURRENT STATE', 'TARGET STATE']}
+  direction="horizontal"
+  label="Current state to target state"
+/>
+
+That seemingly simple arrow carries a significant amount of complexity.
+
+Hidden within it are some of the most important questions in enterprise transformation:
+
+- What moves first?
+- What must exist before something else can move?
+- What must continue operating while we change it?
+- Which existing and new capabilities must coexist?
+- Where does authoritative data reside during the transition?
+- Which dependencies actually determine the sequence?
+- When can existing technology realistically be retired?
+- What happens if funding, strategy or priorities change along the way?
+
+A target-state diagram answers none of these questions on its own.
+
+That is why I separate **direction** from **transition**.
+
+**Target state:** where we are heading.
+
+**Transition architecture:** how we get there without assuming we can move from one state to another instantaneously.
+
+## 2. Start with capability, not technology
+
+The wrong starting question is:
+
+> "What system should we replace?"
+
+A better question is:
+
+> "What do we need to become capable of doing?"
+
+That reframes the architecture conversation:
+
+<ArchitectureFlow
+  steps={[
+    'Strategic Outcome',
+    'Business Capability',
+    'Capability Gap',
+    'Architecture Change',
+    'Technology Change',
+  ]}
+  direction="vertical"
+  label="From strategic outcome to technology change"
+/>
+
+Technology becomes the consequence of the required capability evolution rather than the driver of transformation.
+
+Capabilities are also more durable than systems. The technology supporting a capability may change several times, while the underlying business need remains.
+
+A customer platform may change. The organisation's need to understand and serve its customers does not disappear with it.
+
+My test is relatively simple:
+
+> **If I cannot trace an architecture decision through a business capability to an intended business outcome, I question why we are making that decision.**
+
+That traceability helps prevent technology change from becoming an objective in itself.
+
+## 3. Understand today, but do not get trapped there
+
+You cannot design a credible transition without understanding the starting point.
+
+Dependencies, duplication, contractual commitments, integration complexity, information ownership, operational responsibilities and security boundaries all constrain what is realistically possible.
+
+But there is a trap: **analysis paralysis**.
+
+Architecture teams can spend considerable time attempting to document every application, interface and dependency before making a decision. In a sufficiently large enterprise, that exercise may never truly finish.
+
+My principle is:
+
+<PrincipleCallout>
+  Current-state analysis should be proportionate to the decision that needs to be made.
+</PrincipleCallout>
+
+If we are deciding the future ownership of a capability, I need to understand the systems, information, stakeholders and dependencies that materially affect that capability.
+
+I do not necessarily need a perfect representation of the entire technology estate before I can make that decision.
+
+Enterprise Architecture should remain **decision-oriented, not documentation-oriented**.
+
+## 4. A real target is more than a diagram
+
+A useful target architecture defines more than technology components.
+
+It should establish:
+
+- **Capabilities:** what the organisation must be able to do.
+- **Principles:** the constraints within which we design and make decisions.
+- **Boundaries:** where responsibilities and ownership belong.
+- **Information:** what information matters, who owns it and how it moves.
+- **Platforms:** which capabilities should be created once and reused.
+- **Standards:** where consistency creates enterprise value.
+- **Outcomes:** what should materially improve as a result.
+
+Products will change. Technology will evolve. Organisational structures will change.
+
+If the target state exists only as a technology diagram, its useful life may be limited.
+
+If it is grounded in capabilities, principles, boundaries and outcomes, it becomes significantly more durable.
+
+## 5. Make the gap explicit
+
+Do not move immediately from the target state to:
+
+> "Which systems need to change?"
+
+First ask:
+
+> **"What is preventing us from having the capability we need?"**
+
+I consider that question across several dimensions: capability, information, application, integration, platform, security, technology and operating model.
+
+That creates traceability:
+
+<ArchitectureFlow
+  steps={['Strategy', 'Capability', 'Gap', 'Architecture Decision', 'Initiative']}
+  direction="vertical"
+  label="From strategy to initiative"
+/>
+
+This becomes particularly important when constraints emerge—as they inevitably do.
+
+If funding is reduced, for example, the architectural conversation should not stop at:
+
+> "Project X will be delayed."
+
+We should be able to explain:
+
+> "Capability Y will be delayed, dependency Z remains unresolved, and the corresponding target-state outcome will therefore move."
+
+That is a fundamentally different conversation.
+
+It connects investment decisions back to architectural and business consequences.
+
+## 6. Design the journey as architectures, not phases
+
+This representation is attractive:
+
+<ArchitectureFlow
+  steps={['CURRENT', 'TARGET']}
+  direction="horizontal"
+  label="Current to target — overly simple path"
+/>
+
+But enterprise transformation rarely works that way.
+
+Reality is closer to:
+
+<ArchitectureFlow
+  steps={['CURRENT', 'TRANSITION 1', 'TRANSITION 2', 'TRANSITION 3', 'TARGET']}
+  direction="vertical"
+  label="Current through transition states to target"
+/>
+
+There is an important distinction here:
+
+<PrincipleCallout>
+  A project phase describes work. A transition state describes an architecture the organisation must be able to operate.
+</PrincipleCallout>
+
+"Phase 2 complete" tells me that a set of planned activities has been completed.
+
+It does not necessarily tell me whether the organisation can operate safely, sustainably and coherently at that point.
+
+For each transition state, I want to understand:
+
+What capabilities are available? What remains on the existing architecture? What can now be retired? Where does authoritative information reside? What must coexist? How will the state be operated and supported?
+
+And, critically:
+
+**What are the exit criteria for moving to the next state?**
+
+Without explicit exit criteria, temporary architectures have a tendency to become permanent.
+
+## 7. Coexistence is real architecture work
+
+Large enterprise capabilities are rarely replaced through a single big-bang event.
+
+Existing and new architectures may need to operate alongside one another for months or, in some cases, years.
+
+That creates architectural problems that do not exist in either the pure current state or the pure target state.
+
+Which interactions are routed where?
+
+Which system is authoritative for which information?
+
+Do we synchronise data, replicate it or reconcile it?
+
+Can identity operate consistently across both environments?
+
+Have trust boundaries changed?
+
+How is the combined architecture operated and supported?
+
+What conditions finally allow the existing capability to be retired?
+
+Coexistence therefore needs to be **designed deliberately**.
+
+Otherwise, an integration introduced as a temporary bridge can quietly become another permanent layer of enterprise complexity.
+
+## 8. Transition architecture is fundamentally about dependencies
+
+A roadmap that ignores dependencies is little more than a schedule.
+
+A business capability may depend on a shared platform. That platform may depend on identity. Migration may depend on data readiness. Retirement may depend on several other consumers moving first.
+
+These relationships matter.
+
+They should be visible, understood and used to inform sequencing.
+
+<PrincipleCallout>
+  Sequence by architectural dependency, not simply by arbitrary dates.
+</PrincipleCallout>
+
+This also helps explain the value of foundational investments.
+
+A shared capability may appear to deliver limited direct business functionality on its own, while in reality it enables several downstream capabilities or journeys.
+
+Architecture makes that relationship visible.
+
+It gives us a way to explain not only **what** needs to be built, but **why its position in the sequence matters**.
+
+## 9. Roadmaps should show capability evolution
+
+A useful architecture roadmap shows more than projects and dates.
+
+It should expose:
+
+- capability increments;
+- architectural milestones;
+- dependencies;
+- coexistence windows;
+- decision points;
+- migrations;
+- platform enablement;
+- retirement points.
+
+The conversation then moves away from:
+
+> "Project X finishes in Q3."
+
+toward:
+
+> "Once capabilities X and Y are established, capability Z can transition and the previous component can be retired."
+
+That is architecture giving meaning to delivery sequencing.
+
+The roadmap becomes more than a programme plan.
+
+It becomes a representation of **how the enterprise architecture evolves over time**.
+
+## 10. The shortest path is not always the right path
+
+There is a natural temptation to optimise transformation for speed:
+
+> "What is the fastest route to the target state?"
+
+Sometimes that is exactly the right question.
+
+Sometimes it is not.
+
+There are situations where taking an apparently longer route allows us to establish a foundation first—one that creates reusable capability, reduces coupling, establishes cleaner boundaries or enables several future changes to proceed independently.
+
+This is where **architectural optionality** becomes important.
+
+I place significant value on optionality because the target state will evolve.
+
+Some assumptions will prove incorrect. Priorities will change. Technology will advance. New opportunities and constraints will emerge.
+
+<PrincipleCallout>
+  Good transition architecture should not only reduce the distance to the target state; it should preserve or increase the organisation's ability to respond to future change.
+</PrincipleCallout>
+
+An architecture that allows the organisation to adapt may ultimately be more valuable than one optimised entirely around today's assumptions.
+
+## 11. Treat the target as intent, not gospel
+
+Architecture requires enough stability to guide investment.
+
+It also requires enough adaptability to remain relevant.
+
+If the target state changes constantly, it cannot provide meaningful direction.
+
+If it never changes, it eventually becomes disconnected from reality.
+
+I prefer to treat the target state as **governed architectural intent**.
+
+As the organisation moves through transition states, it learns.
+
+Assumptions are validated or invalidated. Priorities change. Technology evolves. Delivery exposes constraints. Regulatory requirements change.
+
+That evidence needs to feed back into the architecture.
+
+The lifecycle is therefore not simply:
+
+<ArchitectureFlow
+  steps={['Design', 'Approve', 'Implement']}
+  direction="horizontal"
+  label="Design approve implement — incomplete lifecycle"
+/>
+
+It is closer to:
+
+<ArchitectureFlow
+  steps={['Intent', 'Transition', 'Delivery', 'Reality', 'Evidence', 'Reassess']}
+  direction="vertical"
+  cyclic={true}
+  cycleNote="returns to Intent"
+  label="Governed evolution lifecycle returning to Intent"
+/>
+
+That is not architectural indecision.
+
+It is **governed evolution**.
+
+## 12. Governance keeps the architecture alive
+
+Architecture governance should not be limited to approving designs before implementation.
+
+Its more important purpose is to maintain coherence while the enterprise changes.
+
+Are we still moving toward the required capabilities?
+
+Are our architecture principles holding?
+
+Have dependencies changed?
+
+Have temporary solutions become permanent?
+
+Is coexistence continuing longer than intended?
+
+Can anything now be retired?
+
+Does the target state still represent the right direction?
+
+Governance should therefore evolve from being perceived primarily as an **approval gate** toward operating as an **architectural feedback loop**.
+
+The goal is not rigid compliance with a diagram.
+
+The goal is sustained architectural integrity while the organisation evolves.
+
+<TransitionChecklist
+  items={[
+    { label: 'Business', text: 'What outcome does this enable?' },
+    { label: 'Strategy', text: 'Does it support where the organisation is going?' },
+    { label: 'Architecture', text: 'Does it move us toward the intended target state?' },
+    { label: 'Dependency', text: 'What must exist first?' },
+    {
+      label: 'Information',
+      text: 'Where does information authority reside during the transition?',
+    },
+    { label: 'Integration', text: 'What coexistence or interoperability is required?' },
+    { label: 'Security', text: 'Are trust boundaries changing?' },
+    { label: 'Operations', text: 'Can we operate and support this state effectively?' },
+    {
+      label: 'Financial',
+      text: 'Which investment, lifecycle or contractual constraints affect the decision?',
+    },
+    { label: 'Delivery', text: 'Is this transition independently achievable?' },
+    { label: 'Retirement', text: 'What can be simplified or removed afterwards?' },
+    { label: 'Optionality', text: 'Are we unnecessarily constraining future choices?' },
+  ]}
+  title="13. My transition architecture checklist"
+/>
+
+## The role of the Enterprise Architect, as I see it
+
+The Enterprise Architect is not simply the person who describes the future.
+
+The role is to maintain coherence between **strategy, capabilities, architecture, investment and change**.
+
+That means considering multiple horizons simultaneously:
+
+**the architecture we have,  
+the architecture we are building,  
+and the architecture we are moving toward.**
+
+Enterprise Architecture's value is not determined by how polished the target-state diagram looks.
+
+Its value becomes visible when the organisation is able to make better decisions about:
+
+**what to change, what to retain, what to build first, what to retire, and why.**
+
+Target states remain essential. Without them, enterprise change risks becoming a collection of local optimisations.
+
+But direction alone is not enough.
+
+Much of the difficult architectural work happens in the space between current and target state: understanding gaps, defining viable intermediate states, managing coexistence, exposing dependencies, sequencing change, preserving optionality and governing the architecture as reality evolves.
+
+That is how I believe Enterprise Architecture becomes executable.
+
+Not simply by creating **a picture of the future**, but by establishing **a credible path toward it**—one that remains coherent while still being capable of adapting as the organisation learns.

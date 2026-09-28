@@ -1,0 +1,96 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import CareerTimeline from '../components/CareerTimeline.astro';
+import type { TimelineItem } from '../types/experience';
+import { pageTitle } from '../data/seo';
+import { getCollection } from 'astro:content';
+import { isVisibleForReview } from '../utils/publication';
+import { formatExperiencePeriod } from '../utils/experience';
+
+/**
+ * Drafts and draft indicators are local-review only.
+ * Production builds never allow drafts — and never render DRAFT / review banners.
+ * Publication is never inferred from calendar date.
+ */
+const isProduction = import.meta.env.PROD;
+const allowDrafts = import.meta.env.DEV && !isProduction;
+const showDraftIndicators = allowDrafts;
+
+const entries = (await getCollection('experience'))
+  .filter((entry) => isVisibleForReview(entry.data, { allowDrafts }))
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((entry): TimelineItem => {
+    const pendingAppointment = entry.data.pendingAppointment === true;
+    return {
+      id: entry.id,
+      organisation: entry.data.organisation,
+      role: entry.data.role,
+      periodLabel: formatExperiencePeriod(entry.data.period, { pendingAppointment }),
+      summary: entry.data.summary,
+      responsibilities: entry.data.responsibilities,
+      focusAreas: entry.data.focusAreas ?? [],
+      density: entry.data.density,
+      narrativeGroup: entry.data.narrativeGroup,
+      showDraftIndicator: showDraftIndicators && entry.data.status === 'draft',
+      pendingAppointment: showDraftIndicators && pendingAppointment,
+    };
+  });
+
+const draftCount = showDraftIndicators
+  ? entries.filter((entry) => entry.showDraftIndicator).length
+  : 0;
+
+if (import.meta.env.PROD && entries.length === 0) {
+  return new Response(null, { status: 404, statusText: 'Not Found' });
+}
+---
+
+<PageLayout
+  title={pageTitle('Experience')}
+  description="Professional experience — progression from software engineering through technical leadership and solution architecture toward enterprise architecture."
+>
+  <Breadcrumb
+    items={[
+      { label: 'Home', href: '/' },
+      { label: 'Experience', href: '/experience' },
+    ]}
+  />
+
+  <section class="section-space">
+    <div class="site-shell">
+      <p class="eyebrow">Career</p>
+      <h1 class="mt-3 text-4xl sm:text-5xl">Experience</h1>
+      <p class="mt-4 max-w-2xl text-lg text-muted">
+        Progression from software engineering through technical leadership and solution architecture
+        toward enterprise architecture — with expanding scope from systems to solutions, platforms
+        and enterprise.
+      </p>
+
+      <p class="experience-scope mt-8 max-w-2xl text-sm text-muted sm:text-base" aria-label="Architectural scope progression">
+        Systems → Solutions → Platforms → Enterprise
+      </p>
+
+      {
+        !isProduction && draftCount > 0 && (
+          <aside
+            class="mt-8 max-w-2xl border border-border bg-band px-4 py-3 text-sm text-muted"
+            role="status"
+          >
+            Draft review mode: {draftCount} experience
+            {draftCount === 1 ? ' entry is' : ' entries are'} unpublished (classification: amber).
+            Drafts are not included in production builds until explicitly approved for publication.
+          </aside>
+        )
+      }
+
+      {
+        entries.length > 0 && (
+          <div class="mt-12">
+            <CareerTimeline items={entries} />
+          </div>
+        )
+      }
+    </div>
+  </section>
+</PageLayout>

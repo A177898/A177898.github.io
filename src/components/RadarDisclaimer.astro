@@ -1,0 +1,20 @@
+---
+import { radarDisclaimer } from '../data/technologies';
+
+interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+---
+
+<aside
+  class:list={[
+    'border-l-2 border-border pl-4 text-muted',
+    compact ? 'text-xs leading-relaxed' : 'text-sm leading-relaxed',
+  ]}
+  aria-label="Technology radar independence notice"
+>
+  <p class="font-medium text-ink">Independent professional assessment</p>
+  <p class="mt-1">{radarDisclaimer}</p>
+</aside>
