@@ -408,16 +408,14 @@
   }
 
   .ea-spanning__list {
-    @apply mt-2 m-0 flex list-none flex-wrap gap-x-4 gap-y-1 p-0 text-sm text-ink;
-  }
-
-  .ea-spanning__list li {
-    @apply relative;
+    @apply mt-2 m-0 flex list-none flex-wrap gap-x-1 gap-y-1 p-0 text-sm text-ink;
   }
 
   .ea-spanning__list li:not(:last-child)::after {
     content: "·";
-    @apply ml-4 text-muted;
+    margin-left: 0.25rem;
+    margin-right: 0.25rem;
+    color: var(--yk-muted);
   }
 
   .ea-flow {
