@@ -62,6 +62,10 @@ AWS, Azure, GCP, containers, backends, databases, or paid CDN.
 Configure these in the GitHub repository **before** enabling deployment from `main`:
 
 1. **Pages source:** Settings → Pages → Build and deployment → Source: **GitHub Actions**
+   - Do **not** use “Deploy from a branch”. That runs `actions/jekyll-build-pages`, which
+     fails on Astro `---` front matter (e.g. `Invalid YAML front matter in …/SocialLinks.astro`).
+   - A root `_config.yml` excludes Astro sources as a safety net only; Actions must remain
+     the publishing source.
 2. **Repository variable `PUBLIC_SITE_URL`** (Settings → Secrets and variables → Actions → Variables):
    - User / organisation site: `https://<username>.github.io`
    - Project site: `https://<username>.github.io/<repository-name>`

@@ -1,0 +1,34 @@
+# This repository is an Astro site. Production publishing is via
+# .github/workflows/deploy-pages.yml → GitHub Actions → GitHub Pages.
+#
+# GitHub still runs the legacy "pages-build-deployment" workflow
+# (actions/jekyll-build-pages) when Pages → Source is "Deploy from a branch".
+# Astro files use `---` fences that Jekyll treats as YAML front matter, which
+# fails the legacy build (e.g. src/components/SocialLinks.astro).
+#
+# Exclude Astro/Node sources so that legacy builder cannot parse them.
+# Required configuration (stops the legacy workflow entirely):
+#   Settings → Pages → Build and deployment → Source: GitHub Actions
+
+exclude:
+  - src
+  - node_modules
+  - public
+  - scripts
+  - dist
+  - .astro
+  - .github
+  - .vscode
+  - docs
+  - package.json
+  - package-lock.json
+  - astro.config.mjs
+  - tsconfig.json
+  - AGENTS.md
+  - CLAUDE.md
+  - .nvmrc
+  - .gitignore
+
+# Do not publish README as the site index via the legacy builder.
+readme_index:
+  enabled: false
