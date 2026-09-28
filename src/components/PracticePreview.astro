@@ -1,0 +1,46 @@
+---
+import { capabilityDomains } from '../data/capabilities';
+import { withBase } from '../utils/urls';
+
+const domains = capabilityDomains;
+---
+
+<section class="section-space" aria-labelledby="practice-preview-heading" data-reveal>
+  <div class="site-shell">
+    <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+      <div class="section-header">
+        <p class="eyebrow">Centrepiece</p>
+        <h2 id="practice-preview-heading" class="mt-3 text-3xl sm:text-4xl">
+          Architecture Practice
+        </h2>
+        <p class="mt-4 max-w-2xl text-muted">
+          Business architecture first — then enterprise architecture and supporting depth across
+          platform, cloud, integration, identity &amp; security, and emerging technology.
+        </p>
+      </div>
+      <a class="btn-secondary shrink-0 btn-with-arrow" href={withBase('/architecture/practice')}>
+        View Architecture Practice
+        <span class="btn-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    <ul class="practice-preview mt-12" aria-label="Architecture practice domains">
+      {
+        domains.map((domain, index) => (
+          <li class="practice-preview__item" style={`--item-i: ${index}`}>
+            <a
+              class="practice-preview__link"
+              href={withBase(`/architecture/practice#${domain.id}`)}
+            >
+              <span class="practice-preview__marker" aria-hidden="true">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <span class="practice-preview__title">{domain.title}</span>
+              <span class="practice-preview__summary">{domain.summary}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

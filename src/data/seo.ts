@@ -9,13 +9,14 @@ export const siteMeta = {
   defaultTitle: 'Yusuf Kader | Enterprise Architect',
   titleTemplate: '%s | Yusuf Kader',
   defaultDescription:
-    'Enterprise Architect connecting business strategy, platforms and technology transformation.',
+    'Enterprise Architect connecting business strategy, people, process and technology through business architecture and coherent transition planning.',
   locale: 'en_GB',
   /** Static social card — 1200×630 PNG in /public */
   ogImagePath: '/og-image.png',
   ogImageWidth: 1200,
   ogImageHeight: 630,
-  ogImageAlt: 'Yusuf Kader — Enterprise Architect. Strategy · Architecture · Platforms · Technology',
+  ogImageAlt:
+    'Yusuf Kader — Enterprise Architect. Strategy · People · Process · Technology',
 } as const;
 
 const TITLE_SUFFIX = ` | ${siteMeta.siteName}`;

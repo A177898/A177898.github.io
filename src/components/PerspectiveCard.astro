@@ -8,6 +8,8 @@ interface Props {
   tags?: string[];
   pubDateLabel?: string;
   draft?: boolean;
+  /** Zero-padded editorial number, e.g. "01". */
+  number?: string;
 }
 
 const {
@@ -19,34 +21,36 @@ const {
   tags = [],
   pubDateLabel,
   draft = false,
+  number,
 } = Astro.props;
 
-const tagLine = tags.length > 0 ? tags.slice(0, 2).join(' · ') : undefined;
+const domainLine = tags.length > 0 ? tags.slice(0, 2).join(' · ') : undefined;
 ---
 
-<article class="card-quiet">
-  <div class="flex flex-wrap items-center gap-3">
-    {category && <p class="eyebrow">{category}</p>}
+<article class="editorial-entry">
+  <a class="editorial-entry__link" href={href}>
+    <div class="editorial-entry__meta">
+      {number && <span class="editorial-entry__number">{number}</span>}
+      {category && <span class="eyebrow">{category}</span>}
+      {
+        draft && (
+          <span class="perspective-draft-badge" role="status">
+            Draft
+          </span>
+        )
+      }
+    </div>
+    <h3 class="editorial-entry__title">{title}</h3>
+    {subtitle && <p class="editorial-entry__subtitle">{subtitle}</p>}
+    <p class="editorial-entry__summary">{description}</p>
     {
-      draft && (
-        <span class="perspective-draft-badge" role="status">
-          Draft
-        </span>
+      (domainLine || pubDateLabel) && (
+        <p class="editorial-entry__domain">
+          {domainLine}
+          {domainLine && pubDateLabel ? ' · ' : ''}
+          {pubDateLabel}
+        </p>
       )
     }
-  </div>
-  <h3 class="mt-2 text-xl">
-    <a href={href} class="text-ink no-underline hover:underline">{title}</a>
-  </h3>
-  {subtitle && <p class="mt-2 font-serif text-base italic text-muted">{subtitle}</p>}
-  <p class="mt-3 text-sm text-muted">{description}</p>
-  {
-    (tagLine || pubDateLabel) && (
-      <p class="mt-4 text-xs text-muted">
-        {tagLine}
-        {tagLine && pubDateLabel ? ' · ' : ''}
-        {pubDateLabel}
-      </p>
-    )
-  }
+  </a>
 </article>

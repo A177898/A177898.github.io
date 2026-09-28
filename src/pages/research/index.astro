@@ -78,9 +78,10 @@ if (import.meta.env.PROD && perspectives.length === 0) {
             No architecture perspectives are published yet.
           </p>
         ) : (
-          <div class="mt-12 grid gap-6 md:grid-cols-2">
-            {perspectives.map((entry) => (
+          <div class="editorial-index mt-12">
+            {perspectives.map((entry, index) => (
               <PerspectiveCard
+                number={String(index + 1).padStart(2, '0')}
                 title={entry.data.title}
                 subtitle={entry.data.subtitle}
                 description={entry.data.description}

@@ -2,6 +2,8 @@
 import PageLayout from '../layouts/PageLayout.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
 import CareerTimeline from '../components/CareerTimeline.astro';
+import CareerProgression from '../components/CareerProgression.astro';
+import RevealInit from '../components/RevealInit.astro';
 import type { TimelineItem } from '../types/experience';
 import { pageTitle } from '../data/seo';
 import { getCollection } from 'astro:content';
@@ -67,9 +69,9 @@ if (import.meta.env.PROD && entries.length === 0) {
         and enterprise.
       </p>
 
-      <p class="experience-scope mt-8 max-w-2xl text-sm text-muted sm:text-base" aria-label="Architectural scope progression">
-        Systems → Solutions → Platforms → Enterprise
-      </p>
+      <div class="mt-8">
+        <CareerProgression variant="rail" />
+      </div>
 
       {
         !isProduction && draftCount > 0 && (
@@ -86,11 +88,12 @@ if (import.meta.env.PROD && entries.length === 0) {
 
       {
         entries.length > 0 && (
-          <div class="mt-12">
+          <div class="mt-12" data-reveal>
             <CareerTimeline items={entries} />
           </div>
         )
       }
     </div>
   </section>
+  <RevealInit />
 </PageLayout>

@@ -3,6 +3,9 @@
  * Descriptions emphasise principles and decision-making, not glossary definitions.
  * Do not connect these to employer-specific implementations.
  *
+ * Business Architecture leads the offering; technology specialisms follow as
+ * supporting depth that realises broader enterprise outcomes.
+ *
  * Optional relatedPerspectives / relatedArchitectures use content collection IDs.
  * Production surfaces honour publication eligibility when rendering those links.
  */
@@ -25,16 +28,55 @@ export type CapabilityDomain = {
 
 export const capabilityDomains: CapabilityDomain[] = [
   {
-    id: 'enterprise-architecture',
-    title: 'Enterprise Architecture',
+    id: 'business-architecture',
+    title: 'Business Architecture',
     summary:
-      'Connect strategy to technology direction through capability models, coherent target states, realistic transitions and governed decision-making.',
+      'The foundation of the architecture offering: clarify strategic outcomes, capabilities and value streams so people, process, information and technology decisions follow business intent.',
     relatedPerspectives: ['from-target-state-to-transition-architecture'],
     capabilities: [
       {
-        name: 'Capability Architecture',
+        name: 'Strategic Outcomes & Priorities',
         description:
-          'Frame investment and design decisions around the capabilities the enterprise must strengthen, not the systems it already owns.',
+          'Anchor architecture in the outcomes and priorities the enterprise must achieve, not the systems it already operates.',
+      },
+      {
+        name: 'Business Capabilities',
+        description:
+          'Describe what the organisation needs to be able to do — the stable structure for investment and design decisions.',
+      },
+      {
+        name: 'Value Streams',
+        description:
+          'Show how value reaches customers and stakeholders, revealing where architecture should reduce friction or strengthen flow.',
+      },
+      {
+        name: 'Processes',
+        description:
+          'Clarify how work is performed so technology and organisation design support the way value is actually created.',
+      },
+      {
+        name: 'Operating Models',
+        description:
+          'Align people, accountability and ways of working with the capabilities and value streams the enterprise depends on.',
+      },
+      {
+        name: 'Capability Gaps & Investment Priorities',
+        description:
+          'Make gaps and sequencing visible so investment strengthens the capabilities that matter most.',
+      },
+    ],
+  },
+  {
+    id: 'enterprise-architecture',
+    title: 'Enterprise Architecture',
+    summary:
+      'Connect strategy to execution through coherent target states, realistic transitions and governed decisions — spanning people, process, information and technology.',
+    relatedPerspectives: ['from-target-state-to-transition-architecture'],
+    capabilities: [
+      {
+        name: 'Strategy-to-Execution Alignment',
+        description:
+          'Translate business intent into architectural direction that delivery programmes can act on.',
       },
       {
         name: 'Target-State Architecture',
@@ -47,14 +89,14 @@ export const capabilityDomains: CapabilityDomain[] = [
           'Sequence change through intermediate states that protect continuity and make dependencies explicit.',
       },
       {
-        name: 'Technology Strategy',
+        name: 'Information & Application Direction',
         description:
-          'Tie technology choices and standards to outcomes, constraints and lasting architectural intent.',
+          'Use the business architecture foundation to inform information, data and application choices — not the reverse.',
       },
       {
         name: 'Roadmapping',
         description:
-          'Order lasting change across platforms, products and programmes so ambition stays deliverable.',
+          'Order lasting change across capabilities, platforms, products and programmes so ambition stays deliverable.',
       },
       {
         name: 'Architecture Governance',
@@ -67,7 +109,7 @@ export const capabilityDomains: CapabilityDomain[] = [
     id: 'platform-architecture',
     title: 'Platform Architecture',
     summary:
-      'Design shared capabilities and operating models that accelerate product teams without creating a central bottleneck.',
+      'Design shared capabilities and operating models that accelerate product teams without creating a central bottleneck — in service of broader enterprise outcomes.',
     relatedPerspectives: ['designing-platforms-as-enterprise-capabilities'],
     capabilities: [
       {

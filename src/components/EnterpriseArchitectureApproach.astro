@@ -1,0 +1,305 @@
+---
+/**
+ * Personal EA approach — semantic HTML diagram + supporting explanation.
+ * Visual relationships via CSS; text remains selectable and theme-aware.
+ */
+import { eaApproach } from '../data/ea-approach';
+
+interface Props {
+  /** homepage: diagram + brief supports; full: adds Q&A, outputs, frameworks */
+  variant?: 'homepage' | 'full';
+  id?: string;
+}
+
+const { variant = 'homepage', id = 'ea-approach' } = Astro.props;
+const isFull = variant === 'full';
+const headingId = `${id}-heading`;
+const diagramId = `${id}-diagram`;
+---
+
+<section
+  class:list={['ea-approach', 'section-band', isFull && 'ea-approach--full']}
+  aria-labelledby={headingId}
+  data-reveal
+  id={id}
+>
+  <div class="site-shell">
+    <div class="section-header">
+      <p class="eyebrow">Approach</p>
+      <h2 id={headingId} class="mt-3 text-3xl sm:text-4xl">{eaApproach.title}</h2>
+      <p class="mt-4 max-w-2xl font-serif text-xl text-ink sm:text-2xl">
+        {eaApproach.subtitle}
+      </p>
+      {
+        isFull && (
+          <p class="mt-5 max-w-2xl text-muted">{eaApproach.plainLanguage}</p>
+        )
+      }
+    </div>
+
+    <figure class="ea-framework mt-12" aria-labelledby={diagramId}>
+      <figcaption id={diagramId} class="sr-only">
+        Diagram of a personal enterprise architecture approach: business intent at the top;
+        business architecture as the foundation; people, process and technology as three equal
+        connected dimensions with information and data spanning them; governance, principles,
+        security and risk spanning the model; transition planning; and intended outcomes with
+        feedback to strategy.
+      </figcaption>
+
+      <div class="ea-framework__canvas" role="group" aria-label="Enterprise architecture approach model">
+        {/* TOP — Business intent */}
+        <div class="ea-band ea-band--intent">
+          <p class="ea-band__label">
+            <span class="ea-band__role">Top</span>
+            {eaApproach.businessIntent.label}
+          </p>
+          <ul class="ea-chip-row">
+            {eaApproach.businessIntent.items.map((item) => (
+              <li class="ea-chip">{item}</li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="ea-connector" aria-hidden="true">
+          <span class="ea-connector__line" />
+          <span class="ea-connector__arrow">↓</span>
+        </div>
+
+        {/* FOUNDATION — Business architecture */}
+        <div class="ea-band ea-band--foundation">
+          <p class="ea-band__label">
+            <span class="ea-band__role">{eaApproach.foundation.role}</span>
+            {eaApproach.foundation.label}
+          </p>
+          <ul class="ea-chip-row">
+            {eaApproach.foundation.items.map((item) => (
+              <li class="ea-chip ea-chip--emphasis">{item}</li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="ea-connector" aria-hidden="true">
+          <span class="ea-connector__line" />
+          <span class="ea-connector__arrow">↓</span>
+        </div>
+
+        {/* CENTRE — People / Process / Technology */}
+        <div class="ea-band ea-band--dimensions">
+          <p class="ea-band__label">
+            <span class="ea-band__role">Centre</span>
+            {eaApproach.dimensions.label}
+          </p>
+          <ul class="ea-dimensions">
+            {eaApproach.dimensions.items.map((dim) => (
+              <li class="ea-dimension" data-dimension={dim.id}>
+                <h3 class="ea-dimension__title">{dim.title}</h3>
+                <p class="ea-dimension__text">{dim.description}</p>
+              </li>
+            ))}
+          </ul>
+
+          <div class="ea-information">
+            <p class="ea-information__label">{eaApproach.information.label}</p>
+            <p class="ea-information__text">{eaApproach.information.description}</p>
+          </div>
+        </div>
+
+        {/* Spanning concerns */}
+        <aside class="ea-spanning" aria-label={eaApproach.spanning.label}>
+          <p class="ea-spanning__label">{eaApproach.spanning.label}</p>
+          <ul class="ea-spanning__list">
+            {eaApproach.spanning.items.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </aside>
+
+        <div class="ea-connector" aria-hidden="true">
+          <span class="ea-connector__line" />
+          <span class="ea-connector__arrow">↓</span>
+        </div>
+
+        {/* TRANSITION */}
+        <div class="ea-band ea-band--transition">
+          <p class="ea-band__label">
+            <span class="ea-band__role">Transition</span>
+            {eaApproach.transition.label}
+          </p>
+          <ol class="ea-flow">
+            {eaApproach.transition.steps.map((step, index) => (
+              <li class="ea-flow__step">
+                <span class="ea-flow__label">{step}</span>
+                {index < eaApproach.transition.steps.length - 1 && (
+                  <span class="ea-flow__arrow" aria-hidden="true">
+                    →
+                  </span>
+                )}
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        <div class="ea-connector" aria-hidden="true">
+          <span class="ea-connector__line" />
+          <span class="ea-connector__arrow">↓</span>
+        </div>
+
+        {/* BASE — Value and feedback */}
+        <div class="ea-band ea-band--outcomes">
+          <p class="ea-band__label">
+            <span class="ea-band__role">Base</span>
+            {eaApproach.outcomes.label}
+          </p>
+          <p class="ea-outcomes__framing">{eaApproach.outcomes.framing}</p>
+          <ul class="ea-chip-row">
+            {eaApproach.outcomes.items.map((item) => (
+              <li class="ea-chip">{item}</li>
+            ))}
+          </ul>
+        </div>
+
+        <p class="ea-feedback" role="note">
+          <span class="ea-feedback__marker" aria-hidden="true">↻</span>
+          <span>{eaApproach.outcomes.feedback}</span>
+        </p>
+      </div>
+    </figure>
+
+    {/* Accessible text equivalent — always in DOM, not hover-only */}
+    <details class="ea-text-equivalent mt-8">
+      <summary>Text equivalent of the approach model</summary>
+      <div class="ea-text-equivalent__body">
+        <p>
+          <strong>Business intent:</strong>{' '}
+          {eaApproach.businessIntent.items.join('; ')}.
+        </p>
+        <p>
+          <strong>Foundation — business architecture:</strong>{' '}
+          {eaApproach.foundation.items.join('; ')}. {eaApproach.foundation.explanation}
+        </p>
+        <p>
+          <strong>Connected dimensions:</strong>
+        </p>
+        <ul>
+          {eaApproach.dimensions.items.map((dim) => (
+            <li>
+              <strong>{dim.title}:</strong> {dim.description}
+            </li>
+          ))}
+        </ul>
+        <p>
+          <strong>{eaApproach.information.label}:</strong>{' '}
+          {eaApproach.information.description}
+        </p>
+        <p>
+          <strong>{eaApproach.spanning.label}:</strong>{' '}
+          {eaApproach.spanning.items.join('; ')}.
+        </p>
+        <p>
+          <strong>Transition:</strong>{' '}
+          {eaApproach.transition.steps.join(' → ')}.
+        </p>
+        <p>
+          <strong>Intended outcomes:</strong>{' '}
+          {eaApproach.outcomes.items.join('; ')}. {eaApproach.outcomes.feedback}
+        </p>
+      </div>
+    </details>
+
+    {
+      !isFull && (
+        <p class="ea-foundation-note mt-8 max-w-2xl text-muted">
+          {eaApproach.foundation.explanation}
+        </p>
+      )
+    }
+
+    {
+      isFull && (
+        <>
+          <div class="ea-supports mt-14">
+            <h3 class="text-2xl">How the model answers executive questions</h3>
+            <dl class="ea-supports__list mt-6">
+              {eaApproach.supportsDecisions.map((item) => (
+                <div class="ea-supports__item">
+                  <dt>{item.question}</dt>
+                  <dd>{item.answer}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+
+          <div class="ea-outputs mt-14" aria-labelledby={`${id}-outputs`}>
+            <h3 id={`${id}-outputs`} class="text-2xl">
+              {eaApproach.typicalOutputs.title}
+            </h3>
+            <p class="mt-3 max-w-2xl text-sm text-muted">
+              {eaApproach.typicalOutputs.framing}
+            </p>
+            <ul class="ea-outputs__list mt-5">
+              {eaApproach.typicalOutputs.items.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+
+          <aside class="ea-frameworks mt-14" aria-labelledby={`${id}-frameworks`}>
+            <h3 id={`${id}-frameworks`} class="text-xl">
+              Conceptual references
+            </h3>
+            <p class="mt-3 text-sm text-muted">{eaApproach.synthesisNote}</p>
+            <ul class="ea-frameworks__list mt-4">
+              <li>
+                <a href={eaApproach.frameworks.togaf.href} rel="noopener noreferrer">
+                  {eaApproach.frameworks.togaf.label}
+                </a>
+                <span class="text-muted"> — {eaApproach.frameworks.togaf.summary}</span>
+              </li>
+              <li>
+                <a href={eaApproach.frameworks.zachman.href} rel="noopener noreferrer">
+                  {eaApproach.frameworks.zachman.label}
+                </a>
+                <span class="text-muted"> — {eaApproach.frameworks.zachman.summary}</span>
+              </li>
+            </ul>
+          </aside>
+        </>
+      )
+    }
+
+    {
+      !isFull && (
+        <p class="ea-synthesis mt-8 text-sm text-muted">
+          {eaApproach.synthesisNote}{' '}
+          <a href={`#${id}-frameworks-home`} class="ea-synthesis__link">
+            Framework references
+          </a>
+        </p>
+      )
+    }
+
+    {
+      !isFull && (
+        <aside class="ea-frameworks ea-frameworks--compact mt-4" id={`${id}-frameworks-home`}>
+          <ul class="ea-frameworks__list">
+            <li>
+              <a href={eaApproach.frameworks.togaf.href} rel="noopener noreferrer">
+                {eaApproach.frameworks.togaf.label}
+              </a>
+              <span class="text-muted"> — architecture development and governance</span>
+            </li>
+            <li>
+              <a href={eaApproach.frameworks.zachman.href} rel="noopener noreferrer">
+                {eaApproach.frameworks.zachman.label}
+              </a>
+              <span class="text-muted">
+                {' '}
+                — complementary perspectives (Why, What, How, Who, Where, When)
+              </span>
+            </li>
+          </ul>
+        </aside>
+      )
+    }
+  </div>
+</section>
