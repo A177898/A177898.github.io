@@ -1,38 +1,9 @@
 ---
-import { architectureApproach } from '../data/profile';
+/**
+ * Consolidated into EnterpriseArchitectureApproach.
+ * Retained as a thin wrapper for any residual imports.
+ */
+import EnterpriseArchitectureApproach from './EnterpriseArchitectureApproach.astro';
 ---
 
-<section
-  class="section-band section-band--contrast"
-  aria-labelledby="approach-heading"
-  data-reveal
->
-  <div class="site-shell">
-    <div class="section-header">
-      <p class="eyebrow">Approach</p>
-      <h2 id="approach-heading" class="mt-3 text-3xl sm:text-4xl">How I Architect</h2>
-      <p class="mt-4 max-w-2xl text-muted">
-        A repeatable way of working — from business capability to governed evolution.
-      </p>
-    </div>
-
-    <ol class="architect-journey mt-12" aria-label="Architectural approach">
-      {
-        architectureApproach.map((item, index) => (
-          <li class="architect-journey__step" style={`--step-i: ${index}`}>
-            <div class="architect-journey__rail" aria-hidden="true">
-              <span class="architect-journey__node">{item.step}</span>
-              {index < architectureApproach.length - 1 && (
-                <span class="architect-journey__line" />
-              )}
-            </div>
-            <div class="architect-journey__body">
-              <h3 class="architect-journey__title">{item.title}</h3>
-              <p class="architect-journey__text">{item.description}</p>
-            </div>
-          </li>
-        ))
-      }
-    </ol>
-  </div>
-</section>
+<EnterpriseArchitectureApproach variant="homepage" id="ea-approach" />

@@ -1,9 +1,8 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
 import Hero from '../components/Hero.astro';
-import ArchitectureModel from '../components/ArchitectureModel.astro';
+import EnterpriseArchitectureApproach from '../components/EnterpriseArchitectureApproach.astro';
 import PracticePreview from '../components/PracticePreview.astro';
-import HowIArchitect from '../components/HowIArchitect.astro';
 import RevealInit from '../components/RevealInit.astro';
 import { profile } from '../data/profile';
 import { pageTitle, siteMeta } from '../data/seo';
@@ -23,13 +22,13 @@ const hasExperience = (await getCollection('experience')).some((entry) =>
     title={profile.fullName}
     subtitle={`“${profile.proposition}”`}
     lead={profile.propositionSupport}
-    split
   >
     <Fragment slot="actions">
-      <a class="btn-primary btn-with-arrow" href={withBase('/architecture/practice')}>
-        Explore Architecture Practice
+      <a class="btn-primary btn-with-arrow" href="#ea-approach">
+        View my approach
         <span class="btn-arrow" aria-hidden="true">→</span>
       </a>
+      <a class="btn-text" href={withBase('/architecture/practice')}>Architecture Practice</a>
       {hasExperience ? (
         <a class="btn-text" href={withBase('/experience')}>Experience</a>
       ) : (
@@ -37,12 +36,11 @@ const hasExperience = (await getCollection('experience')).some((entry) =>
       )}
       <a class="btn-text" href={withBase('/resume')}>Resume</a>
     </Fragment>
-    <ArchitectureModel slot="model" variant="hero" />
   </Hero>
 
-  <PracticePreview />
+  <EnterpriseArchitectureApproach variant="homepage" id="ea-approach" />
 
-  <HowIArchitect />
+  <PracticePreview />
 
   <RevealInit />
 </PageLayout>

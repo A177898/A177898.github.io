@@ -9,15 +9,21 @@ export const profile = {
    * Primary homepage proposition — strategic scope, not seniority assertion.
    */
   proposition:
-    'Connecting business strategy, platforms and technology transformation.',
+    'Connecting business strategy, people, process and technology.',
   /**
    * Supporting homepage copy — architectural practice scope.
    */
   propositionSupport:
-    'Architecture practice that translates strategic objectives into target-state architectures, transition roadmaps and reusable technology capabilities.',
+    'My approach starts with business architecture: clarifying outcomes, capabilities and value streams, then aligning people, processes, information and technology through coherent target states and practical transition roadmaps.',
+  /**
+   * Plain-language explanation of enterprise architecture.
+   * Prefer on About / practice; avoid repeating verbatim beside the proposition.
+   */
+  eaPlainLanguage:
+    'Enterprise architecture connects strategy to execution by aligning people, processes, information and technology around business outcomes.',
   /** Kept for SEO / legacy references; prefer proposition on the homepage. */
   positioningStatement:
-    'Connecting business strategy, platforms and technology transformation.',
+    'Connecting business strategy, people, process and technology.',
   careerArc: [
     'Software Engineering',
     'Technical Leadership',
@@ -31,56 +37,63 @@ export const profile = {
   scopeArc: ['Systems', 'Solutions', 'Platforms', 'Enterprise'] as const,
   aboutSummary: [
     'Yusuf Kader is an Enterprise Architect whose career has progressed from building systems, through designing solutions and platforms, to shaping enterprise technology direction.',
-    'His work spans enterprise architecture, solution architecture, technology strategy, platform and cloud architecture, integration, identity and security, and the responsible adoption of emerging technology — with an emphasis on architectural thinking, governance, and clear communication.',
+    'Enterprise architecture, in this framing, connects strategy to execution by aligning people, processes, information and technology around business outcomes — with business architecture as the foundation.',
+    'His work spans business and enterprise architecture, solution architecture, technology strategy, platform and cloud architecture, integration, identity and security, and the responsible adoption of emerging technology — with an emphasis on architectural thinking, governance, and clear communication.',
   ] as const,
 } as const;
 
-/** Conceptual architecture lifecycle — homepage demonstration of scope. */
+/**
+ * Compact lifecycle labels for residual ArchitectureModel UI.
+ * Primary model: src/data/ea-approach.ts.
+ */
 export const architectureLifecycle = [
   'Strategy',
-  'Business Capabilities',
+  'Business Architecture',
+  'People · Process · Technology',
   'Target Architecture',
   'Transition Architecture',
-  'Platforms & Solutions',
   'Governance',
 ] as const;
 
-/** Architectural approach — independent methodology framing. */
+/**
+ * Compact supporting steps for residual UI.
+ * Primary model: src/data/ea-approach.ts.
+ */
 export const architectureApproach = [
   {
     step: '01',
-    title: 'Understand the business capability',
+    title: 'Clarify business intent',
     description:
-      'Start with outcomes, stakeholders, constraints and capabilities rather than technology.',
+      'Start with strategy, outcomes and priorities before selecting technology.',
   },
   {
     step: '02',
-    title: 'Establish architectural context',
+    title: 'Establish business architecture',
     description:
-      'Understand current state, dependencies, boundaries and strategic direction.',
+      'Clarify capabilities, value streams, processes and operating model.',
   },
   {
     step: '03',
-    title: 'Define the target state',
+    title: 'Align people, process and technology',
     description:
-      'Establish principles, capabilities, information flows and technology direction.',
+      'Treat the three dimensions equally, with information and data as a shared concern.',
   },
   {
     step: '04',
-    title: 'Make trade-offs explicit',
+    title: 'Define the target state',
     description:
-      'Evaluate alternatives across value, complexity, risk, cost, security and operability.',
+      'Establish coherent direction across information, applications, platforms and technology.',
   },
   {
     step: '05',
-    title: 'Define the transition',
+    title: 'Plan the transition',
     description:
-      'Translate target architecture into realistic transition states, dependencies and roadmaps.',
+      'Sequence current-state assessment, target state, roadmap and delivery alignment.',
   },
   {
     step: '06',
-    title: 'Govern the evolution',
+    title: 'Govern and learn',
     description:
-      'Use decisions, standards, principles and feedback to maintain architectural integrity.',
+      'Use principles, security, risk and outcome feedback to keep architecture coherent.',
   },
 ] as const;

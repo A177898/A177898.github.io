@@ -7,13 +7,14 @@ import { profile } from '../data/profile';
 import { pageTitle } from '../data/seo';
 import { getCollection } from 'astro:content';
 import { isPublished } from '../utils/publication';
+import { withBase } from '../utils/urls';
 
 const leadership = (await getCollection('leadership')).filter((entry) => isPublished(entry.data));
 ---
 
 <PageLayout
   title={pageTitle('About')}
-  description={`About ${profile.fullName}, Enterprise Architect — career progression from software engineering to enterprise architecture.`}
+  description={`About ${profile.fullName}, Enterprise Architect — connecting business strategy, people, process and technology.`}
 >
   <Breadcrumb
     items={[
@@ -34,6 +35,13 @@ const leadership = (await getCollection('leadership')).filter((entry) => isPubli
       <div class="prose-portfolio mt-10 space-y-4 text-muted" data-reveal>
         {profile.aboutSummary.map((paragraph) => <p>{paragraph}</p>)}
       </div>
+
+      <p class="mt-8 text-muted">
+        The full visual model of this approach is on the{' '}
+        <a href={withBase('/#ea-approach')}>homepage</a>
+        {' '}and in{' '}
+        <a href={withBase('/architecture/practice#ea-approach')}>Architecture Practice</a>.
+      </p>
 
       <h2 class="mt-16 text-3xl">Career progression</h2>
       <p class="mt-4 text-muted">

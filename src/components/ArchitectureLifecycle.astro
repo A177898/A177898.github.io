@@ -1,21 +1,9 @@
 ---
-import ArchitectureModel from './ArchitectureModel.astro';
+/**
+ * Consolidated into EnterpriseArchitectureApproach.
+ * Retained as a thin wrapper for any residual imports.
+ */
+import EnterpriseArchitectureApproach from './EnterpriseArchitectureApproach.astro';
 ---
 
-<section class="section-band" aria-labelledby="lifecycle-heading" data-reveal>
-  <div class="site-shell">
-    <div class="section-header">
-      <p class="eyebrow">Architecture lifecycle</p>
-      <h2 id="lifecycle-heading" class="mt-3 text-3xl sm:text-4xl">
-        From strategy to technology execution
-      </h2>
-      <p class="mt-4 max-w-2xl text-muted">
-        A concise view of how architectural work moves from intent to governed delivery.
-      </p>
-    </div>
-
-    <div class="mt-12 max-w-3xl">
-      <ArchitectureModel variant="band" labelledBy="lifecycle-heading" />
-    </div>
-  </div>
-</section>
+<EnterpriseArchitectureApproach variant="homepage" id="architecture-lifecycle" />

@@ -1,4 +1,4 @@
-/* Resume print stylesheet — applied on /resume via media print */
+/* Print stylesheet — resume (portrait) and EA approach framework (landscape) */
 
 @media print {
   :root {
@@ -75,8 +75,65 @@
     page-break-inside: avoid;
   }
 
+  /* Default: A4 portrait (resume and general pages). */
   @page {
     size: A4;
     margin: 16mm 14mm;
+  }
+
+  /* Named landscape page for the EA approach diagram. */
+  @page ea-framework {
+    size: A4 landscape;
+    margin: 10mm 12mm;
+  }
+
+  /*
+    When printing a page that includes the approach model (and is not the
+    resume), hide surrounding content and place the diagram on one landscape page.
+  */
+  body:has(.ea-approach):not(:has(.resume-doc)) {
+    font-size: 9.5pt;
+  }
+
+  body:has(.ea-approach):not(:has(.resume-doc)) .breadcrumb,
+  body:has(.ea-approach):not(:has(.resume-doc)) .hero-block,
+  body:has(.ea-approach):not(:has(.resume-doc)) .practice-preview,
+  body:has(.ea-approach):not(:has(.resume-doc)) .capability-grid,
+  body:has(.ea-approach):not(:has(.resume-doc)) .ea-text-equivalent,
+  body:has(.ea-approach):not(:has(.resume-doc)) .ea-supports,
+  body:has(.ea-approach):not(:has(.resume-doc)) .ea-outputs,
+  body:has(.ea-approach):not(:has(.resume-doc)) .ea-frameworks,
+  body:has(.ea-approach):not(:has(.resume-doc)) .ea-foundation-note,
+  body:has(.ea-approach):not(:has(.resume-doc)) .ea-synthesis,
+  body:has(.ea-approach):not(:has(.resume-doc)) section.section-space {
+    display: none !important;
+  }
+
+  body:has(.ea-approach):not(:has(.resume-doc)) .ea-approach {
+    display: block !important;
+    border: none !important;
+    padding: 0 !important;
+    page: ea-framework;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  body:has(.ea-approach):not(:has(.resume-doc)) .ea-framework__canvas {
+    border-color: #999 !important;
+    padding: 8mm !important;
+  }
+
+  body:has(.ea-approach):not(:has(.resume-doc)) .ea-dimensions {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  body:has(.ea-approach):not(:has(.resume-doc)) .ea-flow {
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+  }
+
+  body:has(.ea-approach):not(:has(.resume-doc)) .ea-flow__arrow {
+    display: inline !important;
   }
 }

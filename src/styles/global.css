@@ -303,6 +303,218 @@
     @apply text-sm leading-relaxed text-muted;
   }
 
+  /* —— Enterprise Architecture Approach framework —— */
+  .ea-approach .section-header {
+    @apply max-w-3xl;
+  }
+
+  .ea-framework {
+    @apply m-0;
+  }
+
+  .ea-framework__canvas {
+    @apply relative overflow-hidden border border-border bg-canvas p-4 sm:p-6 lg:p-8;
+  }
+
+  .ea-band {
+    @apply border border-border bg-surface px-4 py-4 sm:px-5 sm:py-5;
+  }
+
+  .ea-band__label {
+    @apply m-0 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-muted;
+  }
+
+  .ea-band__role {
+    @apply mr-2 inline-block text-accent;
+  }
+
+  .ea-chip-row {
+    @apply mt-3 m-0 flex list-none flex-wrap gap-2 p-0;
+  }
+
+  .ea-chip {
+    @apply border border-border bg-canvas px-3 py-1.5 font-serif text-sm text-ink sm:text-base;
+  }
+
+  .ea-chip--emphasis {
+    @apply border-accent/40 bg-accent-soft;
+  }
+
+  .ea-connector {
+    @apply flex flex-col items-center py-1 text-muted;
+  }
+
+  .ea-connector__line {
+    @apply h-3 w-px bg-border;
+  }
+
+  .ea-connector__arrow {
+    @apply text-xs leading-none;
+  }
+
+  .ea-band--foundation {
+    border-left: 3px solid var(--yk-accent);
+  }
+
+  .ea-dimensions {
+    @apply mt-4 m-0 grid list-none gap-3 p-0;
+  }
+
+  @media (min-width: 768px) {
+    .ea-dimensions {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0;
+    }
+
+    .ea-dimension {
+      border-right: 1px solid var(--yk-border);
+    }
+
+    .ea-dimension:last-child {
+      border-right: none;
+    }
+  }
+
+  .ea-dimension {
+    @apply border border-border bg-canvas px-4 py-4 md:border-0 md:border-r md:px-5;
+  }
+
+  .ea-dimension__title {
+    @apply m-0 font-serif text-xl text-ink;
+  }
+
+  .ea-dimension__text {
+    @apply mt-2 text-sm leading-relaxed text-muted;
+  }
+
+  .ea-information {
+    @apply mt-4 border border-dashed border-border bg-accent-soft/60 px-4 py-3;
+  }
+
+  .ea-information__label {
+    @apply m-0 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-accent;
+  }
+
+  .ea-information__text {
+    @apply mt-1 text-sm text-muted;
+  }
+
+  .ea-spanning {
+    @apply mt-4 border border-border bg-band px-4 py-3;
+  }
+
+  .ea-spanning__label {
+    @apply m-0 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-muted;
+  }
+
+  .ea-spanning__list {
+    @apply mt-2 m-0 flex list-none flex-wrap gap-x-4 gap-y-1 p-0 text-sm text-ink;
+  }
+
+  .ea-spanning__list li {
+    @apply relative;
+  }
+
+  .ea-spanning__list li:not(:last-child)::after {
+    content: "·";
+    @apply ml-4 text-muted;
+  }
+
+  .ea-flow {
+    @apply mt-3 m-0 flex list-none flex-col gap-2 p-0 sm:flex-row sm:flex-wrap sm:items-center;
+  }
+
+  .ea-flow__step {
+    @apply flex items-center gap-2;
+  }
+
+  .ea-flow__label {
+    @apply border border-border bg-canvas px-3 py-1.5 font-serif text-sm text-ink;
+  }
+
+  .ea-flow__arrow {
+    @apply hidden text-muted sm:inline;
+  }
+
+  @media (max-width: 639px) {
+    .ea-flow__step:not(:last-child) .ea-flow__label {
+      position: relative;
+    }
+
+    .ea-flow__step:not(:last-child)::after {
+      content: "↓";
+      @apply ml-3 text-muted;
+    }
+  }
+
+  .ea-outcomes__framing {
+    @apply mt-2 text-sm text-muted;
+  }
+
+  .ea-feedback {
+    @apply mt-4 flex items-start gap-3 border border-border bg-surface px-4 py-3 text-sm text-muted;
+  }
+
+  .ea-feedback__marker {
+    @apply shrink-0 font-serif text-lg text-accent;
+  }
+
+  .ea-text-equivalent {
+    @apply border border-border bg-surface px-4 py-3 text-sm;
+  }
+
+  .ea-text-equivalent summary {
+    @apply cursor-pointer font-semibold text-ink;
+  }
+
+  .ea-text-equivalent__body {
+    @apply mt-3 space-y-3 text-muted;
+  }
+
+  .ea-text-equivalent__body ul {
+    @apply list-disc space-y-1 pl-5;
+  }
+
+  .ea-foundation-note {
+    @apply text-base leading-relaxed;
+  }
+
+  .ea-supports__list {
+    @apply m-0 grid list-none gap-0 border-t border-border p-0;
+  }
+
+  .ea-supports__item {
+    @apply border-b border-border py-5;
+  }
+
+  .ea-supports__item dt {
+    @apply font-serif text-lg text-ink;
+  }
+
+  .ea-supports__item dd {
+    @apply mt-2 text-sm leading-relaxed text-muted;
+  }
+
+  .ea-outputs__list {
+    @apply m-0 flex list-none flex-wrap gap-2 p-0;
+  }
+
+  .ea-outputs__list li {
+    @apply border border-border bg-surface px-3 py-1.5 text-sm text-ink;
+  }
+
+  .ea-frameworks__list {
+    @apply m-0 list-none space-y-2 p-0 text-sm;
+  }
+
+  .ea-frameworks--compact .ea-frameworks__list {
+    @apply space-y-1;
+  }
+
+  .ea-synthesis__link {
+    @apply font-semibold;
+  }
+
   /* —— How I Architect journey —— */
   .architect-journey {
     @apply m-0 list-none p-0;
