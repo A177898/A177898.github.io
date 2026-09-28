@@ -13,7 +13,6 @@ import { isVisibleForReview } from '../utils/publication';
 import { formatExperiencePeriod, isEarlierCareer } from '../utils/experience';
 import { getEnabledSocialLinks } from '../data/social';
 import { withBase } from '../utils/urls';
-import '../styles/print.css';
 
 const isProduction = import.meta.env.PROD;
 const allowDrafts = import.meta.env.DEV && !isProduction;
@@ -27,6 +26,7 @@ const professional = experience.filter((entry) => !isEarlierCareer(entry.data.de
 const earlier = experience.filter((entry) => isEarlierCareer(entry.data.density));
 
 const leadershipAreas = [
+  'Business Architecture',
   'Enterprise Architecture',
   'Technology Strategy',
   'Platform Architecture',
@@ -55,7 +55,7 @@ const draftCount = showDraftIndicators
 
 <PageLayout
   title={pageTitle('Resume')}
-  description={`Resume for ${profile.fullName}, Enterprise Architect — executive profile, architecture leadership and professional experience.`}
+  description={`Resume for ${profile.fullName}, Enterprise Architect — connecting business strategy, people, process and technology.`}
 >
   <Breadcrumb
     items={[
