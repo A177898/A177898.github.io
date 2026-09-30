@@ -303,9 +303,41 @@
     @apply text-sm leading-relaxed text-muted;
   }
 
+  .practice-preview-ea {
+    @apply border border-border bg-surface;
+  }
+
+  .practice-preview-ea__link {
+    @apply relative flex flex-col gap-2 px-4 py-6 text-ink no-underline sm:px-5;
+    border-left: 3px solid var(--yk-accent);
+    transition:
+      background-color 220ms ease,
+      border-color 220ms ease;
+  }
+
+  .practice-preview-ea__link:hover {
+    @apply no-underline bg-accent-soft/50;
+  }
+
+  .practice-preview-bidat {
+    @apply m-0 flex list-none flex-wrap gap-x-4 gap-y-2 border-t border-border px-4 py-4 text-sm sm:px-5;
+  }
+
+  .practice-preview-bidat a {
+    @apply font-medium text-ink no-underline underline-offset-2;
+  }
+
+  .practice-preview-bidat a:hover {
+    @apply underline;
+  }
+
   /* —— Enterprise Architecture Approach framework —— */
   .ea-approach .section-header {
     @apply max-w-3xl;
+  }
+
+  .ea-principle {
+    @apply border-l-2 border-accent pl-3 leading-relaxed;
   }
 
   .ea-framework {
@@ -352,8 +384,81 @@
     @apply text-xs leading-none;
   }
 
+  .ea-boundary {
+    @apply border-2 border-accent/50 bg-surface/80 p-3 sm:p-4;
+  }
+
+  .ea-boundary__header {
+    @apply mb-4 flex flex-wrap items-baseline justify-between gap-2 border-b border-border pb-3;
+  }
+
+  .ea-boundary__title {
+    @apply m-0 font-serif text-xl text-ink sm:text-2xl;
+  }
+
+  .ea-boundary__role {
+    @apply m-0 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-accent;
+  }
+
   .ea-band--foundation {
     border-left: 3px solid var(--yk-accent);
+  }
+
+  .ea-connector--direction {
+    @apply gap-1 py-2;
+  }
+
+  .ea-connector__caption {
+    @apply font-sans text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-accent;
+  }
+
+  .ea-band--bidat {
+    @apply mt-1;
+  }
+
+  .ea-bidat {
+    @apply mt-3 m-0 grid list-none gap-3 p-0;
+  }
+
+  @media (min-width: 768px) {
+    .ea-bidat {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .ea-bidat {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0;
+    }
+
+    .ea-bidat__domain {
+      border-right: 1px solid var(--yk-border);
+    }
+
+    .ea-bidat__domain:last-child {
+      border-right: none;
+    }
+  }
+
+  .ea-bidat__domain {
+    @apply relative border border-border bg-canvas px-3 py-3 lg:border-0 lg:border-r lg:px-4;
+  }
+
+  .ea-bidat__title {
+    @apply m-0 font-serif text-base text-ink sm:text-lg;
+  }
+
+  .ea-bidat__text {
+    @apply mt-2 text-sm leading-relaxed text-muted;
+  }
+
+  .ea-bidat__join {
+    @apply absolute -right-2 top-1/2 z-[1] hidden -translate-y-1/2 bg-surface px-0.5 text-muted lg:inline;
+  }
+
+  .ea-cross-note {
+    @apply mt-2 text-sm text-muted;
   }
 
   .ea-dimensions {
@@ -623,6 +728,40 @@
 
   .capability-grid {
     @apply grid gap-6 lg:grid-cols-2;
+  }
+
+  .capability-card--parent {
+    @apply lg:col-span-2;
+    border-left-width: 3px;
+    border-left-color: var(--yk-accent);
+  }
+
+  .bidat-nest__label {
+    @apply m-0 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-accent;
+  }
+
+  .bidat-nest__grid {
+    @apply mt-4 grid gap-4 lg:grid-cols-2;
+  }
+
+  .bidat-nest__domain {
+    @apply border border-border bg-canvas p-4 sm:p-5;
+  }
+
+  .bidat-nest__domain[id='business-architecture'] {
+    border-left: 3px solid var(--yk-accent);
+  }
+
+  .bidat-nest__title {
+    @apply m-0 flex items-baseline gap-2 font-serif text-xl text-ink;
+  }
+
+  .bidat-nest__marker {
+    @apply font-sans text-[0.65rem] font-semibold tracking-[0.14em] text-muted;
+  }
+
+  .bidat-nest__summary {
+    @apply mt-2 text-sm leading-relaxed text-muted;
   }
 
   .capability-card {

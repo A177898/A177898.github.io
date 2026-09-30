@@ -14,13 +14,13 @@ export const profile = {
    * Supporting homepage copy — architectural practice scope.
    */
   propositionSupport:
-    'My approach starts with business architecture: clarifying outcomes, capabilities and value streams, then aligning people, processes, information and technology through coherent target states and practical transition roadmaps.',
+    'My enterprise architecture approach starts with Business Architecture: clarifying outcomes, capabilities and value streams before shaping information, data, application and technology architectures. This keeps technology decisions aligned with business priorities and translates direction into practical transition roadmaps.',
   /**
-   * Plain-language explanation of enterprise architecture.
+   * Plain-language explanation of enterprise architecture (BIDAT framing).
    * Prefer on About / practice; avoid repeating verbatim beside the proposition.
    */
   eaPlainLanguage:
-    'Enterprise architecture connects strategy to execution by aligning people, processes, information and technology around business outcomes.',
+    'Enterprise Architecture brings together Business, Information, Data, Application and Technology architectures to align business strategy and execution.',
   /** Kept for SEO / legacy references; prefer proposition on the homepage. */
   positioningStatement:
     'Connecting business strategy, people, process and technology.',
@@ -37,8 +37,8 @@ export const profile = {
   scopeArc: ['Systems', 'Solutions', 'Platforms', 'Enterprise'] as const,
   aboutSummary: [
     'Yusuf Kader is an Enterprise Architect whose career has progressed from building systems, through designing solutions and platforms, to shaping enterprise technology direction.',
-    'Enterprise architecture, in this framing, connects strategy to execution by aligning people, processes, information and technology around business outcomes — with business architecture as the foundation.',
-    'His work spans business and enterprise architecture, solution architecture, technology strategy, platform and cloud architecture, integration, identity and security, and the responsible adoption of emerging technology — with an emphasis on architectural thinking, governance, and clear communication.',
+    'Enterprise Architecture brings together Business, Information, Data, Application and Technology architectures. Within EA, Business Architecture provides the business foundation — establishing direction that informs technology architecture decisions while domains iterate together.',
+    'His work spans enterprise architecture — including Business Architecture as a critical EA domain — alongside solution architecture, technology strategy, platform and cloud architecture, integration, identity and security, and the responsible adoption of emerging technology, with an emphasis on architectural thinking, governance and clear communication.',
   ] as const,
 } as const;
 
@@ -48,8 +48,8 @@ export const profile = {
  */
 export const architectureLifecycle = [
   'Strategy',
-  'Business Architecture',
-  'People · Process · Technology',
+  'Business Architecture (within EA)',
+  'Information · Data · Application · Technology',
   'Target Architecture',
   'Transition Architecture',
   'Governance',
@@ -68,21 +68,21 @@ export const architectureApproach = [
   },
   {
     step: '02',
-    title: 'Establish business architecture',
+    title: 'Establish business architecture within EA',
     description:
-      'Clarify capabilities, value streams, processes and operating model.',
+      'Clarify capabilities, value streams, processes and operating model as the business foundation of enterprise architecture.',
   },
   {
     step: '03',
-    title: 'Align people, process and technology',
+    title: 'Align the BIDAT domains',
     description:
-      'Treat the three dimensions equally, with information and data as a shared concern.',
+      'Connect Business, Information, Data, Application and Technology architectures, with people and process as cross-domain concerns.',
   },
   {
     step: '04',
     title: 'Define the target state',
     description:
-      'Establish coherent direction across information, applications, platforms and technology.',
+      'Establish coherent direction across the EA domains without treating the work as a one-way waterfall.',
   },
   {
     step: '05',

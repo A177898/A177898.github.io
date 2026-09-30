@@ -98,7 +98,9 @@
   body:has(.ea-approach):not(:has(.resume-doc)) .breadcrumb,
   body:has(.ea-approach):not(:has(.resume-doc)) .hero-block,
   body:has(.ea-approach):not(:has(.resume-doc)) .practice-preview,
+  body:has(.ea-approach):not(:has(.resume-doc)) .practice-preview-ea,
   body:has(.ea-approach):not(:has(.resume-doc)) .capability-grid,
+  body:has(.ea-approach):not(:has(.resume-doc)) .capability-card--parent,
   body:has(.ea-approach):not(:has(.resume-doc)) .ea-text-equivalent,
   body:has(.ea-approach):not(:has(.resume-doc)) .ea-supports,
   body:has(.ea-approach):not(:has(.resume-doc)) .ea-outputs,
@@ -126,6 +128,11 @@
   body:has(.ea-approach):not(:has(.resume-doc)) .ea-dimensions {
     display: grid !important;
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  body:has(.ea-approach):not(:has(.resume-doc)) .ea-bidat {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
   }
 
   body:has(.ea-approach):not(:has(.resume-doc)) .ea-flow {

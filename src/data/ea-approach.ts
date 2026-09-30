@@ -2,14 +2,21 @@
  * Personal Enterprise Architecture approach — positioning and explanatory model.
  * Conceptual synthesis only; not an employer framework, certification claim,
  * or inventory of delivered engagements.
+ *
+ * Hierarchy: EA is the parent discipline. BIDAT domains sit inside EA.
+ * Business Architecture establishes business direction that informs
+ * Technology Architecture — it does not sit outside EA.
  */
 
 export const eaApproach = {
   title: 'My Enterprise Architecture Approach',
   subtitle: 'From business intent to coordinated change.',
   plainLanguage:
-    'Enterprise architecture connects strategy to execution by aligning people, processes, information and technology around business outcomes.',
-  synthesisNote: 'A personal synthesis informed by TOGAF and Zachman.',
+    'Enterprise Architecture brings together Business, Information, Data, Application and Technology architectures to align business strategy and execution.',
+  principle:
+    'Within EA, Business Architecture establishes the business direction that informs Technology Architecture.',
+  synthesisNote:
+    'A personal synthesis informed by TOGAF and Zachman. BIDAT is used here as a clear domain framing for this approach — not as a claim that every EA standard uses identical domain labels.',
   frameworks: {
     togaf: {
       label: 'TOGAF',
@@ -23,24 +30,69 @@ export const eaApproach = {
       summary:
         'Referenced for complementary perspectives and the questions Why, What, How, Who, Where and When — not as a delivery lifecycle or reproduced matrix.',
     },
+    bidat: {
+      label: 'BIDAT (conceptual)',
+      href: 'https://www.realirm.com/what-is-ea',
+      summary:
+        'Business, Information, Data, Application and Technology architectures as connected EA domains — used here as an explanatory framing, not an employer standard.',
+    },
   },
   businessIntent: {
-    label: 'Business intent',
+    label: 'Business strategy and intended outcomes',
     items: [
       'Strategy',
       'Customer and stakeholder outcomes',
       'Business priorities',
     ] as const,
   },
-  foundation: {
-    label: 'Business architecture',
-    role: 'Foundation',
-    items: ['Capabilities', 'Value streams', 'Operating model'] as const,
-    explanation:
-      'Business architecture clarifies outcomes, capabilities and value streams so information, application, platform and technology choices follow business intent rather than precede it.',
+  eaBoundary: {
+    label: 'Enterprise Architecture',
+    role: 'Overarching discipline',
   },
-  dimensions: {
-    label: 'Connected dimensions',
+  businessArchitecture: {
+    label: 'Business Architecture',
+    role: 'Business foundation within EA',
+    items: [
+      'Outcomes',
+      'Capabilities',
+      'Value streams',
+      'Processes',
+      'Operating model',
+    ] as const,
+    directionNote: 'Business direction',
+    explanation:
+      'Business Architecture provides the business foundation within EA: clarifying outcomes, capabilities and value streams so information, data, application and technology architecture decisions follow business priorities — domains still iterate and feed back.',
+  },
+  bidatDomains: [
+    {
+      id: 'information',
+      title: 'Information Architecture',
+      short: 'Information',
+      description: 'Business meaning, information needs and information flows.',
+    },
+    {
+      id: 'data',
+      title: 'Data Architecture',
+      short: 'Data',
+      description: 'Data structures, ownership, quality and lifecycle.',
+    },
+    {
+      id: 'application',
+      title: 'Application Architecture',
+      short: 'Application',
+      description: 'Application responsibilities, services and interactions.',
+    },
+    {
+      id: 'technology',
+      title: 'Technology Architecture',
+      short: 'Technology Architecture',
+      description: 'Infrastructure, runtime environments and technical platforms.',
+    },
+  ] as const,
+  crossDomain: {
+    label: 'Cross-domain alignment',
+    note:
+      'People, process and technology concerns cut across the BIDAT domains — they do not replace those domains.',
     items: [
       {
         id: 'people',
@@ -55,17 +107,12 @@ export const eaApproach = {
           'Value delivery, workflows, controls and operational improvement.',
       },
       {
-        id: 'technology',
-        title: 'Technology',
+        id: 'technology-concern',
+        title: 'Technology (alignment)',
         description:
-          'Applications, platforms, integration and infrastructure.',
+          'How technology choices support people and process — distinct from the Technology Architecture domain.',
       },
     ] as const,
-  },
-  information: {
-    label: 'Information and data',
-    description:
-      'A shared concern connecting people, process and technology — not buried inside infrastructure alone.',
   },
   spanning: {
     label: 'Spanning concerns',
@@ -74,14 +121,13 @@ export const eaApproach = {
   transition: {
     label: 'Making change achievable',
     steps: [
-      'Current-state assessment',
-      'Target state',
-      'Prioritised roadmap',
+      'Target states',
+      'Transition roadmaps',
       'Delivery alignment',
     ] as const,
   },
   outcomes: {
-    label: 'Value and feedback',
+    label: 'Business outcomes and feedback',
     framing: 'Intended outcomes — not claims of measured results.',
     items: [
       'Customer value',
@@ -90,7 +136,7 @@ export const eaApproach = {
       'Adaptability',
     ] as const,
     feedback:
-      'Outcomes inform strategy so the approach remains cyclical rather than a one-way waterfall.',
+      'Outcomes inform business direction, and the BIDAT domains iterate — the approach is cyclical, not a one-way waterfall.',
   },
   typicalOutputs: {
     title: 'Typical outputs',
@@ -106,24 +152,24 @@ export const eaApproach = {
   },
   supportsDecisions: [
     {
-      question: 'Where does business architecture fit?',
+      question: 'Where does Business Architecture fit?',
       answer:
-        'As the foundation: it clarifies outcomes, capabilities, value streams and operating model before technology specialisms are fixed.',
+        'Inside Enterprise Architecture as a critical BIDAT domain. It provides the business foundation within EA and establishes direction that informs Technology Architecture — not a discipline outside EA.',
     },
     {
-      question: 'How do people, process and technology connect?',
+      question: 'How do the BIDAT domains connect?',
       answer:
-        'As three equal dimensions, joined by information and data, with governance, principles, security and risk spanning the whole.',
+        'Business Architecture sets business direction; Information, Data, Application and Technology architectures then align around that direction, iterating together rather than finishing in a strict sequence.',
+    },
+    {
+      question: 'How do people, process and technology relate?',
+      answer:
+        'As cross-domain alignment concerns that complement the five BIDAT domains — they do not replace Business, Information, Data, Application or Technology Architecture.',
     },
     {
       question: 'How does this translate into practical change?',
       answer:
-        'Through current-state assessment, target state, a prioritised roadmap and delivery alignment — with feedback from outcomes back to strategy.',
-    },
-    {
-      question: 'What architectural outputs support decisions?',
-      answer:
-        'Capability maps, value-stream views, target-state models, architecture decisions and transition roadmaps.',
+        'Through target states, transition roadmaps and delivery alignment — with feedback from outcomes back to business direction.',
     },
   ] as const,
 } as const;

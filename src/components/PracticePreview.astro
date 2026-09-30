@@ -1,8 +1,11 @@
 ---
-import { capabilityDomains } from '../data/capabilities';
+import {
+  enterpriseArchitecturePractice,
+  supportingSpecialisms,
+} from '../data/capabilities';
 import { withBase } from '../utils/urls';
 
-const domains = capabilityDomains;
+const bidat = enterpriseArchitecturePractice.bidatDomains ?? [];
 ---
 
 <section class="section-space" aria-labelledby="practice-preview-heading" data-reveal>
@@ -14,8 +17,9 @@ const domains = capabilityDomains;
           Architecture Practice
         </h2>
         <p class="mt-4 max-w-2xl text-muted">
-          Business architecture first — then enterprise architecture and supporting depth across
-          platform, cloud, integration, identity &amp; security, and emerging technology.
+          Enterprise Architecture is the parent discipline. Within EA, Business Architecture
+          establishes business direction before technology architecture decisions — supported by
+          platform, cloud, integration, identity &amp; security, and emerging technology depth.
         </p>
       </div>
       <a class="btn-secondary shrink-0 btn-with-arrow" href={withBase('/architecture/practice')}>
@@ -24,16 +28,36 @@ const domains = capabilityDomains;
       </a>
     </div>
 
-    <ul class="practice-preview mt-12" aria-label="Architecture practice domains">
+    <div class="practice-preview-ea mt-12">
+      <a
+        class="practice-preview-ea__link"
+        href={withBase('/architecture/practice#enterprise-architecture')}
+      >
+        <span class="practice-preview__marker" aria-hidden="true">01</span>
+        <span class="practice-preview__title">{enterpriseArchitecturePractice.title}</span>
+        <span class="practice-preview__summary">{enterpriseArchitecturePractice.summary}</span>
+      </a>
+      <ul class="practice-preview-bidat" aria-label="BIDAT domains within Enterprise Architecture">
+        {
+          bidat.map((domain) => (
+            <li>
+              <a href={withBase(`/architecture/practice#${domain.id}`)}>{domain.title}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <ul class="practice-preview mt-8" aria-label="Supporting architecture specialisms">
       {
-        domains.map((domain, index) => (
+        supportingSpecialisms.map((domain, index) => (
           <li class="practice-preview__item" style={`--item-i: ${index}`}>
             <a
               class="practice-preview__link"
               href={withBase(`/architecture/practice#${domain.id}`)}
             >
               <span class="practice-preview__marker" aria-hidden="true">
-                {String(index + 1).padStart(2, '0')}
+                {String(index + 2).padStart(2, '0')}
               </span>
               <span class="practice-preview__title">{domain.title}</span>
               <span class="practice-preview__summary">{domain.summary}</span>
