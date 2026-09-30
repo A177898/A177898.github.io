@@ -9,7 +9,7 @@ export const siteMeta = {
   defaultTitle: 'Yusuf Kader | Enterprise Architect',
   titleTemplate: '%s | Yusuf Kader',
   defaultDescription:
-    'Enterprise Architect connecting business strategy, people, process and technology through business architecture and coherent transition planning.',
+    'Enterprise Architect connecting business strategy, people, process and technology — with Business Architecture establishing direction within EA before technology architecture decisions.',
   locale: 'en_GB',
   /** Static social card — 1200×630 PNG in /public */
   ogImagePath: '/og-image.png',
@@ -57,6 +57,5 @@ export function normalizeSeoTitle(title: string): string {
   if (base === siteMeta.siteName || base === 'Enterprise Architect') {
     return siteMeta.defaultTitle;
   }
-  // Homepage-style already correct after strip: "Yusuf Kader | Enterprise Architect" handled above
   return `${base}${TITLE_SUFFIX}`;
 }

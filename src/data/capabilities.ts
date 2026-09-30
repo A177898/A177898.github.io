@@ -1,10 +1,14 @@
 /**
  * Architecture Practice capability model — generic and capability-oriented.
- * Descriptions emphasise principles and decision-making, not glossary definitions.
- * Do not connect these to employer-specific implementations.
  *
- * Business Architecture leads the offering; technology specialisms follow as
- * supporting depth that realises broader enterprise outcomes.
+ * Enterprise Architecture is the parent discipline. Within EA, five BIDAT
+ * domains connect Business, Information, Data, Application and Technology
+ * architecture. Platform, cloud, integration, identity/security and emerging
+ * technology remain supporting specialisms — not BIDAT domains.
+ *
+ * Descriptions emphasise principles and decision-making, not glossary definitions.
+ * Do not invent personal delivery experience or imply equal specialist depth
+ * in every domain.
  *
  * Optional relatedPerspectives / relatedArchitectures use content collection IDs.
  * Production surfaces honour publication eligibility when rendering those links.
@@ -24,14 +28,16 @@ export type CapabilityDomain = {
   relatedPerspectives?: string[];
   /** Reference architecture content IDs. */
   relatedArchitectures?: string[];
+  /** Nested BIDAT domains when this entry is the EA parent. */
+  bidatDomains?: CapabilityDomain[];
 };
 
-export const capabilityDomains: CapabilityDomain[] = [
+const bidatDomains: CapabilityDomain[] = [
   {
     id: 'business-architecture',
     title: 'Business Architecture',
     summary:
-      'The foundation of the architecture offering: clarify strategic outcomes, capabilities and value streams so people, process, information and technology decisions follow business intent.',
+      'Critical EA domain: outcomes, capabilities, value streams, processes and operating model — establishing business direction that informs technology architecture decisions.',
     relatedPerspectives: ['from-target-state-to-transition-architecture'],
     capabilities: [
       {
@@ -67,44 +73,138 @@ export const capabilityDomains: CapabilityDomain[] = [
     ],
   },
   {
-    id: 'enterprise-architecture',
-    title: 'Enterprise Architecture',
+    id: 'information-architecture',
+    title: 'Information Architecture',
     summary:
-      'Connect strategy to execution through coherent target states, realistic transitions and governed decisions — spanning people, process, information and technology.',
-    relatedPerspectives: ['from-target-state-to-transition-architecture'],
+      'EA domain focused on business meaning, information needs and information flows that connect people, process and systems.',
     capabilities: [
       {
-        name: 'Strategy-to-Execution Alignment',
+        name: 'Business Meaning',
         description:
-          'Translate business intent into architectural direction that delivery programmes can act on.',
+          'Clarify the concepts and language the enterprise uses so architecture decisions rest on shared meaning.',
       },
       {
-        name: 'Target-State Architecture',
+        name: 'Information Needs',
         description:
-          'Establish a coherent future state while ensuring the transition path remains realistic, governable and aligned to business priorities.',
+          'Identify what information stakeholders require to operate, decide and assure outcomes.',
       },
       {
-        name: 'Transition Architecture',
+        name: 'Information Flows',
         description:
-          'Sequence change through intermediate states that protect continuity and make dependencies explicit.',
-      },
-      {
-        name: 'Information & Application Direction',
-        description:
-          'Use the business architecture foundation to inform information, data and application choices — not the reverse.',
-      },
-      {
-        name: 'Roadmapping',
-        description:
-          'Order lasting change across capabilities, platforms, products and programmes so ambition stays deliverable.',
-      },
-      {
-        name: 'Architecture Governance',
-        description:
-          'Sustain integrity through principles, decision rights and review practices that scale beyond individual projects.',
+          'Describe how information moves across capabilities and boundaries without collapsing into a data-store catalogue.',
       },
     ],
   },
+  {
+    id: 'data-architecture',
+    title: 'Data Architecture',
+    summary:
+      'EA domain focused on data structures, ownership, quality and lifecycle — distinct from business information meaning.',
+    capabilities: [
+      {
+        name: 'Data Structures',
+        description:
+          'Shape how data is organised so it can support applications, analytics and operational use coherently.',
+      },
+      {
+        name: 'Ownership & Accountability',
+        description:
+          'Make clear who is accountable for data products, definitions and fitness for purpose.',
+      },
+      {
+        name: 'Quality & Lifecycle',
+        description:
+          'Treat quality, retention and change as architectural concerns, not only operational tasks.',
+      },
+    ],
+  },
+  {
+    id: 'application-architecture',
+    title: 'Application Architecture',
+    summary:
+      'EA domain focused on application responsibilities, services and interactions that realise capabilities.',
+    capabilities: [
+      {
+        name: 'Application Responsibilities',
+        description:
+          'Assign clear ownership of capability support so applications do not compete for the same outcomes.',
+      },
+      {
+        name: 'Services & Interfaces',
+        description:
+          'Define how applications expose and consume services in line with enterprise boundaries.',
+      },
+      {
+        name: 'Application Interactions',
+        description:
+          'Make dependencies and integration paths explicit so change remains governable.',
+      },
+    ],
+  },
+  {
+    id: 'technology-architecture',
+    title: 'Technology Architecture',
+    summary:
+      'EA domain focused on infrastructure, runtime environments and technical platforms — informed by business direction, not preceding it.',
+    capabilities: [
+      {
+        name: 'Infrastructure & Runtime',
+        description:
+          'Shape environments that host applications with deliberate attention to resilience and operability.',
+      },
+      {
+        name: 'Technical Platforms',
+        description:
+          'Identify shared technical platforms that enable delivery without dictating business design.',
+      },
+      {
+        name: 'Technology Standards',
+        description:
+          'Set durable technical direction that remains subordinate to business and capability priorities.',
+      },
+    ],
+  },
+];
+
+/** Parent EA discipline containing BIDAT domains. */
+export const enterpriseArchitecturePractice: CapabilityDomain = {
+  id: 'enterprise-architecture',
+  title: 'Enterprise Architecture',
+  summary:
+    'The overarching discipline that brings together Business, Information, Data, Application and Technology architectures to align business strategy and execution. Strategy alignment, target states, transition planning, roadmaps and governance span these domains.',
+  relatedPerspectives: ['from-target-state-to-transition-architecture'],
+  bidatDomains,
+  capabilities: [
+    {
+      name: 'Strategy-to-Execution Alignment',
+      description:
+        'Translate business intent into architectural direction that delivery programmes can act on across the BIDAT domains.',
+    },
+    {
+      name: 'Target-State Architecture',
+      description:
+        'Establish a coherent future state across EA domains while keeping the transition path realistic and governable.',
+    },
+    {
+      name: 'Transition Architecture',
+      description:
+        'Sequence change through intermediate states that protect continuity and make dependencies explicit.',
+    },
+    {
+      name: 'Roadmapping',
+      description:
+        'Order lasting change across capabilities, platforms, products and programmes so ambition stays deliverable.',
+    },
+    {
+      name: 'Architecture Governance',
+      description:
+        'Sustain integrity through principles, decision rights and review practices that scale beyond individual projects.',
+    },
+  ],
+};
+
+/** Supporting technology specialisms — not the BIDAT domain set. */
+export const supportingSpecialisms: CapabilityDomain[] = [
   {
     id: 'platform-architecture',
     title: 'Platform Architecture',
@@ -268,4 +368,20 @@ export const capabilityDomains: CapabilityDomain[] = [
       },
     ],
   },
+];
+
+/**
+ * Flat lookup list for related-content resolution.
+ * Includes the EA parent, nested BIDAT domains, and supporting specialisms.
+ */
+export const capabilityDomains: CapabilityDomain[] = [
+  enterpriseArchitecturePractice,
+  ...bidatDomains,
+  ...supportingSpecialisms,
+];
+
+/** Top-level practice sections for homepage / practice page rendering. */
+export const practiceTopLevel: CapabilityDomain[] = [
+  enterpriseArchitecturePractice,
+  ...supportingSpecialisms,
 ];

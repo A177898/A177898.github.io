@@ -4,14 +4,24 @@ import Breadcrumb from '../../components/Breadcrumb.astro';
 import EnterpriseArchitectureApproach from '../../components/EnterpriseArchitectureApproach.astro';
 import CapabilityCard from '../../components/CapabilityCard.astro';
 import RevealInit from '../../components/RevealInit.astro';
-import { capabilityDomains } from '../../data/capabilities';
+import {
+  enterpriseArchitecturePractice,
+  supportingSpecialisms,
+} from '../../data/capabilities';
 import { profile } from '../../data/profile';
+import { eaApproach } from '../../data/ea-approach';
 import { pageTitle } from '../../data/seo';
+import RelatedArtifacts from '../../components/RelatedArtifacts.astro';
+
+const bidat = enterpriseArchitecturePractice.bidatDomains ?? [];
+const eaRelatedPerspectives = enterpriseArchitecturePractice.relatedPerspectives ?? [];
+const eaRelatedArchitectures = enterpriseArchitecturePractice.relatedArchitectures ?? [];
+const eaHasRelated = eaRelatedPerspectives.length > 0 || eaRelatedArchitectures.length > 0;
 ---
 
 <PageLayout
   title={pageTitle('Architecture Practice')}
-  description="Architecture Practice — business architecture as the foundation, supported by enterprise, platform, cloud, integration, identity & security, and emerging technology."
+  description="Architecture Practice — Enterprise Architecture as the parent discipline, with Business Architecture establishing direction within EA across the BIDAT domains, plus supporting technology specialisms."
 >
   <Breadcrumb
     items={[
@@ -26,8 +36,10 @@ import { pageTitle } from '../../data/seo';
       <p class="eyebrow">Centrepiece</p>
       <h1 class="mt-3 max-w-3xl text-4xl sm:text-5xl">Architecture Practice</h1>
       <p class="mt-5 max-w-2xl text-lg text-muted">
-        Business architecture leads the offering. Technology and platform depth support broader
-        enterprise outcomes — framed as decision-making, not a technology catalogue.
+        {eaApproach.plainLanguage} Within EA, Business Architecture establishes business direction
+        before technology architecture decisions. Platform, cloud, integration, identity &amp;
+        security, and emerging technology remain supporting specialisms — framed as
+        decision-making, not a technology catalogue.
       </p>
       <p class="mt-4 max-w-2xl text-muted">
         “{profile.proposition}”
@@ -42,19 +54,92 @@ import { pageTitle } from '../../data/seo';
       <div class="section-header">
         <p class="eyebrow">Capability domains</p>
         <h2 id="capability-domains-heading" class="mt-3 text-3xl sm:text-4xl">
-          From business architecture to technology depth
+          Enterprise Architecture and supporting depth
         </h2>
         <p class="mt-4 max-w-2xl text-muted">
-          Business architecture establishes the foundation. Enterprise architecture connects that
-          foundation to coordinated change. Platform, cloud, integration, identity &amp; security,
-          and emerging technology remain areas of supporting depth.
+          Enterprise Architecture is the parent discipline. Business Architecture provides the
+          business foundation within EA and establishes direction that informs Technology
+          Architecture. Information, Data, Application and Technology architectures complete the
+          BIDAT set. Platform, cloud, integration, identity &amp; security, and emerging technology
+          remain supporting specialisms.
         </p>
       </div>
 
-      <div class="capability-grid mt-14">
+      {/* EA parent with nested BIDAT */}
+      <article
+        class="capability-card capability-card--parent mt-14"
+        id="enterprise-architecture"
+        data-capability="enterprise-architecture"
+        data-reveal
+      >
+        <div class="capability-card__header">
+          <span class="capability-card__marker" aria-hidden="true">01</span>
+          <h3 class="capability-card__title">{enterpriseArchitecturePractice.title}</h3>
+        </div>
+        <p class="mt-3 text-sm leading-relaxed text-muted">
+          {enterpriseArchitecturePractice.summary}
+        </p>
+        <ul class="capability-card__list">
+          {
+            enterpriseArchitecturePractice.capabilities.map((capability) => (
+              <li>
+                <p class="capability-card__name">{capability.name}</p>
+                <p class="capability-card__desc">{capability.description}</p>
+              </li>
+            ))
+          }
+        </ul>
+
+        <div class="bidat-nest mt-8" aria-label="BIDAT domains within Enterprise Architecture">
+          <p class="bidat-nest__label">BIDAT domains within EA</p>
+          <div class="bidat-nest__grid">
+            {
+              bidat.map((domain, index) => (
+                <section class="bidat-nest__domain" id={domain.id} data-capability={domain.id}>
+                  <h4 class="bidat-nest__title">
+                    <span class="bidat-nest__marker" aria-hidden="true">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    {domain.title}
+                  </h4>
+                  <p class="bidat-nest__summary">{domain.summary}</p>
+                  <ul class="capability-card__list">
+                    {domain.capabilities.map((capability) => (
+                      <li>
+                        <p class="capability-card__name">{capability.name}</p>
+                        <p class="capability-card__desc">{capability.description}</p>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              ))
+            }
+          </div>
+        </div>
+
         {
-          capabilityDomains.map((domain, index) => (
-            <CapabilityCard domain={domain} index={index} />
+          eaHasRelated && (
+            <div class="capability-card__related" data-capability-related>
+              <RelatedArtifacts
+                researchIds={eaRelatedPerspectives}
+                architectureIds={eaRelatedArchitectures}
+                title="Related"
+                compact
+              />
+            </div>
+          )
+        }
+      </article>
+
+      <h3 class="mt-16 text-2xl">Supporting specialisms</h3>
+      <p class="mt-3 max-w-2xl text-muted">
+        Depth that supports enterprise outcomes — not a substitute for the BIDAT domains inside EA.
+      </p>
+
+      <div class="capability-grid mt-8">
+        {
+          supportingSpecialisms.map((domain, index) => (
+            <CapabilityCard domain={domain} index={index + 1} />
           ))
         }
       </div>

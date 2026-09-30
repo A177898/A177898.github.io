@@ -1,7 +1,8 @@
 ---
 /**
  * Personal EA approach — semantic HTML diagram + supporting explanation.
- * Visual relationships via CSS; text remains selectable and theme-aware.
+ * EA is the enclosing discipline; BIDAT domains sit inside it.
+ * Business Architecture establishes business direction within EA.
  */
 import { eaApproach } from '../data/ea-approach';
 
@@ -35,22 +36,32 @@ const diagramId = `${id}-diagram`;
           <p class="mt-5 max-w-2xl text-muted">{eaApproach.plainLanguage}</p>
         )
       }
+      <p class="ea-principle mt-4 max-w-2xl text-sm font-medium text-ink sm:text-base">
+        {eaApproach.principle}
+      </p>
     </div>
 
     <figure class="ea-framework mt-12" aria-labelledby={diagramId}>
       <figcaption id={diagramId} class="sr-only">
-        Diagram of a personal enterprise architecture approach: business intent at the top;
-        business architecture as the foundation; people, process and technology as three equal
-        connected dimensions with information and data spanning them; governance, principles,
-        security and risk spanning the model; transition planning; and intended outcomes with
-        feedback to strategy.
+        Diagram of a personal enterprise architecture approach. Business strategy and intended
+        outcomes sit above an Enterprise Architecture boundary. Inside that boundary, Business
+        Architecture provides the business foundation and establishes business direction that
+        informs Information Architecture, Data Architecture, Application Architecture and
+        Technology Architecture. People, process and technology alignment cut across those domains.
+        Governance, principles, security and risk span the model. Below the boundary: target
+        states, transition roadmaps and delivery alignment, then business outcomes with feedback
+        to business direction. Domains iterate; the model is not a one-way waterfall.
       </figcaption>
 
-      <div class="ea-framework__canvas" role="group" aria-label="Enterprise architecture approach model">
-        {/* TOP — Business intent */}
+      <div
+        class="ea-framework__canvas"
+        role="group"
+        aria-label="Enterprise architecture approach model"
+      >
+        {/* TOP — Business strategy / outcomes */}
         <div class="ea-band ea-band--intent">
           <p class="ea-band__label">
-            <span class="ea-band__role">Top</span>
+            <span class="ea-band__role">Above EA</span>
             {eaApproach.businessIntent.label}
           </p>
           <ul class="ea-chip-row">
@@ -65,54 +76,85 @@ const diagramId = `${id}-diagram`;
           <span class="ea-connector__arrow">↓</span>
         </div>
 
-        {/* FOUNDATION — Business architecture */}
-        <div class="ea-band ea-band--foundation">
-          <p class="ea-band__label">
-            <span class="ea-band__role">{eaApproach.foundation.role}</span>
-            {eaApproach.foundation.label}
-          </p>
-          <ul class="ea-chip-row">
-            {eaApproach.foundation.items.map((item) => (
-              <li class="ea-chip ea-chip--emphasis">{item}</li>
-            ))}
-          </ul>
-        </div>
-
-        <div class="ea-connector" aria-hidden="true">
-          <span class="ea-connector__line" />
-          <span class="ea-connector__arrow">↓</span>
-        </div>
-
-        {/* CENTRE — People / Process / Technology */}
-        <div class="ea-band ea-band--dimensions">
-          <p class="ea-band__label">
-            <span class="ea-band__role">Centre</span>
-            {eaApproach.dimensions.label}
-          </p>
-          <ul class="ea-dimensions">
-            {eaApproach.dimensions.items.map((dim) => (
-              <li class="ea-dimension" data-dimension={dim.id}>
-                <h3 class="ea-dimension__title">{dim.title}</h3>
-                <p class="ea-dimension__text">{dim.description}</p>
-              </li>
-            ))}
-          </ul>
-
-          <div class="ea-information">
-            <p class="ea-information__label">{eaApproach.information.label}</p>
-            <p class="ea-information__text">{eaApproach.information.description}</p>
+        {/* EA BOUNDARY — contains BIDAT */}
+        <div
+          class="ea-boundary"
+          role="group"
+          aria-label={eaApproach.eaBoundary.label}
+        >
+          <div class="ea-boundary__header">
+            <p class="ea-boundary__title">{eaApproach.eaBoundary.label}</p>
+            <p class="ea-boundary__role">{eaApproach.eaBoundary.role}</p>
           </div>
-        </div>
 
-        {/* Spanning concerns */}
-        <aside class="ea-spanning" aria-label={eaApproach.spanning.label}>
-          <p class="ea-spanning__label">{eaApproach.spanning.label}</p>
-          <ul class="ea-spanning__list">
-            {eaApproach.spanning.items.map((item) => (
-              <li>{item}</li>
-            ))}
-          </ul>
-        </aside>
+          {/* Business Architecture — emphasised inside EA */}
+          <div class="ea-band ea-band--foundation">
+            <p class="ea-band__label">
+              <span class="ea-band__role">{eaApproach.businessArchitecture.role}</span>
+              {eaApproach.businessArchitecture.label}
+            </p>
+            <ul class="ea-chip-row">
+              {eaApproach.businessArchitecture.items.map((item) => (
+                <li class="ea-chip ea-chip--emphasis">{item}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="ea-connector ea-connector--direction" aria-hidden="true">
+            <span class="ea-connector__line" />
+            <span class="ea-connector__arrow">↓</span>
+            <span class="ea-connector__caption">
+              {eaApproach.businessArchitecture.directionNote}
+            </span>
+          </div>
+
+          {/* Remaining BIDAT domains */}
+          <div class="ea-band ea-band--bidat">
+            <p class="ea-band__label">
+              <span class="ea-band__role">BIDAT domains</span>
+              Information · Data · Application · Technology Architecture
+            </p>
+            <ul class="ea-bidat">
+              {eaApproach.bidatDomains.map((domain, index) => (
+                <li class="ea-bidat__domain" data-domain={domain.id}>
+                  <h3 class="ea-bidat__title">{domain.title}</h3>
+                  <p class="ea-bidat__text">{domain.description}</p>
+                  {index < eaApproach.bidatDomains.length - 1 && (
+                    <span class="ea-bidat__join" aria-hidden="true">
+                      ↔
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Cross-domain alignment — people / process / technology */}
+          <div class="ea-band ea-band--dimensions">
+            <p class="ea-band__label">
+              <span class="ea-band__role">Cross-domain</span>
+              {eaApproach.crossDomain.label}
+            </p>
+            <p class="ea-cross-note">{eaApproach.crossDomain.note}</p>
+            <ul class="ea-dimensions">
+              {eaApproach.crossDomain.items.map((dim) => (
+                <li class="ea-dimension" data-dimension={dim.id}>
+                  <h3 class="ea-dimension__title">{dim.title}</h3>
+                  <p class="ea-dimension__text">{dim.description}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <aside class="ea-spanning" aria-label={eaApproach.spanning.label}>
+            <p class="ea-spanning__label">{eaApproach.spanning.label}</p>
+            <ul class="ea-spanning__list">
+              {eaApproach.spanning.items.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </aside>
+        </div>
 
         <div class="ea-connector" aria-hidden="true">
           <span class="ea-connector__line" />
@@ -144,7 +186,7 @@ const diagramId = `${id}-diagram`;
           <span class="ea-connector__arrow">↓</span>
         </div>
 
-        {/* BASE — Value and feedback */}
+        {/* OUTCOMES + feedback */}
         <div class="ea-band ea-band--outcomes">
           <p class="ea-band__label">
             <span class="ea-band__role">Base</span>
@@ -165,43 +207,52 @@ const diagramId = `${id}-diagram`;
       </div>
     </figure>
 
-    {/* Accessible text equivalent — always in DOM, not hover-only */}
     <details class="ea-text-equivalent mt-8">
       <summary>Text equivalent of the approach model</summary>
       <div class="ea-text-equivalent__body">
         <p>
-          <strong>Business intent:</strong>{' '}
+          <strong>Business strategy and intended outcomes:</strong>{' '}
           {eaApproach.businessIntent.items.join('; ')}.
         </p>
         <p>
-          <strong>Foundation — business architecture:</strong>{' '}
-          {eaApproach.foundation.items.join('; ')}. {eaApproach.foundation.explanation}
+          <strong>Enterprise Architecture</strong> is the overarching discipline containing the
+          BIDAT domains.
         </p>
         <p>
-          <strong>Connected dimensions:</strong>
+          <strong>Business Architecture</strong> ({eaApproach.businessArchitecture.role}):{' '}
+          {eaApproach.businessArchitecture.items.join('; ')}.{' '}
+          {eaApproach.businessArchitecture.explanation}
+        </p>
+        <p>
+          <strong>Connected BIDAT domains:</strong>
         </p>
         <ul>
-          {eaApproach.dimensions.items.map((dim) => (
+          {eaApproach.bidatDomains.map((domain) => (
+            <li>
+              <strong>{domain.title}:</strong> {domain.description}
+            </li>
+          ))}
+        </ul>
+        <p>
+          <strong>{eaApproach.crossDomain.label}:</strong> {eaApproach.crossDomain.note}
+        </p>
+        <ul>
+          {eaApproach.crossDomain.items.map((dim) => (
             <li>
               <strong>{dim.title}:</strong> {dim.description}
             </li>
           ))}
         </ul>
         <p>
-          <strong>{eaApproach.information.label}:</strong>{' '}
-          {eaApproach.information.description}
-        </p>
-        <p>
           <strong>{eaApproach.spanning.label}:</strong>{' '}
           {eaApproach.spanning.items.join('; ')}.
         </p>
         <p>
-          <strong>Transition:</strong>{' '}
-          {eaApproach.transition.steps.join(' → ')}.
+          <strong>Transition:</strong> {eaApproach.transition.steps.join(' → ')}.
         </p>
         <p>
-          <strong>Intended outcomes:</strong>{' '}
-          {eaApproach.outcomes.items.join('; ')}. {eaApproach.outcomes.feedback}
+          <strong>Intended outcomes:</strong> {eaApproach.outcomes.items.join('; ')}.{' '}
+          {eaApproach.outcomes.feedback}
         </p>
       </div>
     </details>
@@ -209,7 +260,7 @@ const diagramId = `${id}-diagram`;
     {
       !isFull && (
         <p class="ea-foundation-note mt-8 max-w-2xl text-muted">
-          {eaApproach.foundation.explanation}
+          {eaApproach.businessArchitecture.explanation}
         </p>
       )
     }
@@ -261,6 +312,12 @@ const diagramId = `${id}-diagram`;
                 </a>
                 <span class="text-muted"> — {eaApproach.frameworks.zachman.summary}</span>
               </li>
+              <li>
+                <a href={eaApproach.frameworks.bidat.href} rel="noopener noreferrer">
+                  {eaApproach.frameworks.bidat.label}
+                </a>
+                <span class="text-muted"> — {eaApproach.frameworks.bidat.summary}</span>
+              </li>
             </ul>
           </aside>
         </>
@@ -295,6 +352,15 @@ const diagramId = `${id}-diagram`;
               <span class="text-muted">
                 {' '}
                 — complementary perspectives (Why, What, How, Who, Where, When)
+              </span>
+            </li>
+            <li>
+              <a href={eaApproach.frameworks.bidat.href} rel="noopener noreferrer">
+                BIDAT
+              </a>
+              <span class="text-muted">
+                {' '}
+                — Business, Information, Data, Application and Technology architectures within EA
               </span>
             </li>
           </ul>
