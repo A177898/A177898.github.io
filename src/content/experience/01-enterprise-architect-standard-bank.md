@@ -3,7 +3,7 @@ organisation: Standard Bank Group
 role: Enterprise Architect
 period:
   start: Oct 2026
-pendingAppointment: true
+pendingAppointment: False
 summary: |
   Enterprise architecture responsibility focused on connecting business strategy, enterprise capabilities and technology direction.
 
