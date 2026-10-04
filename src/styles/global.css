@@ -127,6 +127,27 @@
     @apply font-sans text-xs font-semibold uppercase tracking-[0.16em] text-muted;
   }
 
+  /* —— On-brand 404 —— restrained recovery page; reuses btn/eyebrow tokens. */
+  .page-404__shell {
+    @apply max-w-2xl;
+  }
+
+  .page-404__code {
+    @apply m-0 mb-4 font-sans text-6xl font-semibold tracking-tight text-ink/15 sm:text-7xl;
+  }
+
+  .page-404__title {
+    @apply mt-3 m-0 max-w-xl font-serif text-3xl leading-tight text-ink sm:text-4xl;
+  }
+
+  .page-404__lead {
+    @apply mt-5 m-0 max-w-xl text-base leading-relaxed text-muted sm:text-lg;
+  }
+
+  .page-404__actions {
+    @apply mt-8 flex flex-wrap gap-3;
+  }
+
   .prose-portfolio {
     @apply max-w-3xl text-base leading-relaxed text-ink sm:text-lg;
   }

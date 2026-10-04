@@ -916,29 +916,23 @@ COBOL / enterprise engineering → full-stack digital engineering → technical 
 
 | Field | Value |
 | --- | --- |
-| Status | IN PROGRESS |
+| Status | APPROVED |
 | Priority | P2 |
 | Dependencies | None (may be scheduled late or after TASK-01) |
 | Human review required | Yes |
 
-**Objective:** Enhance 404 with restrained architecture language and useful CTAs.
+**Outcome:** **IMPLEMENTED** — On-brand 404 with plain “Page not found” + approved transition-state heading/lead; CTAs Return Home (`/`) and Explore Architecture (`/architecture/`) via `withBase`. Large muted 404 marker; PageLayout shell retained. Optional broken-progression motif not added. **Approved 2026-10-04** — commit: `feat: refresh on-brand 404 with architecture recovery paths`.
 
-**Candidate copy:**
+**Files modified:**
 
-- “This transition state could not be found.”
-- Support: “A target state without a transition path is difficult to reach. This page is no exception.”
-- Actions: Return Home · Explore Architecture
-
-**Files likely affected:**
-
-- `src/pages/404.astro`
-- Minimal styles if needed in `src/styles/global.css`
+- `src/pages/404.astro` — copy, dual CTAs, structure
+- `src/styles/global.css` — minimal `.page-404*` styles
 
 **Acceptance criteria:**
 
-- [ ] On-brand, restrained, not overly humorous
-- [ ] CTAs: Home + Architecture
-- [ ] Works in dark/light and mobile
+- [x] On-brand, restrained, not overly humorous
+- [x] CTAs: Home + Architecture
+- [x] Works in dark/light and mobile
 
 **Validation:** Visit unknown path in preview; visual check.
 
@@ -948,7 +942,7 @@ COBOL / enterprise engineering → full-stack digital engineering → technical 
 
 | Field | Value |
 | --- | --- |
-| Status | NOT STARTED |
+| Status | IN PROGRESS |
 | Priority | P1 |
 | Dependencies | **All of TASK-01 through TASK-19** |
 | Human review required | Yes |

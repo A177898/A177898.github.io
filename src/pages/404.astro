@@ -5,18 +5,23 @@ import { withBase } from '../utils/urls';
 ---
 
 <PageLayout
-  title={pageTitle('Page not found')}
+  title={pageTitle('Page Not Found')}
   description="The requested page could not be found."
 >
-  <section class="section-space">
-    <div class="site-shell max-w-xl">
-      <p class="eyebrow">404</p>
-      <h1 class="mt-3 text-4xl">Page not found</h1>
-      <p class="mt-4 text-muted">
-        The page you requested is unavailable. It may not be published yet, or the address may be
-        incorrect.
+  <section class="section-space page-404" aria-labelledby="page-404-heading">
+    <div class="site-shell page-404__shell">
+      <p class="page-404__code" aria-hidden="true">404</p>
+      <p class="eyebrow">Page not found</p>
+      <h1 id="page-404-heading" class="page-404__title">
+        This transition state could not be found.
+      </h1>
+      <p class="page-404__lead">
+        A target state without a transition path is difficult to reach. This page is no exception.
       </p>
-      <a class="btn-primary mt-8" href={withBase('/')}>Return home</a>
+      <div class="page-404__actions">
+        <a class="btn-primary" href={withBase('/')}>Return Home</a>
+        <a class="btn-secondary" href={withBase('/architecture/')}>Explore Architecture</a>
+      </div>
     </div>
   </section>
 </PageLayout>
