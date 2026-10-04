@@ -751,6 +751,35 @@
     @apply mt-2 text-sm leading-relaxed text-muted sm:text-[0.95rem];
   }
 
+  /* —— About career story —— */
+  .about-opening {
+    @apply max-w-2xl;
+  }
+
+  .about-story {
+    @apply m-0 list-none border-t border-border p-0;
+  }
+
+  .about-story__item {
+    @apply grid gap-3 border-b border-border py-6 sm:grid-cols-[3rem_minmax(0,1fr)] sm:gap-6 sm:py-7;
+  }
+
+  .about-story__index {
+    @apply m-0 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-accent;
+  }
+
+  .about-story__title {
+    @apply m-0 font-serif text-xl text-ink sm:text-2xl;
+  }
+
+  .about-story__text {
+    @apply mt-2 m-0 text-base leading-relaxed text-muted;
+  }
+
+  .about-closing {
+    @apply border-l-2 border-accent pl-4;
+  }
+
   /* —— Career rail —— */
   .career-rail__list {
     @apply m-0 flex list-none flex-wrap items-center gap-x-2 gap-y-2 p-0;

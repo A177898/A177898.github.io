@@ -28,28 +28,42 @@ const scopeArc = profile.scopeArc;
       </ol>
     </div>
   ) : (
-    <div class="progression-pair" data-reveal>
+    <div
+      class="progression-pair"
+      data-reveal
+      aria-label="Role progression and expanding architectural scope"
+    >
       <div>
-        <p class="eyebrow">Role progression</p>
-        <ol class="progression-pair__list mt-5">
+        <p class="eyebrow" id="role-progression-label">Role progression</p>
+        <ol class="progression-pair__list mt-5" aria-labelledby="role-progression-label">
           {roleArc.map((stage, index) => (
             <li class="progression-pair__item" style={`--prog-i: ${index}`}>
-              <span class="eyebrow w-6 shrink-0">{String(index + 1).padStart(2, '0')}</span>
+              <span class="eyebrow w-6 shrink-0" aria-hidden="true">
+                {String(index + 1).padStart(2, '0')}
+              </span>
               <span class="font-serif text-lg text-ink sm:text-xl">{stage}</span>
             </li>
           ))}
         </ol>
+        <p class="progression-pair__note mt-4 text-sm text-muted">
+          {roleArc.join(' → ')}
+        </p>
       </div>
       <div>
-        <p class="eyebrow">Scope</p>
-        <ol class="progression-pair__list mt-5">
+        <p class="eyebrow" id="scope-progression-label">Scope progression</p>
+        <ol class="progression-pair__list mt-5" aria-labelledby="scope-progression-label">
           {scopeArc.map((stage, index) => (
             <li class="progression-pair__item" style={`--prog-i: ${index}`}>
-              <span class="eyebrow w-6 shrink-0">{String(index + 1).padStart(2, '0')}</span>
+              <span class="eyebrow w-6 shrink-0" aria-hidden="true">
+                {String(index + 1).padStart(2, '0')}
+              </span>
               <span class="font-serif text-lg text-ink sm:text-xl">{stage}</span>
             </li>
           ))}
         </ol>
+        <p class="progression-pair__note mt-4 text-sm text-muted">
+          {scopeArc.join(' → ')}
+        </p>
       </div>
     </div>
   )

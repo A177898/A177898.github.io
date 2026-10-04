@@ -14,7 +14,7 @@ const leadership = (await getCollection('leadership')).filter((entry) => isPubli
 
 <PageLayout
   title={pageTitle('About')}
-  description={`About ${profile.fullName}, Enterprise Architect — connecting business strategy, people, process and technology.`}
+  description={`About ${profile.fullName}, Enterprise Architect — career progression from software engineering to enterprise architecture.`}
 >
   <Breadcrumb
     items={[
@@ -32,24 +32,52 @@ const leadership = (await getCollection('leadership')).filter((entry) => isPubli
         “{profile.proposition}”
       </p>
 
-      <div class="prose-portfolio mt-10 space-y-4 text-muted" data-reveal>
-        {profile.aboutSummary.map((paragraph) => <p>{paragraph}</p>)}
-      </div>
-
-      <p class="mt-8 text-muted">
-        The full visual model of this approach is on the{' '}
-        <a href={withBase('/#ea-approach')}>homepage</a>
-        {' '}and in{' '}
-        <a href={withBase('/architecture/practice#ea-approach')}>Architecture Practice</a>.
+      <p class="about-opening mt-10 text-lg leading-relaxed text-muted" data-reveal>
+        {profile.aboutOpening}
       </p>
 
-      <h2 class="mt-16 text-3xl">Career progression</h2>
-      <p class="mt-4 text-muted">
-        Professional path and expanding architectural scope — from building systems to shaping
-        enterprise technology direction.
+      <h2 class="mt-16 text-3xl" id="career-story">Career story</h2>
+      <p class="mt-4 max-w-2xl text-muted">
+        How engineering experience broadened into architectural judgement — synthesised from the
+        career path detailed on{' '}
+        <a href={withBase('/experience')}>Experience</a>.
+      </p>
+
+      <ol class="about-story mt-10" aria-labelledby="career-story" data-reveal>
+        {
+          profile.aboutStory.map((stage, index) => (
+            <li class="about-story__item">
+              <p class="about-story__index" aria-hidden="true">
+                {String(index + 1).padStart(2, '0')}
+              </p>
+              <div class="about-story__body">
+                <h3 class="about-story__title">{stage.title}</h3>
+                <p class="about-story__text">{stage.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+
+      <h2 class="mt-16 text-3xl" id="career-progression">Career progression</h2>
+      <p class="mt-4 max-w-2xl text-muted">
+        The same journey expressed as role and scope — from building systems to shaping enterprise
+        technology direction.
       </p>
 
       <CareerProgression variant="pair" />
+
+      <p class="about-closing mt-12 max-w-2xl font-serif text-xl leading-snug text-ink" data-reveal>
+        {profile.aboutClosing}
+      </p>
+      <p class="mt-6 text-muted">
+        For the factual chronology, see{' '}
+        <a href={withBase('/experience')}>Experience</a>
+        . For the architecture model that this progression informs, see the{' '}
+        <a href={withBase('/#ea-approach')}>homepage approach</a>
+        {' '}and{' '}
+        <a href={withBase('/architecture/practice')}>Architecture Practice</a>.
+      </p>
 
       {
         leadership.length > 0 && (
