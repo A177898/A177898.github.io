@@ -664,7 +664,7 @@ COBOL / enterprise engineering → full-stack digital engineering → technical 
 - Performance vs true pre-change: CSS **+1,083 B**, JS **0**, Resume HTML **+548 B**, total dist **+1,631 B**
 - Dependencies added: **0** (`package.json` unchanged)
 
-**Commit:** not created — awaiting human approval.
+**Commit:** `feat: polish resume Print / Save as PDF experience`
 
 ---
 
@@ -672,35 +672,36 @@ COBOL / enterprise engineering → full-stack digital engineering → technical 
 
 | Field | Value |
 | --- | --- |
-| Status | NOT STARTED |
+| Status | READY FOR REVIEW |
 | Priority | P1 |
 | Dependencies | Soft: diagram component enhancements may help TASK-16 |
 | Human review required | Yes |
 
-**Perspective:** `src/content/perspectives/from-target-state-to-transition-architecture.mdx`
+**Outcome:** **IMPLEMENTED** — Gap analysis: current→target, transition sequence and governance cycle already present; missing coexistence and dependency visuals; traceability incomplete (no outcome/feedback). Added coexistence + dependency figures; enhanced traceability chain; consolidated duplicate CURRENT→TARGET in §6; labelled transition states as illustrative (`… n`).
 
-**Baseline:** Already has multiple `ArchitectureFlow` figures including current→target, capability gap chain, and CURRENT → TRANSITION 1..3 → TARGET. Enhance with higher-value models (coexistence, dependency map) without altering thesis.
-
-**Target diagrams:**
-
-1. Current → Transition 1..n → Target, with coexistence where relevant
-2. Capability → Gap → Architecture Decision → Transition Initiative → Outcome
-3. Generic dependency-map example (no employer specifics)
-
-**Files likely affected:**
+**Files modified:**
 
 - `src/content/perspectives/from-target-state-to-transition-architecture.mdx`
-- `src/components/ArchitectureFlow.astro` and/or new diagram component
-- `src/styles/global.css`
+- `src/components/ArchitectureCoexistence.astro` — new
+- `src/components/ArchitectureDependency.astro` — new
+- `src/styles/global.css` — `.arch-coexist-*` / `.arch-depend-*`
+- `docs/META-RECOMMENDATIONS-TASKS.md` — status notes
 
 **Acceptance criteria:**
 
-- [ ] Diagrams reinforce existing approved content
-- [ ] No employer-specific examples
-- [ ] Article thesis unchanged
-- [ ] Accessible labels; responsive
+- [x] Diagrams reinforce existing approved content
+- [x] No employer-specific examples
+- [x] Article thesis unchanged
+- [x] Accessible labels; responsive
 
-**Validation:** Perspective visual review; check/build; CSS/HTML size delta.
+**Validation:**
+
+- `npm run validate` / `test:publication` / `check` / production build — PASS
+- Responsive 1440–390 dark+light — no overflow
+- Performance vs true pre-change: CSS **+5,558 B**, JS **0**, P01 HTML **+4,096 B**, total dist **+9,654 B**
+- Dependencies added: **0**
+
+**Commit:** not created — awaiting human approval.
 
 ---
 

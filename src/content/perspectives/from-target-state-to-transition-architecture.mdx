@@ -30,6 +30,8 @@ relatedArchitectures: []
 ---
 
 import ArchitectureFlow from '../../components/ArchitectureFlow.astro';
+import ArchitectureCoexistence from '../../components/ArchitectureCoexistence.astro';
+import ArchitectureDependency from '../../components/ArchitectureDependency.astro';
 import PrincipleCallout from '../../components/PrincipleCallout.astro';
 import TransitionChecklist from '../../components/TransitionChecklist.astro';
 
@@ -172,13 +174,23 @@ First ask:
 
 I consider that question across several dimensions: capability, information, application, integration, platform, security, technology and operating model.
 
-That creates traceability:
+That creates traceability from capability need through architecture into execution and evidence:
 
 <ArchitectureFlow
-  steps={['Strategy', 'Capability', 'Gap', 'Architecture Decision', 'Initiative']}
+  steps={[
+    'Business Capability',
+    'Gap',
+    'Architecture Decision',
+    'Transition Initiative',
+    'Outcome / Evidence',
+  ]}
   direction="vertical"
-  label="From strategy to initiative"
+  cyclic={true}
+  cycleNote="feeds architecture reassessment"
+  label="Capability to outcome traceability with feedback"
 />
+
+This is architecture traceability — not a delivery-ticket workflow. Roadmap items should remain connected to a capability need and an architectural decision.
 
 This becomes particularly important when constraints emerge—as they inevitably do.
 
@@ -196,22 +208,20 @@ It connects investment decisions back to architectural and business consequences
 
 ## 6. Design the journey as architectures, not phases
 
-This representation is attractive:
+The simple current-to-target arrow in section 1 is attractive — and incomplete.
+
+Enterprise transformation is closer to a sequence of operable architecture states. The number of transition states is illustrative, not fixed:
 
 <ArchitectureFlow
-  steps={['CURRENT', 'TARGET']}
-  direction="horizontal"
-  label="Current to target — overly simple path"
-/>
-
-But enterprise transformation rarely works that way.
-
-Reality is closer to:
-
-<ArchitectureFlow
-  steps={['CURRENT', 'TRANSITION 1', 'TRANSITION 2', 'TRANSITION 3', 'TARGET']}
+  steps={[
+    'CURRENT STATE',
+    'TRANSITION STATE 1',
+    'TRANSITION STATE 2',
+    'TRANSITION STATE n',
+    'TARGET STATE',
+  ]}
   direction="vertical"
-  label="Current through transition states to target"
+  label="Illustrative current through transition architecture states to target"
 />
 
 There is an important distinction here:
@@ -239,6 +249,8 @@ Without explicit exit criteria, temporary architectures have a tendency to becom
 Large enterprise capabilities are rarely replaced through a single big-bang event.
 
 Existing and new architectures may need to operate alongside one another for months or, in some cases, years.
+
+<ArchitectureCoexistence />
 
 That creates architectural problems that do not exist in either the pure current state or the pure target state.
 
@@ -269,6 +281,8 @@ A business capability may depend on a shared platform. That platform may depend 
 These relationships matter.
 
 They should be visible, understood and used to inform sequencing.
+
+<ArchitectureDependency />
 
 <PrincipleCallout>
   Sequence by architectural dependency, not simply by arbitrary dates.

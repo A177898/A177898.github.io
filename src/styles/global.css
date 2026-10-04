@@ -1409,6 +1409,93 @@
     @apply mb-3 font-sans text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-muted;
   }
 
+  /* —— Perspective: coexistence + dependency models ——
+     Extends arch-flow borders/labels; editorial, not dashboard. */
+  .arch-coexist,
+  .arch-depend {
+    @apply my-8 border border-border bg-band/60 px-4 py-5 sm:px-6 sm:py-6;
+  }
+
+  .arch-coexist__title,
+  .arch-depend__title {
+    @apply m-0 mb-4 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-muted;
+  }
+
+  .arch-coexist__path,
+  .arch-depend__sequence {
+    @apply m-0 flex list-none flex-col items-start gap-1 p-0;
+  }
+
+  .arch-coexist__state,
+  .arch-depend__step {
+    @apply flex flex-col items-start gap-1;
+  }
+
+  .arch-coexist__state-label,
+  .arch-depend__step-label {
+    @apply inline-flex min-h-[2.5rem] items-center border border-border bg-surface px-3 py-2 font-sans text-xs font-semibold uppercase tracking-[0.08em] text-ink sm:text-[0.8rem];
+  }
+
+  .arch-coexist__state-label--transition {
+    @apply border-accent/40;
+  }
+
+  .arch-coexist__state-label--edge {
+    @apply bg-accent-soft/40;
+  }
+
+  .arch-coexist__connector,
+  .arch-depend__connector {
+    @apply ml-4 py-0.5 font-sans text-base leading-none text-muted;
+  }
+
+  .arch-coexist__band {
+    @apply mt-5 border border-border bg-surface px-4 py-4;
+  }
+
+  .arch-coexist__band-label,
+  .arch-depend__enablers-label {
+    @apply m-0 mb-3 font-sans text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-muted;
+  }
+
+  .arch-coexist__lanes {
+    @apply m-0 grid list-none gap-3 p-0 sm:grid-cols-3;
+  }
+
+  .arch-coexist__lane {
+    @apply border-l-2 border-border pl-3;
+  }
+
+  .arch-coexist__lane-title {
+    @apply block font-serif text-base text-ink;
+  }
+
+  .arch-coexist__lane-text {
+    @apply mt-1 block text-sm leading-relaxed text-muted;
+  }
+
+  .arch-coexist__converge {
+    @apply mt-4 m-0 text-center font-sans text-sm text-muted;
+  }
+
+  .arch-coexist__converge-text,
+  .arch-coexist__caption,
+  .arch-depend__caption {
+    @apply mt-3 m-0 text-sm leading-relaxed text-muted;
+  }
+
+  .arch-depend__enablers {
+    @apply mt-5 border-t border-border/80 pt-4;
+  }
+
+  .arch-depend__enabler-list {
+    @apply m-0 flex list-none flex-wrap gap-2 p-0;
+  }
+
+  .arch-depend__enabler {
+    @apply border border-border bg-surface px-3 py-2 font-sans text-xs font-semibold uppercase tracking-[0.08em] text-ink;
+  }
+
   .prose-perspective pre {
     @apply my-6 overflow-x-auto border border-border bg-band/70 px-4 py-4 font-mono text-[0.82rem] leading-relaxed text-ink sm:text-sm;
   }
