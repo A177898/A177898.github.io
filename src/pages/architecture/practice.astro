@@ -4,6 +4,7 @@ import Breadcrumb from '../../components/Breadcrumb.astro';
 import EnterpriseArchitectureApproach from '../../components/EnterpriseArchitectureApproach.astro';
 import ArchitectureBeliefs from '../../components/ArchitectureBeliefs.astro';
 import ArchitectureSequence from '../../components/ArchitectureSequence.astro';
+import ArchitectureOperatingBoundaries from '../../components/ArchitectureOperatingBoundaries.astro';
 import CapabilityCard from '../../components/CapabilityCard.astro';
 import RevealInit from '../../components/RevealInit.astro';
 import {
@@ -58,6 +59,8 @@ const eaHasRelated = eaRelatedPerspectives.length > 0 || eaRelatedArchitectures.
   <ArchitectureBeliefs id="architecture-beliefs" />
 
   <ArchitectureSequence model={architectureGovernanceModel} />
+
+  <ArchitectureOperatingBoundaries />
 
   <ArchitectureSequence model={architectureEngagementModel} />
 

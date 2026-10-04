@@ -588,30 +588,38 @@ COBOL / enterprise engineering → full-stack digital engineering → technical 
 
 | Field | Value |
 | --- | --- |
-| Status | IN PROGRESS |
+| Status | READY FOR REVIEW |
 | Priority | P1 |
 | Dependencies | Soft: after TASK-05; can share section with TASK-08 model C |
 | Human review required | Yes |
 
-**Objective:** Expand “governance without creating a central bottleneck” into a concise architecture operating model distinguishing Guardrails vs Gatekeeping and Architecture authority vs Delivery ownership.
+**Outcome:** **IMPLEMENTED** — Operating boundaries section on Practice after Governance model and before Engagement lifecycle. Covers Guardrails vs Gatekeeping (with formal-governance nuance) and Architecture authority / Shared decision space / Delivery ownership. No employer-specific process; distinct from TASK-05 principles and TASK-08 sequences.
 
-**Existing seed copy:** Platform Architecture summary in `src/data/capabilities.ts` (“without creating a central bottleneck”).
+**Placement:** EA → Principles → Governance → **Operating boundaries** → Engagement → Capability domains.
 
-**Files likely affected:**
+**Files modified:**
 
-- `src/pages/architecture/practice.astro`
-- `src/data/capabilities.ts` and/or new beliefs/operating-model data module
-- Optional visual from TASK-08 model C
-- `src/styles/global.css`
+- `src/data/architecture-operating-boundaries.ts` — copy
+- `src/components/ArchitectureOperatingBoundaries.astro` — section component
+- `src/pages/architecture/practice.astro` — insert + reorder relative to Engagement
+- `src/styles/global.css` — `.operating-boundaries-*`
+- `docs/META-RECOMMENDATIONS-TASKS.md` — status notes
 
 **Acceptance criteria:**
 
-- [ ] Clear Guardrails vs Gatekeeping distinction
-- [ ] Clear Architecture authority vs Delivery ownership distinction
-- [ ] No employer-specific governance claims
-- [ ] Concise operating-model tone
+- [x] Clear Guardrails vs Gatekeeping distinction
+- [x] Clear Architecture authority vs Delivery ownership distinction
+- [x] No employer-specific governance claims
+- [x] Concise operating-model tone
 
-**Validation:** Copy/IP review; Practice page visual check; build.
+**Validation:**
+
+- `npm run validate` / `test:publication` / `check` / production build — PASS
+- Responsive 1440–390 dark+light — no overflow
+- Performance vs true pre-change: CSS **+4,341 B**, JS **0**, Practice HTML **+5,209 B**, total dist **+9,550 B**
+- No new dependencies
+
+**Commit:** not created — awaiting human approval.
 
 ---
 

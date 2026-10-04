@@ -830,6 +830,60 @@
     @apply font-medium text-ink;
   }
 
+  /* —— Operating boundaries (Practice) ——
+     Extends arch-compare / beliefs list rhythm; no good/bad colour coding. */
+  .operating-boundaries__compare {
+    @apply grid gap-6 sm:grid-cols-2 sm:gap-8;
+  }
+
+  .operating-boundaries__responsibility {
+    @apply grid gap-6 lg:grid-cols-3 lg:gap-6;
+  }
+
+  .operating-boundaries__panel {
+    @apply border border-border bg-surface px-4 py-5 sm:px-5 sm:py-6;
+  }
+
+  .operating-boundaries__panel--shared {
+    @apply border-l-[3px] border-l-accent;
+  }
+
+  .operating-boundaries__panel-title {
+    @apply m-0 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-muted;
+  }
+
+  .operating-boundaries__panel-lead {
+    @apply mt-3 m-0 font-serif text-lg text-ink;
+  }
+
+  .operating-boundaries__list {
+    @apply mt-4 m-0 list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted;
+  }
+
+  .operating-boundaries__list--compact {
+    @apply mt-3 sm:columns-2 sm:gap-x-8;
+  }
+
+  .operating-boundaries__panel-outcome {
+    @apply mt-4 m-0 border-t border-border/80 pt-4 text-sm leading-relaxed text-ink/85;
+  }
+
+  .operating-boundaries__nuance {
+    @apply max-w-3xl border border-border bg-band/40 px-4 py-5 sm:px-5 sm:py-6;
+  }
+
+  .operating-boundaries__nuance-title {
+    @apply m-0 font-serif text-xl text-ink;
+  }
+
+  .operating-boundaries__nuance-intro {
+    @apply mt-3 m-0 text-sm leading-relaxed text-muted;
+  }
+
+  .operating-boundaries__closing {
+    @apply m-0 border-l-2 border-accent pl-4 font-serif text-xl leading-snug text-ink;
+  }
+
   /* —— About career story —— */
   .about-opening {
     @apply max-w-2xl;
