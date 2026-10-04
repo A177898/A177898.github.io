@@ -784,6 +784,52 @@
     @apply border-l-2 border-accent/50 pl-4 text-base leading-relaxed text-ink;
   }
 
+  /* —— Architecture sequence models (governance / engagement) ——
+     Reuses beliefs/lifecycle rhythm: numbered stages, serif titles, ea-feedback note. */
+  .arch-sequence__progression {
+    @apply m-0 max-w-3xl font-sans text-sm leading-relaxed text-muted;
+  }
+
+  .arch-sequence__list {
+    @apply m-0 grid list-none gap-0 border-t border-border p-0 sm:grid-cols-2 lg:grid-cols-3;
+  }
+
+  .arch-sequence__item {
+    @apply relative border-b border-border px-0 py-6 sm:border-r sm:px-4 lg:px-5;
+  }
+
+  .arch-sequence__item:nth-child(2n) {
+    @apply sm:border-r-0 lg:border-r;
+  }
+
+  .arch-sequence__item:nth-child(3n) {
+    @apply lg:border-r-0;
+  }
+
+  .arch-sequence__index {
+    @apply m-0 font-sans text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-accent;
+  }
+
+  .arch-sequence__title {
+    @apply mt-2 m-0 font-serif text-xl text-ink sm:text-[1.35rem];
+  }
+
+  .arch-sequence__text {
+    @apply mt-2 m-0 max-w-sm text-sm leading-relaxed text-muted;
+  }
+
+  .arch-sequence__feedback {
+    @apply mt-8 flex max-w-3xl items-start gap-3 border border-border bg-surface px-4 py-3 text-sm text-muted;
+  }
+
+  .arch-sequence__feedback-marker {
+    @apply shrink-0 font-serif text-lg text-accent;
+  }
+
+  .arch-sequence__feedback-cue {
+    @apply font-medium text-ink;
+  }
+
   /* —— About career story —— */
   .about-opening {
     @apply max-w-2xl;

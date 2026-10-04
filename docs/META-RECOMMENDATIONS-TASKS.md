@@ -546,38 +546,41 @@ COBOL / enterprise engineering → full-stack digital engineering → technical 
 
 | Field | Value |
 | --- | --- |
-| Status | IN PROGRESS |
+| Status | APPROVED |
 | Priority | P1 |
 | Dependencies | Soft: after TASK-02 (reuse EA diagram primitives); inspect existing diagrams first |
 | Human review required | Yes |
 
-**Objective:** Add a **small number** of high-value conceptual models to Architecture Practice (not a diagram per paragraph).
+**Outcome:** **IMPLEMENTED** — Gap analysis confirmed EA/BIDAT already covers operating model + BA/IDAT + domain relationships. Added two models only: Architecture Governance and Architecture Engagement Lifecycle. No MODEL C (BIDAT duplicate). No TASK-09 operating-boundary prose.
 
-**Candidate models (select during implementation after gap analysis):**
+**Gap analysis:**
 
-- A. EA Operating Model (Strategy → Capability → BIDAT → Target → Transition → Delivery → Governance/Feedback)
-- B. BIDAT relationship model (BA as business-direction/capability concern aligning IDAT)
-- C. Architecture Governance (Principles → Guardrails → Decisions → Delivery Autonomy → Feedback)
-- D. Architecture Engagement (Understand → Frame → Decide → Transition → Govern → Learn)
+- Strategy→…→feedback / BA vs IDAT / capability domains — already covered by `EnterpriseArchitectureApproach` + capability section
+- Governance flow and engagement lifecycle — were prose/principle-only; added as visual sequences
 
-**Baseline:** Homepage/Practice already share `EnterpriseArchitectureApproach` covering much of A/B. Prefer enhancing gaps (governance/engagement) over duplicating BIDAT.
+**Files modified:**
 
-**Files likely affected:**
-
-- `src/pages/architecture/practice.astro`
-- `src/components/EnterpriseArchitectureApproach.astro` and/or new focused model components
-- `src/data/ea-approach.ts` / new `src/data/*` model copy
-- `src/styles/global.css`
-- Possibly reuse `ArchitectureFlow.astro`
+- `src/data/architecture-practice-models.ts` — model copy
+- `src/components/ArchitectureSequence.astro` — shared sequence component (2 models; reusable later)
+- `src/pages/architecture/practice.astro` — place models after Principles, before capability domains
+- `src/styles/global.css` — `.arch-sequence-*` (extends beliefs/ea-feedback patterns)
+- `docs/META-RECOMMENDATIONS-TASKS.md` — status notes
 
 **Acceptance criteria:**
 
-- [ ] Only high-value models added; no diagram spam
-- [ ] No unnecessary duplication of existing EA approach diagram
-- [ ] Models are conceptual, vendor-neutral, non-employer-specific
-- [ ] Accessible labels; responsive; reduced-motion safe
+- [x] Only high-value models added; no diagram spam
+- [x] No unnecessary duplication of existing EA approach diagram
+- [x] Models are conceptual, vendor-neutral, non-employer-specific
+- [x] Accessible labels; responsive; reduced-motion safe
 
-**Validation:** Practice page review desktop/mobile; CSS size delta; check/build.
+**Validation:**
+
+- `npm run validate` / `test:publication` / `check` / production build — PASS
+- Responsive 1440–390 dark+light — no overflow
+- Performance vs true pre-change: CSS **+3,001 B**, JS **0**, Practice HTML **+5,873 B**, total dist **+8,874 B**
+- No new dependencies
+
+**Commit:** `feat: add governance and engagement models to Practice`
 
 ---
 
@@ -585,7 +588,7 @@ COBOL / enterprise engineering → full-stack digital engineering → technical 
 
 | Field | Value |
 | --- | --- |
-| Status | NOT STARTED |
+| Status | IN PROGRESS |
 | Priority | P1 |
 | Dependencies | Soft: after TASK-05; can share section with TASK-08 model C |
 | Human review required | Yes |

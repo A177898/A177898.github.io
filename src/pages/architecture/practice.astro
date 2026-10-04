@@ -3,12 +3,17 @@ import PageLayout from '../../layouts/PageLayout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import EnterpriseArchitectureApproach from '../../components/EnterpriseArchitectureApproach.astro';
 import ArchitectureBeliefs from '../../components/ArchitectureBeliefs.astro';
+import ArchitectureSequence from '../../components/ArchitectureSequence.astro';
 import CapabilityCard from '../../components/CapabilityCard.astro';
 import RevealInit from '../../components/RevealInit.astro';
 import {
   enterpriseArchitecturePractice,
   supportingSpecialisms,
 } from '../../data/capabilities';
+import {
+  architectureEngagementModel,
+  architectureGovernanceModel,
+} from '../../data/architecture-practice-models';
 import { profile } from '../../data/profile';
 import { eaApproach } from '../../data/ea-approach';
 import { pageTitle } from '../../data/seo';
@@ -51,6 +56,10 @@ const eaHasRelated = eaRelatedPerspectives.length > 0 || eaRelatedArchitectures.
   <EnterpriseArchitectureApproach variant="full" id="ea-approach" />
 
   <ArchitectureBeliefs id="architecture-beliefs" />
+
+  <ArchitectureSequence model={architectureGovernanceModel} />
+
+  <ArchitectureSequence model={architectureEngagementModel} />
 
   <section class="section-space" aria-labelledby="capability-domains-heading">
     <div class="site-shell">
