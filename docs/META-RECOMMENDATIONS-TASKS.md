@@ -739,7 +739,7 @@ COBOL / enterprise engineering → full-stack digital engineering → technical 
 - Performance vs true pre-change: CSS **+4,235 B**, JS **0**, P02 HTML **+5,398 B**, total dist **+9,633 B**
 - Dependencies added: **0**
 
-**Commit:** not created — awaiting human approval.
+**Commit:** `feat: add Platform Capability Canvas to Perspective 02`
 
 ---
 
@@ -747,29 +747,28 @@ COBOL / enterprise engineering → full-stack digital engineering → technical 
 
 | Field | Value |
 | --- | --- |
-| Status | NOT STARTED |
+| Status | READY FOR REVIEW |
 | Priority | P1 |
 | Dependencies | Soft: precedes TASK-14; may share compare component with TASK-18 |
 | Human review required | Yes |
 
 **Perspective:** `src/content/perspectives/enterprise-authorization-beyond-rbac.mdx`
 
-**Baseline:** Prose already argues RBAC/ABAC are complementary; flows combine RBAC+ABAC+Relationship+Mandate+Limits+Context+Policy. Needs a concise comparison covering RBAC, ABAC, ReBAC, Policy-based, Mandates/Limits across Strength / Limitation / Best use.
+**Outcome:** **IMPLEMENTED** — Complementary authorization model comparison added in §5 after narrative model blurbs and before the existing combined `ArchitectureFlow`. Covers RBAC, ABAC, ReBAC, Policy-based authorization, and Mandates / Limits across What it expresses / Strength / Limitation / Best use. Policy framed as decision logic; Mandates / Limits as domain authority. Optional second composition model **not added** — existing combined flow already covers that. No pseudo-policy (TASK-14). Uncommitted pending human review.
 
-**Critical message:** Models are complementary, not mutually exclusive.
+**Files modified:**
 
-**Files likely affected:**
-
-- `src/content/perspectives/enterprise-authorization-beyond-rbac.mdx`
-- `src/components/ArchitectureCompare.astro` and/or new comparison table/figure component
-- `src/styles/global.css`
+- `src/data/authorization-model-compare.ts` — comparison copy
+- `src/components/AuthorizationModelCompare.astro` — semantic table + stacked mobile
+- `src/content/perspectives/enterprise-authorization-beyond-rbac.mdx` — placement in §5
+- `src/styles/global.css` — `.authz-compare*` styles
 
 **Acceptance criteria:**
 
-- [ ] Comparison covers listed models and dimensions
-- [ ] Does not claim one model universally replaces another
-- [ ] Complements existing thesis; no vendor endorsement
-- [ ] Readable on mobile (table strategy considered)
+- [x] Comparison covers listed models and dimensions
+- [x] Does not claim one model universally replaces another
+- [x] Complements existing thesis; no vendor endorsement
+- [x] Readable on mobile (table strategy considered)
 
 **Validation:** Perspective review; a11y for table/figure; check/build.
 

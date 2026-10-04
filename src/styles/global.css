@@ -1551,6 +1551,129 @@
     @apply mt-6 m-0 max-w-3xl border-l-2 border-accent pl-4 text-sm leading-relaxed text-ink/90;
   }
 
+  /* —— Authorization model comparison (Perspective 03) ——
+     Complementary responsibilities, not a winner matrix.
+     One semantic table: matrix on lg+, stacked labelled cells below. */
+  .authz-compare {
+    @apply my-10 border border-border bg-band/50 px-4 py-5 sm:px-6 sm:py-7;
+  }
+
+  .authz-compare__eyebrow {
+    @apply m-0 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-muted;
+  }
+
+  .authz-compare__title {
+    @apply mt-2 m-0 font-serif text-2xl text-ink sm:text-3xl;
+  }
+
+  .authz-compare__lead {
+    @apply mt-3 m-0 max-w-3xl text-sm leading-relaxed text-muted;
+  }
+
+  .authz-compare__table-wrap {
+    @apply mt-8 min-w-0;
+  }
+
+  .authz-compare__table {
+    @apply w-full border-collapse text-left text-sm leading-relaxed;
+  }
+
+  .authz-compare__table thead th {
+    @apply border-b border-border px-3 py-3 font-sans text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-muted;
+  }
+
+  .authz-compare__table tbody th,
+  .authz-compare__table tbody td {
+    @apply border-b border-border/80 px-3 py-4 align-top text-ink/90;
+  }
+
+  .authz-compare__table tbody tr:last-child th,
+  .authz-compare__table tbody tr:last-child td {
+    @apply border-b-0;
+  }
+
+  .authz-compare__model {
+    @apply font-normal;
+  }
+
+  .authz-compare__model-name {
+    @apply block font-serif text-base text-ink;
+  }
+
+  .authz-compare__model-meta {
+    @apply mt-1 flex flex-col gap-0.5;
+  }
+
+  .authz-compare__kind {
+    @apply font-sans text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-accent;
+  }
+
+  .authz-compare__short {
+    @apply text-xs leading-snug text-muted;
+  }
+
+  .authz-compare__callout {
+    @apply mt-8 border-l-2 border-accent bg-surface/80 px-4 py-4 sm:px-5;
+  }
+
+  .authz-compare__callout-title {
+    @apply m-0 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-muted;
+  }
+
+  .authz-compare__callout-text {
+    @apply mt-3 m-0 max-w-3xl text-sm leading-relaxed text-ink/90;
+  }
+
+  .authz-compare__caption {
+    @apply mt-6 m-0 max-w-3xl text-sm leading-relaxed text-muted;
+  }
+
+  .prose-perspective .authz-compare {
+    @apply text-base;
+  }
+
+  /* Stack below xl so five columns stay readable at 1024/768/390. */
+  @media (max-width: 1279px) {
+    .authz-compare__table thead {
+      @apply absolute -m-px h-px w-px overflow-hidden whitespace-nowrap border-0 p-0;
+      clip: rect(0 0 0 0);
+    }
+
+    .authz-compare__table,
+    .authz-compare__table tbody,
+    .authz-compare__table tr,
+    .authz-compare__table th,
+    .authz-compare__table td {
+      @apply block;
+    }
+
+    .authz-compare__table tbody {
+      @apply space-y-4;
+    }
+
+    .authz-compare__table tr {
+      @apply border border-border bg-surface px-4 py-4;
+    }
+
+    .authz-compare__table tbody th,
+    .authz-compare__table tbody td {
+      @apply border-0 border-t border-border/80 px-0 py-3;
+    }
+
+    .authz-compare__table tbody th {
+      @apply border-t-0 pb-3 pt-0;
+    }
+
+    .authz-compare__table tbody td::before {
+      content: attr(data-label);
+      @apply mb-1 block font-sans text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-muted;
+    }
+
+    .authz-compare__model-name {
+      @apply text-xl;
+    }
+  }
+
   .prose-perspective pre {
     @apply my-6 overflow-x-auto border border-border bg-band/70 px-4 py-4 font-mono text-[0.82rem] leading-relaxed text-ink sm:text-sm;
   }

@@ -1,0 +1,76 @@
+---
+/**
+ * Complementary authorization model comparison — presentation-only.
+ * One semantic table: readable matrix on wide viewports; stacked rows on narrow.
+ * Distinguishes access-control models, decision logic, and domain authority.
+ */
+import { authorizationModelCompare as compare } from '../data/authorization-model-compare';
+
+interface Props {
+  id?: string;
+}
+
+const { id = compare.id } = Astro.props;
+const titleId = `${id}-title`;
+const complementaryId = `${id}-complementary`;
+const { columns, rows } = compare;
+---
+
+<figure class="authz-compare" aria-labelledby={titleId} id={id}>
+  <div class="authz-compare__header">
+    <p class="authz-compare__eyebrow">Comparison</p>
+    <h3 id={titleId} class="authz-compare__title">{compare.title}</h3>
+    <p class="authz-compare__lead">{compare.lead}</p>
+  </div>
+
+  <div class="authz-compare__table-wrap">
+    <table class="authz-compare__table">
+      <caption class="sr-only">
+        Comparison of RBAC, ABAC, ReBAC, policy-based authorization, and mandates / limits across
+        what each expresses, strength, limitation and best use.
+      </caption>
+      <thead>
+        <tr>
+          <th scope="col">{columns.model}</th>
+          <th scope="col">{columns.expresses}</th>
+          <th scope="col">{columns.strength}</th>
+          <th scope="col">{columns.limitation}</th>
+          <th scope="col">{columns.bestUse}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          rows.map((row) => (
+            <tr class={`authz-compare__row authz-compare__row--${row.kind}`}>
+              <th scope="row" class="authz-compare__model" data-label={columns.model}>
+                <span class="authz-compare__model-name">{row.model}</span>
+                <span class="authz-compare__model-meta">
+                  <span class="authz-compare__kind">{row.kindLabel}</span>
+                  <span class="authz-compare__short">{row.shortName}</span>
+                </span>
+              </th>
+              <td data-label={columns.expresses}>{row.expresses}</td>
+              <td data-label={columns.strength}>{row.strength}</td>
+              <td data-label={columns.limitation}>{row.limitation}</td>
+              <td data-label={columns.bestUse}>{row.bestUse}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <aside class="authz-compare__callout" aria-labelledby={complementaryId}>
+    <p id={complementaryId} class="authz-compare__callout-title">
+      Complementary by design
+    </p>
+    <p class="authz-compare__callout-text">{compare.complementary}</p>
+    <p class="authz-compare__callout-text">{compare.policyNote}</p>
+    <p class="authz-compare__callout-text">{compare.domainNote}</p>
+  </aside>
+
+  <figcaption class="authz-compare__caption">
+    RBAC, ABAC, ReBAC and mandates / limits provide different forms of authority or context.
+    Policy-based authorization evaluates how those inputs combine into an effective decision.
+  </figcaption>
+</figure>
