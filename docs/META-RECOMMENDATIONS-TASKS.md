@@ -672,7 +672,7 @@ COBOL / enterprise engineering → full-stack digital engineering → technical 
 
 | Field | Value |
 | --- | --- |
-| Status | READY FOR REVIEW |
+| Status | APPROVED |
 | Priority | P1 |
 | Dependencies | Soft: diagram component enhancements may help TASK-16 |
 | Human review required | Yes |
@@ -701,7 +701,7 @@ COBOL / enterprise engineering → full-stack digital engineering → technical 
 - Performance vs true pre-change: CSS **+5,558 B**, JS **0**, P01 HTML **+4,096 B**, total dist **+9,654 B**
 - Dependencies added: **0**
 
-**Commit:** not created — awaiting human approval.
+**Commit:** `feat: add transition visuals to Perspective 01`
 
 ---
 
@@ -709,33 +709,37 @@ COBOL / enterprise engineering → full-stack digital engineering → technical 
 
 | Field | Value |
 | --- | --- |
-| Status | NOT STARTED |
+| Status | APPROVED |
 | Priority | P1 |
 | Dependencies | Soft: may introduce reusable canvas component |
 | Human review required | Yes |
 
-**Perspective:** `src/content/perspectives/designing-platforms-as-enterprise-capabilities.mdx`
+**Outcome:** **IMPLEMENTED** — Platform Capability Canvas added after §5 Boundaries. Independently developed aid disclaimer included. Dimensions grouped: Value / Consumption / Boundary & Control / Run & Evolve. Optional “Should this be a platform?” decision model **not added** — existing §2 trade-off principle + §14 `PerspectiveChecklist` already cover decision judgement without a simplistic algorithm.
 
-**Objective:** Create reusable **Platform Capability Canvas** (independently developed aid — not an external industry framework) plus optional “Should this be a platform?” decision model.
+**Files modified:**
 
-**Suggested canvas dimensions:** Capability, Consumers, Boundary, Value, Contract, Consumer Experience, Reliability, Ownership, Governance, Economics, Evolution.
-
-**Files likely affected:**
-
-- `src/content/perspectives/designing-platforms-as-enterprise-capabilities.mdx`
-- New component e.g. `src/components/PlatformCapabilityCanvas.astro`
-- Optional decision model via `ArchitectureFlow` / `PerspectiveChecklist`
-- `src/styles/global.css`
+- `src/data/platform-capability-canvas.ts` — canvas copy
+- `src/components/PlatformCapabilityCanvas.astro` — canvas component
+- `src/content/perspectives/designing-platforms-as-enterprise-capabilities.mdx` — placement after boundaries
+- `src/styles/global.css` — `.platform-canvas-*`
+- `docs/META-RECOMMENDATIONS-TASKS.md` — status notes
 
 **Acceptance criteria:**
 
-- [ ] Canvas helps evaluate platform behaviour
-- [ ] Clearly presented as independently developed architectural aid
-- [ ] Optional decision model remains concise
-- [ ] No invented adoption metrics
-- [ ] Responsive + accessible
+- [x] Canvas helps evaluate platform behaviour
+- [x] Clearly presented as independently developed architectural aid
+- [x] Optional decision model remains concise (omitted; checklist retained)
+- [x] No invented adoption metrics
+- [x] Responsive + accessible
 
-**Validation:** Perspective review at desktop/mobile; check/build.
+**Validation:**
+
+- `npm run validate` / `test:publication` / `check` / production build — PASS
+- Responsive 1440–390 dark+light — no overflow
+- Performance vs true pre-change: CSS **+4,235 B**, JS **0**, P02 HTML **+5,398 B**, total dist **+9,633 B**
+- Dependencies added: **0**
+
+**Commit:** not created — awaiting human approval.
 
 ---
 

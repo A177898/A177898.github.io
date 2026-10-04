@@ -1,0 +1,48 @@
+---
+/**
+ * Platform Capability Canvas — editorial framing aid for Perspective 02.
+ * Independently developed; not an external standard. No JS / no interaction required.
+ */
+import { platformCapabilityCanvas as canvas } from '../data/platform-capability-canvas';
+
+interface Props {
+  id?: string;
+}
+
+const { id = 'platform-capability-canvas' } = Astro.props;
+const titleId = `${id}-title`;
+---
+
+<figure class="platform-canvas" aria-labelledby={titleId} id={id}>
+  <div class="platform-canvas__header">
+    <p class="platform-canvas__eyebrow">Architectural aid</p>
+    <h3 id={titleId} class="platform-canvas__title">{canvas.title}</h3>
+    <p class="platform-canvas__framing">{canvas.framing}</p>
+    <p class="platform-canvas__purpose">{canvas.purpose}</p>
+  </div>
+
+  <div class="platform-canvas__groups">
+    {
+      canvas.groups.map((group) => (
+        <section class="platform-canvas__group" aria-labelledby={`${id}-${group.id}`}>
+          <h4 id={`${id}-${group.id}`} class="platform-canvas__group-title">
+            {group.title}
+          </h4>
+          <ul class="platform-canvas__dimensions">
+            {group.dimensions.map((dimension) => (
+              <li class="platform-canvas__dimension" id={`${id}-${dimension.id}`}>
+                <p class="platform-canvas__dimension-title">{dimension.title}</p>
+                <p class="platform-canvas__dimension-prompt">{dimension.prompt}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+  </div>
+
+  <figcaption class="platform-canvas__caption">
+    Own the boundary clearly, contract explicitly, and leave domain ownership where it belongs —
+    then judge whether the leverage still outweighs the dependency.
+  </figcaption>
+</figure>

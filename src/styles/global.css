@@ -1496,6 +1496,61 @@
     @apply border border-border bg-surface px-3 py-2 font-sans text-xs font-semibold uppercase tracking-[0.08em] text-ink;
   }
 
+  /* —— Platform Capability Canvas (Perspective 02) ——
+     Editorial canvas; semantic groups; not a KPI/scorecard grid. */
+  .platform-canvas {
+    @apply my-10 border border-border bg-band/50 px-4 py-5 sm:px-6 sm:py-7;
+  }
+
+  .platform-canvas__eyebrow {
+    @apply m-0 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-muted;
+  }
+
+  .platform-canvas__title {
+    @apply mt-2 m-0 font-serif text-2xl text-ink sm:text-3xl;
+  }
+
+  .platform-canvas__framing,
+  .platform-canvas__purpose {
+    @apply mt-3 m-0 max-w-3xl text-sm leading-relaxed text-muted;
+  }
+
+  .platform-canvas__purpose {
+    @apply mt-2;
+  }
+
+  .platform-canvas__groups {
+    @apply mt-8 grid gap-6 lg:grid-cols-2;
+  }
+
+  .platform-canvas__group {
+    @apply border border-border bg-surface px-4 py-4 sm:px-5 sm:py-5;
+  }
+
+  .platform-canvas__group-title {
+    @apply m-0 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-accent;
+  }
+
+  .platform-canvas__dimensions {
+    @apply mt-4 m-0 list-none space-y-4 p-0;
+  }
+
+  .platform-canvas__dimension {
+    @apply border-t border-border/80 pt-3 first:border-t-0 first:pt-0;
+  }
+
+  .platform-canvas__dimension-title {
+    @apply m-0 font-serif text-lg text-ink;
+  }
+
+  .platform-canvas__dimension-prompt {
+    @apply mt-1 m-0 text-sm leading-relaxed text-muted;
+  }
+
+  .platform-canvas__caption {
+    @apply mt-6 m-0 max-w-3xl border-l-2 border-accent pl-4 text-sm leading-relaxed text-ink/90;
+  }
+
   .prose-perspective pre {
     @apply my-6 overflow-x-auto border border-border bg-band/70 px-4 py-4 font-mono text-[0.82rem] leading-relaxed text-ink sm:text-sm;
   }
