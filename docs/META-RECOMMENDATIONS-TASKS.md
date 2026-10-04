@@ -832,25 +832,24 @@ COBOL / enterprise engineering → full-stack digital engineering → technical 
 
 | Field | Value |
 | --- | --- |
-| Status | IN PROGRESS |
+| Status | APPROVED |
 | Priority | P1 |
 | Dependencies | Soft: after TASK-15 for shared styling; baseline `AuthorizationRuntimeFlow` already exists |
 | Human review required | Yes |
 
-**Objective:** Add or improve sequence-style visual: Consumer → PEP → PDP → decision information/policy → decision → obligation → re-evaluation → domain authorization → domain invariant → protected action; **DENY terminal**; vendor-neutral.
+**Outcome:** **IMPLEMENTED** — Enhanced existing `AuthorizationRuntimeFlow` (not replaced). Clarified PEP intercept/enforce vs PDP evaluate; DENY labelled terminal with no re-entry; named illustrative blocking obligations (STEP_UP, REQUIRE_APPROVAL, REQUIRE_SECOND_AUTHORIZER); explicit note that fulfilment ≠ automatic ALLOW and re-evaluation returns a new decision for the PEP; enterprise authority-to-attempt vs domain validity on the effective-ALLOW path; visible title/lead/caption. No AP/ADR/semantic changes. **Approved 2026-10-04** — commit: `feat: clarify RA01 runtime authorization decision sequence`.
 
-**Files likely affected:**
+**Files modified:**
 
-- `src/content/architectures/enterprise-authorization.mdx`
-- `src/components/AuthorizationRuntimeFlow.astro`
-- `src/styles/global.css`
+- `src/components/AuthorizationRuntimeFlow.astro` — clarity enhancements
+- `src/styles/global.css` — `.authz-runtime__*` header/caption/return-note styles
 
 **Acceptance criteria:**
 
-- [ ] Sequence covers the listed responsibilities
-- [ ] DENY is terminal
-- [ ] Vendor-neutral; no deployment topology claim
-- [ ] Complements rather than contradicts ADRs
+- [x] Sequence covers the listed responsibilities
+- [x] DENY is terminal
+- [x] Vendor-neutral; no deployment topology claim
+- [x] Complements rather than contradicts ADRs
 
 **Validation:** RA01 section review; a11y; check/build.
 
@@ -860,7 +859,7 @@ COBOL / enterprise engineering → full-stack digital engineering → technical 
 
 | Field | Value |
 | --- | --- |
-| Status | NOT STARTED |
+| Status | IN PROGRESS |
 | Priority | P1 |
 | Dependencies | Soft: after TASK-15/16 styling conventions |
 | Human review required | Yes |

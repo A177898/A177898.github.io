@@ -2088,6 +2088,22 @@
     @apply m-0 list-disc space-y-1 pl-5 text-sm text-muted;
   }
 
+  .authz-runtime__header {
+    @apply mb-6;
+  }
+
+  .authz-runtime__eyebrow {
+    @apply m-0 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-muted;
+  }
+
+  .authz-runtime__title {
+    @apply mt-2 m-0 font-serif text-2xl text-ink sm:text-3xl;
+  }
+
+  .authz-runtime__lead {
+    @apply mt-3 m-0 max-w-3xl text-sm leading-relaxed text-muted;
+  }
+
   .authz-runtime__trunk {
     @apply m-0 flex list-none flex-col p-0;
   }
@@ -2104,12 +2120,20 @@
     @apply border border-border bg-surface px-4 py-4;
   }
 
+  .authz-runtime__branch--deny {
+    @apply border-l-2 border-l-border;
+  }
+
   .authz-runtime__split {
     @apply mt-3 grid gap-4 lg:grid-cols-2;
   }
 
   .authz-runtime__path {
     @apply border border-border/80 bg-band/40 px-3 py-3;
+  }
+
+  .authz-runtime__path-intro {
+    @apply m-0 mt-2 text-sm leading-relaxed text-muted;
   }
 
   .authz-runtime__path-steps {
@@ -2132,12 +2156,20 @@
     @apply text-base leading-none;
   }
 
+  .authz-runtime__return-note {
+    @apply m-0 max-w-xl text-sm leading-relaxed text-ink/90;
+  }
+
   .authz-runtime__return-link {
     @apply font-sans text-sm text-ink underline decoration-border underline-offset-2 hover:decoration-ink;
   }
 
   .authz-runtime__rules {
     @apply mt-5 list-disc space-y-2 border-t border-border/80 pt-4 pl-5;
+  }
+
+  .authz-runtime__caption {
+    @apply mt-5 m-0 max-w-3xl border-l-2 border-accent pl-4 text-sm leading-relaxed text-ink/90;
   }
 
   .related-artifacts {
