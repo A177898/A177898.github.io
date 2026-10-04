@@ -4,11 +4,13 @@ interface Props {
   subtitle?: string;
   eyebrow?: string;
   lead?: string;
+  /** Restrained career credibility / progression line beneath the lead. */
+  credibility?: string;
   /** Split layout with architecture model on the right (homepage). */
   split?: boolean;
 }
 
-const { title, subtitle, eyebrow, lead, split = false } = Astro.props;
+const { title, subtitle, eyebrow, lead, credibility, split = false } = Astro.props;
 ---
 
 <section class:list={['hero-block', 'section-space', split && 'hero-block--split']}>
@@ -22,6 +24,11 @@ const { title, subtitle, eyebrow, lead, split = false } = Astro.props;
         )
       }
       {lead && <p class="hero-block__lead mt-5 max-w-2xl text-muted">{lead}</p>}
+      {
+        credibility && (
+          <p class="hero-block__credibility">{credibility}</p>
+        )
+      }
       <div class="hero-block__actions mt-10 flex flex-wrap items-center gap-x-6 gap-y-3">
         <slot name="actions" />
       </div>

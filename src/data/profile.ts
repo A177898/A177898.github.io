@@ -16,6 +16,13 @@ export const profile = {
   propositionSupport:
     'My enterprise architecture approach starts with Business Architecture: clarifying outcomes, capabilities and value streams before shaping information, data, application and technology architectures. This keeps technology decisions aligned with business priorities and translates direction into practical transition roadmaps.',
   /**
+   * Homepage hero credibility line — career progression signal, not a second headline.
+   * Distinct from Experience/About leads: domains spanned, not role/scope rails.
+   * No tenure metrics or comparative claims.
+   */
+  careerCredibility:
+    'From software engineering to enterprise architecture — experience spanning transactional systems, digital engineering, technical leadership, solution architecture and enterprise technology strategy.',
+  /**
    * Plain-language explanation of enterprise architecture (BIDAT framing).
    * Prefer on About / practice; avoid repeating verbatim beside the proposition.
    */

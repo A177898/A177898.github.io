@@ -211,10 +211,12 @@ Do **not** merge tasks merely because they touch the same file. Keep individuall
 
 | Field | Value |
 | --- | --- |
-| Status | NOT STARTED |
+| Status | APPROVED |
 | Priority | P0 |
 | Dependencies | None |
 | Human review required | Yes — before any subsequent task |
+
+**Outcome:** **NO PRODUCT CHANGE REQUIRED** (verification-only). **Approved 2026-10-04** — no implementation commit.
 
 **Baseline finding:** Display already uses `Oct 2026 — Present` on Experience and Resume because `pendingAppointment: False` on `01-enterprise-architect-standard-bank.md`. Residual pending-appointment plumbing still exists for genuinely future-dated roles and must be retained.
 
@@ -243,25 +245,34 @@ Do **not** merge tasks merely because they touch the same file. Keep individuall
 
 **Acceptance criteria:**
 
-- [ ] Published Experience shows `Oct 2026 — Present` for Enterprise Architect
-- [ ] Published Resume shows the same period label
-- [ ] No production surface shows `Effective Oct 2026`
-- [ ] No production surface shows `Pending effective date`
-- [ ] Title remains Enterprise Architect
-- [ ] Employer remains Standard Bank Group
-- [ ] Start remains Oct 2026
-- [ ] Publication metadata unchanged
-- [ ] Other career entries untouched
-- [ ] Generic support for genuinely future appointments is retained
+- [x] Published Experience shows `Oct 2026 — Present` for Enterprise Architect
+- [x] Published Resume shows the same period label
+- [x] No production surface shows `Effective Oct 2026`
+- [x] No production surface shows `Pending effective date`
+- [x] Title remains Enterprise Architect
+- [x] Employer remains Standard Bank Group
+- [x] Start remains Oct 2026
+- [x] Publication metadata unchanged
+- [x] Other career entries untouched
+- [x] Generic support for genuinely future appointments is retained
 
 **Validation:**
 
-- `npm run validate`
-- `npm run test:publication`
-- `npm run check`
-- `PUBLIC_SITE_URL=https://A177898.github.io npm run build`
-- Inspect `dist/experience/index.html` and `dist/resume/index.html`
-- Search production output for `Effective Oct 2026` and `Pending effective date` (expect none)
+- `npm run validate` — PASS
+- `npm run test:publication` — PASS (45 checks; pending helper tests retained)
+- `npm run check` — PASS
+- `PUBLIC_SITE_URL=https://A177898.github.io npm run build` — PASS
+- Inspect `dist/experience/index.html` and `dist/resume/index.html` — both associate Enterprise Architect / Standard Bank Group with `Oct 2026 — Present`
+- Dist-wide search: `Effective Oct 2026` = 0; `Pending effective date` = 0
+
+**Verification notes (2026-10-04):**
+
+- Frontmatter (`01-enterprise-architect-standard-bank.md`): `role: Enterprise Architect`, `organisation: Standard Bank Group`, `period.start: Oct 2026`, `pendingAppointment: False`, `status: published`, `classification: amber`, `approvedForPublication: true`
+- Experience timeline periods remain: Oct 2026 — Present; Jun 2024 — Sep 2026; May 2023 — Jun 2024; Apr 2022 — May 2023; Mar 2019 — Apr 2022; Jul 2015 — Feb 2019; Mar 2014 — Jun 2015; Jan 2010 — Feb 2014
+- “Pending effective date” UI remains DEV-only gated (`showDraftIndicators && pendingAppointment === true`) and does not render for this role
+- Generic `formatExperiencePeriod(..., { pendingAppointment: true }) → Effective {start}` retained for future-dated roles
+- Product files modified for TASK-01: **None**
+- Implementation commit: **None** (no empty commit)
 
 ---
 
@@ -311,7 +322,7 @@ Do **not** merge tasks merely because they touch the same file. Keep individuall
 
 | Field | Value |
 | --- | --- |
-| Status | NOT STARTED |
+| Status | APPROVED |
 | Priority | P1 |
 | Dependencies | Soft: before or immediately after TASK-02; inspect duplication with About/Experience leads |
 | Human review required | Yes |
@@ -326,20 +337,35 @@ Do **not** merge tasks merely because they touch the same file. Keep individuall
 - Experience page lead already: “Progression from software engineering through technical leadership…”
 - `profile.careerArc` / About summary already cover the arc
 
-**Files likely affected:**
+**Files modified:**
 
-- `src/pages/index.astro`
-- `src/components/Hero.astro`
-- `src/data/profile.ts` (preferred single source for the line)
+- `src/data/profile.ts` — added `careerCredibility`
+- `src/components/Hero.astro` — optional `credibility` prop; rendered after lead, before actions
+- `src/pages/index.astro` — passes `profile.careerCredibility`
+- `src/styles/global.css` — `.hero-block__credibility` (muted, smaller, subtle top rule)
 
 **Acceptance criteria:**
 
-- [ ] Credibility line appears near hero, restrained
-- [ ] No “14 years…” or comparative South Africa claims
-- [ ] No material duplication with adjacent homepage copy
-- [ ] Does not overpower brand/name hierarchy
+- [x] Credibility line appears near hero, restrained
+- [x] No “14 years…” or comparative South Africa claims
+- [x] No material duplication with adjacent homepage copy
+- [x] Does not overpower brand/name hierarchy
 
-**Validation:** Homepage visual check desktop + mobile; build/check as needed.
+**Final wording:**  
+`From software engineering to enterprise architecture — experience spanning transactional systems, digital engineering, technical leadership, solution architecture and enterprise technology strategy.`
+
+**Duplication approach:** Homepage line emphasises domains spanned (transactional systems, digital engineering, … strategy). Experience lead keeps role→scope rails. About keeps systems→platforms→enterprise narrative. Resume still uses `careerArc` arrow string. About/Experience content untouched.
+
+**Validation:**
+
+- `npm run validate` — PASS
+- `npm run test:publication` — PASS
+- `npm run check` — PASS
+- `PUBLIC_SITE_URL=https://A177898.github.io npm run build` — PASS
+- Responsive review 1440/1280/1024/768/390 dark+light — no horizontal overflow; name/role/proposition remain dominant
+- Performance vs immediate pre-change build: CSS **+635 B**, JS **0**, total dist **+874 B**
+
+**Commit:** not created yet — awaiting human approval.
 
 ---
 

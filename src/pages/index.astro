@@ -22,6 +22,7 @@ const hasExperience = (await getCollection('experience')).some((entry) =>
     title={profile.fullName}
     subtitle={`“${profile.proposition}”`}
     lead={profile.propositionSupport}
+    credibility={profile.careerCredibility}
   >
     <Fragment slot="actions">
       <a class="btn-primary btn-with-arrow" href="#ea-approach">
