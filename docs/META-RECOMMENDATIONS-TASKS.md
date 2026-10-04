@@ -422,36 +422,40 @@ COBOL / enterprise engineering → full-stack digital engineering → technical 
 
 | Field | Value |
 | --- | --- |
-| Status | NOT STARTED |
+| Status | APPROVED |
 | Priority | P1 |
 | Dependencies | Soft: before TASK-09 (shared language); decide page home (About and/or Practice) |
 | Human review required | Yes |
 
+**Outcome:** **IMPLEMENTED** — placed on Architecture Practice only (not About), after the EA approach model and before capability domains.
+
+**Placement decision:** Architecture Practice is the primary home (how Yusuf practises architecture). About remains career narrative. No duplication across pages.
+
 **Objective:** Add a concise professional-principles section (beliefs, not universal truths), plus a small “What architecture is not” / boundaries set.
 
-**Candidate principles:**
+**Files modified:**
 
-1. Technology should follow capability and problem definition.
-2. Architecture must make trade-offs explicit.
-3. Transition architecture is as important as target-state architecture.
-4. Governance should create guardrails, not bottlenecks.
-5. Architecture should increase delivery autonomy rather than centralise every decision.
-
-**Files likely affected:**
-
-- Preferred placement decision during implementation: `src/pages/about.astro` and/or `src/pages/architecture/practice.astro`
-- New data module e.g. `src/data/architecture-beliefs.ts` (recommended)
-- Possibly `src/components/PrincipleCallout.astro` reuse or a small dedicated section component
-- `src/styles/global.css`
+- `src/data/architecture-beliefs.ts` — principles + boundaries copy
+- `src/components/ArchitectureBeliefs.astro` — section component
+- `src/pages/architecture/practice.astro` — insert after EA approach
+- `src/styles/global.css` — `.beliefs-*` styles
+- `docs/META-RECOMMENDATIONS-TASKS.md` — status notes
 
 **Acceptance criteria:**
 
-- [ ] Framed as professional principles / personal practice, not universal laws
-- [ ] Includes concise boundaries (“architecture is not…”)
-- [ ] No employer-specific governance claims
-- [ ] Concise; executive tone; not a manifesto wall
+- [x] Framed as professional principles / personal practice, not universal laws
+- [x] Includes concise boundaries (“architecture is not…”)
+- [x] No employer-specific governance claims
+- [x] Concise; executive tone; not a manifesto wall
 
-**Validation:** Copy review; responsive layout; check/build.
+**Validation:**
+
+- `npm run validate` / `test:publication` / `check` / production build — PASS
+- Responsive 1440–390 dark+light — no overflow
+- Performance vs true pre-change: CSS **+2,753 B**, JS **0**, Practice HTML **+3,397 B**, total dist **+6,150 B**
+- About unchanged; Experience / Perspectives / RA untouched
+
+**Commit:** not created yet — awaiting human approval.
 
 ---
 

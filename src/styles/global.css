@@ -751,6 +751,39 @@
     @apply mt-2 text-sm leading-relaxed text-muted sm:text-[0.95rem];
   }
 
+  /* —— Architecture beliefs / boundaries —— */
+  .beliefs-principles {
+    @apply m-0 max-w-3xl list-none border-t border-border p-0;
+  }
+
+  .beliefs-principles__item {
+    @apply grid gap-3 border-b border-border py-6 sm:grid-cols-[3rem_minmax(0,1fr)] sm:gap-6 sm:py-7;
+  }
+
+  .beliefs-principles__index {
+    @apply m-0 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-accent;
+  }
+
+  .beliefs-principles__title {
+    @apply m-0 font-serif text-xl text-ink sm:text-2xl;
+  }
+
+  .beliefs-principles__text {
+    @apply mt-2 m-0 text-base leading-relaxed text-muted;
+  }
+
+  .beliefs-boundaries {
+    @apply max-w-3xl border border-border bg-surface px-5 py-6 sm:px-7 sm:py-8;
+  }
+
+  .beliefs-boundaries__list {
+    @apply m-0 list-none space-y-4 p-0;
+  }
+
+  .beliefs-boundaries__item {
+    @apply border-l-2 border-accent/50 pl-4 text-base leading-relaxed text-ink;
+  }
+
   /* —— About career story —— */
   .about-opening {
     @apply max-w-2xl;
