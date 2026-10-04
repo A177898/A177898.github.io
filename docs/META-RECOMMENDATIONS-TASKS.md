@@ -807,30 +807,24 @@ COBOL / enterprise engineering → full-stack digital engineering → technical 
 
 | Field | Value |
 | --- | --- |
-| Status | NOT STARTED |
+| Status | APPROVED |
 | Priority | P1 |
 | Dependencies | Soft: start of RA01 visual suite; shares styling with TASK-16–18 |
 | Human review required | Yes |
 
 **RA01:** `src/content/architectures/enterprise-authorization.mdx`
 
-**Objective (assess-first):** Assess whether an additional enterprise-context visual materially improves orientation beyond the existing `AuthorizationLogicalModel` (Actors/Consumers → Enforcement → Authorization Capability → Domain Authorities → Protected Domains). **Do not add** an additional diagram unless that assessment is affirmative. If added, keep logical (not physical/deployment); do not force C4 terminology.
+**Outcome:** **NO PRODUCT CHANGE REQUIRED** (assess-first). Existing `AuthorizationLogicalModel` already provides enterprise orientation: Consumers → PEP → PDP → PEP enforcement → Domain authorization + invariants → Protected action, plus decision-information dependencies (Entitlements, Authorization Context, Published policy, Domain authorities) and PAP control plane. A separate higher-level context diagram would largely repeat those layers without adding a distinct abstraction. Enterprise vs domain boundary is reinforced by the logical model, Architecture Position boundaries, and the dedicated “Enterprise vs domain authorization” section. **Approved 2026-10-04** — planning-status commit only (`docs: mark TASK-15 approved`).
 
-**Baseline:** `AuthorizationLogicalModel` already exists — assess gap before adding. A valid READY FOR REVIEW outcome is “no additional diagram required,” with rationale.
-
-**Files likely affected (only if assessment says add):**
-
-- `src/content/architectures/enterprise-authorization.mdx`
-- `src/components/AuthorizationLogicalModel.astro` and/or new context visual component
-- `src/styles/global.css`
+**Assessment (eight orientation questions):** answered by existing logical model + surrounding RA01 sections — see task report. No new diagram.
 
 **Acceptance criteria:**
 
-- [ ] Explicit assess-then-implement (or assess-then-skip) decision documented in task notes when READY FOR REVIEW
-- [ ] No additional diagram unless it materially improves orientation beyond `AuthorizationLogicalModel`
-- [ ] If added: logical architecture view only; no physical deployment implication; no forced C4 labelling
+- [x] Explicit assess-then-implement (or assess-then-skip) decision documented in task notes when READY FOR REVIEW
+- [x] No additional diagram unless it materially improves orientation beyond `AuthorizationLogicalModel`
+- [x] If added: logical architecture view only — N/A (not added)
 
-**Validation:** RA01 orientation assessment; build/size delta only if a diagram is added.
+**Validation:** Assessment-only; no product-file delta; no empty implementation commit.
 
 ---
 
@@ -838,7 +832,7 @@ COBOL / enterprise engineering → full-stack digital engineering → technical 
 
 | Field | Value |
 | --- | --- |
-| Status | NOT STARTED |
+| Status | IN PROGRESS |
 | Priority | P1 |
 | Dependencies | Soft: after TASK-15 for shared styling; baseline `AuthorizationRuntimeFlow` already exists |
 | Human review required | Yes |
