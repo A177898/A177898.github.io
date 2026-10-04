@@ -353,6 +353,10 @@
     @apply relative overflow-hidden border border-border bg-canvas p-4 sm:p-6 lg:p-8;
   }
 
+  .ea-framework--homepage .ea-framework__canvas {
+    @apply sm:p-7 lg:p-8;
+  }
+
   .ea-band {
     @apply border border-border bg-surface px-4 py-4 sm:px-5 sm:py-5;
   }
@@ -363,6 +367,91 @@
 
   .ea-band__role {
     @apply mr-2 inline-block text-accent;
+  }
+
+  /* Focusable layers — definitions remain readable without hover */
+  .ea-layer {
+    @apply outline-none transition-[border-color,background-color,box-shadow] duration-200;
+  }
+
+  .ea-layer:hover,
+  .ea-layer:focus-visible {
+    border-color: color-mix(in oklab, var(--yk-accent) 55%, var(--yk-border));
+    background-color: color-mix(in oklab, var(--yk-accent-soft) 55%, var(--yk-surface));
+  }
+
+  .ea-layer:focus-visible {
+    box-shadow: 0 0 0 2px color-mix(in oklab, var(--yk-accent) 45%, transparent);
+  }
+
+  .ea-layer__title {
+    @apply mt-2 m-0 font-serif text-lg text-ink sm:text-xl;
+  }
+
+  .ea-layer__title--foundation {
+    @apply text-xl sm:text-2xl;
+  }
+
+  .ea-layer__def {
+    @apply mt-2 m-0 max-w-3xl text-sm leading-relaxed text-muted;
+  }
+
+  .ea-journey {
+    @apply m-0 list-none p-0;
+  }
+
+  .ea-journey__item {
+    @apply m-0;
+  }
+
+  .ea-band--stage {
+    @apply bg-surface;
+  }
+
+  .ea-cross-compact {
+    @apply mt-3 m-0 grid list-none gap-2 p-0 sm:grid-cols-3 sm:gap-0;
+  }
+
+  .ea-cross-compact__item {
+    @apply border border-border bg-canvas px-3 py-3 sm:border-y-0 sm:border-l-0 sm:border-r sm:px-4;
+  }
+
+  .ea-cross-compact__item:first-child {
+    @apply sm:border-l;
+  }
+
+  .ea-cross-compact__item:last-child {
+    @apply sm:border-r;
+  }
+
+  .ea-cross-compact__title {
+    @apply block font-serif text-base text-ink;
+  }
+
+  .ea-cross-compact__text {
+    @apply mt-1 block text-xs leading-relaxed text-muted sm:text-sm;
+  }
+
+  .ea-feedback__cue {
+    @apply font-medium text-ink;
+  }
+
+  .ea-bidat__text--secondary {
+    @apply mt-1 text-xs text-muted;
+  }
+
+  .ea-approach--homepage .ea-spanning {
+    @apply bg-transparent;
+  }
+
+  .ea-approach--homepage .ea-band--dimensions {
+    @apply bg-band/40;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ea-layer {
+      transition: none;
+    }
   }
 
   .ea-chip-row {

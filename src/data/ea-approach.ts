@@ -38,7 +38,9 @@ export const eaApproach = {
     },
   },
   businessIntent: {
-    label: 'Business strategy and intended outcomes',
+    label: 'Strategy',
+    detail: 'Business strategy and intended outcomes',
+    definition: 'Defines business intent and desired outcomes.',
     items: [
       'Strategy',
       'Customer and stakeholder outcomes',
@@ -52,6 +54,9 @@ export const eaApproach = {
   businessArchitecture: {
     label: 'Business Architecture',
     role: 'Business foundation within EA',
+    summary: 'Business capability · outcomes · direction',
+    definition:
+      'Translates strategy into capabilities, organisational context and business change that inform information, data, application and technology architecture.',
     items: [
       'Outcomes',
       'Capabilities',
@@ -69,30 +74,40 @@ export const eaApproach = {
       title: 'Information Architecture',
       short: 'Information',
       description: 'Business meaning, information needs and information flows.',
+      definition: 'Defines the information required to support capabilities and decisions.',
     },
     {
       id: 'data',
       title: 'Data Architecture',
       short: 'Data',
       description: 'Data structures, ownership, quality and lifecycle.',
+      definition: 'Establishes ownership, structure, quality and lifecycle of data.',
     },
     {
       id: 'application',
       title: 'Application Architecture',
       short: 'Application',
       description: 'Application responsibilities, services and interactions.',
+      definition: 'Defines application responsibilities, boundaries and interactions.',
     },
     {
       id: 'technology',
       title: 'Technology Architecture',
-      short: 'Technology Architecture',
+      short: 'Technology',
       description: 'Infrastructure, runtime environments and technical platforms.',
+      definition:
+        'Establishes the infrastructure and technology environment supporting capabilities.',
     },
   ] as const,
+  /** IDAT label — Information, Data, Application, Technology within BIDAT. */
+  idatLabel: 'Information · Data · Application · Technology',
   crossDomain: {
     label: 'Cross-domain alignment',
+    role: 'Across BIDAT',
     note:
       'People, process and technology concerns cut across the BIDAT domains — they do not replace those domains.',
+    definition:
+      'Architectural outcomes depend on alignment across people, process and technology as well as the BIDAT domains.',
     items: [
       {
         id: 'people',
@@ -108,7 +123,7 @@ export const eaApproach = {
       },
       {
         id: 'technology-concern',
-        title: 'Technology (alignment)',
+        title: 'Technology',
         description:
           'How technology choices support people and process — distinct from the Technology Architecture domain.',
       },
@@ -118,16 +133,44 @@ export const eaApproach = {
     label: 'Spanning concerns',
     items: ['Governance', 'Principles', 'Security', 'Risk'] as const,
   },
+  /**
+   * Explicit change journey — Target → Transition → Delivery.
+   * Homepage and full variants share this lifecycle for scanability.
+   */
+  changeStages: [
+    {
+      id: 'target',
+      label: 'Target Architecture',
+      role: 'Direction',
+      definition: 'Describes the intended future architecture.',
+    },
+    {
+      id: 'transition',
+      label: 'Transition Architecture / Roadmap',
+      role: 'Path',
+      definition: 'Defines achievable intermediate states and dependencies.',
+    },
+    {
+      id: 'delivery',
+      label: 'Delivery',
+      role: 'Execution',
+      definition: 'Turns architecture direction into executable change.',
+    },
+  ] as const,
+  /** Compact labels retained for text equivalents and residual UI. */
   transition: {
     label: 'Making change achievable',
     steps: [
-      'Target states',
-      'Transition roadmaps',
-      'Delivery alignment',
+      'Target Architecture',
+      'Transition Architecture / Roadmap',
+      'Delivery',
     ] as const,
   },
   outcomes: {
-    label: 'Business outcomes and feedback',
+    label: 'Outcomes',
+    detail: 'Business outcomes and feedback',
+    definition:
+      'Provide evidence that architecture is producing intended business and technology results.',
     framing: 'Intended outcomes — not claims of measured results.',
     items: [
       'Customer value',
@@ -137,6 +180,7 @@ export const eaApproach = {
     ] as const,
     feedback:
       'Outcomes inform business direction, and the BIDAT domains iterate — the approach is cyclical, not a one-way waterfall.',
+    feedbackCue: 'Feedback / evidence → strategy and architecture refinement',
   },
   typicalOutputs: {
     title: 'Typical outputs',

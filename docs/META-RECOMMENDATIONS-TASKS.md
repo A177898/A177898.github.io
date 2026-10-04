@@ -280,41 +280,43 @@ Do **not** merge tasks merely because they touch the same file. Keep individuall
 
 | Field | Value |
 | --- | --- |
-| Status | NOT STARTED |
+| Status | APPROVED |
 | Priority | P1 |
 | Dependencies | Soft: TASK-03 optional before/after; coordinate reuse with TASK-08 |
 | Human review required | Yes |
 
-**Baseline finding:** `EnterpriseArchitectureApproach` already provides a strong HTML/CSS model below the fold. Hero still relies on textual BIDAT explanation (`profile.propositionSupport`). Target flow in backlog is broader (includes Delivery / Outcomes feedback more explicitly) and wants accessible hover/focus definitions.
+**Outcome:** **IMPLEMENTED** — enhanced existing `EnterpriseArchitectureApproach` (homepage focused variant + shared lifecycle clarity); no second competing model; no new JS dependencies.
+
+**Baseline finding:** `EnterpriseArchitectureApproach` already provided Strategy → BA → BIDAT → transition bundle → outcomes. Lifecycle Target / Transition / Delivery was compressed; definitions and feedback cue needed strengthening for homepage scanability.
 
 **Objective:** Transform homepage EA/BIDAT positioning into a stronger visual architecture model that communicates architecture (not decoration), while preserving BIDAT as Yusuf’s framing (not an industry standard claim — see `eaApproach.synthesisNote`).
 
-**Files likely affected:**
+**Files modified:**
 
-- `src/pages/index.astro`
-- `src/components/EnterpriseArchitectureApproach.astro`
-- `src/data/ea-approach.ts`
-- `src/data/profile.ts` (only if reducing duplicated hero prose)
-- `src/styles/global.css` (`.ea-*` diagram styles)
-- Possibly new small presentational helper component under `src/components/` if interaction pattern is reusable
+- `src/components/EnterpriseArchitectureApproach.astro` — homepage-focused layered model; shared Target→Transition→Delivery journey; focusable layers; compact cross-domain on homepage; fuller Practice variant retained
+- `src/data/ea-approach.ts` — definitions, `changeStages`, BA summary, feedback cue; BIDAT framing preserved
+- `src/styles/global.css` — `.ea-layer*`, `.ea-journey`, `.ea-cross-compact`, focus/hover, reduced-motion
+- `docs/META-RECOMMENDATIONS-TASKS.md` — status notes
 
 **Acceptance criteria:**
 
-- [ ] Visual communicates approximately: Strategy → Business Architecture / capability → Information/Data/Application/Technology → cross-domain People·Process·Technology → Target → Transition/Roadmap → Delivery → Outcomes/Feedback
-- [ ] BIDAT not presented as an industry standard
-- [ ] Responsive SVG or structured HTML/CSS; semantic labels
-- [ ] Lightweight interaction only; keyboard accessible; reduced-motion safe
-- [ ] No heavy JS libraries
-- [ ] Does not duplicate confusingly with Practice full variant — homepage may be a focused variant
-- [ ] Executive tone preserved; not dashboard-like
+- [x] Visual communicates approximately: Strategy → Business Architecture / capability → Information/Data/Application/Technology → cross-domain People·Process·Technology → Target → Transition/Roadmap → Delivery → Outcomes/Feedback
+- [x] BIDAT not presented as an industry standard (`synthesisNote` retained)
+- [x] Responsive structured HTML/CSS; semantic labels / figcaption / text equivalent
+- [x] Lightweight interaction only (CSS hover/focus); keyboard accessible; reduced-motion safe
+- [x] No heavy JS libraries; dependencies added = 0
+- [x] Practice continues with richer `full` variant; homepage uses focused variant
+- [x] Executive tone preserved; not dashboard-like
 
 **Validation:**
 
-- Visual review at 1440 / 768 / 390, dark + light
-- Keyboard focus through interactive definitions
-- `prefers-reduced-motion` behaviour
-- `npm run check` + production build
-- CSS size delta vs baseline (~114 KiB)
+- Responsive 1440/1280/1024/768/390 dark+light — no horizontal overflow
+- Keyboard focus across 11 `[data-ea-layer]` regions
+- `prefers-reduced-motion` disables layer transitions
+- `npm run validate` / `test:publication` / `check` / production build — PASS
+- Performance vs immediate pre-change: CSS **+4.3 KiB**, JS **0**, homepage HTML **+3.7 KiB**, total dist **+12.8 KiB**
+
+**Commit:** not created yet — awaiting human approval.
 
 ---
 
