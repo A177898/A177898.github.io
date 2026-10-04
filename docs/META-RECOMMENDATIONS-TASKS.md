@@ -505,31 +505,40 @@ COBOL / enterprise engineering → full-stack digital engineering → technical 
 
 | Field | Value |
 | --- | --- |
-| Status | NOT STARTED |
+| Status | APPROVED |
 | Priority | P1 |
 | Dependencies | None hard; benefits from Practice/Perspectives/RA already published |
 | Human review required | Yes |
 
+**Outcome:** **IMPLEMENTED** — Architecture Hub rewritten as an editorial evidence entry point: intro, Practice → Perspectives → Reference journey, foundational Practice entry, Perspectives/RA entries with production-derived counts (3 / 1), relationship cue. Radar remains absent (no published entries). No publication metadata changes.
+
 **Objective:** Transform Architecture Hub from a quiet index into a stronger architecture entry point while preserving Practice → Perspectives → Reference evidence journey.
 
-**Files likely affected:**
+**Files modified:**
 
-- `src/pages/architecture/index.astro`
-- Possibly small presentational components if needed
-- `src/styles/global.css` (hub hierarchy; avoid dashboard cards escalation)
-- Counts derived from published collections (already partially available in page)
+- `src/pages/architecture/index.astro` — hub IA, journey, differentiated entries, dynamic published counts
+- `src/styles/global.css` — `.arch-hub-*` editorial hierarchy styles
+- `docs/META-RECOMMENDATIONS-TASKS.md` — status notes
 
 **Acceptance criteria:**
 
-- [ ] Stronger visual hierarchy as architecture entry point
-- [ ] Published counts: Perspectives **3**, Reference Architectures **1** (derived, not hard-coded falsely)
-- [ ] Short explanation of each evidence type
-- [ ] Clearer connection to Architecture Practice
-- [ ] No Technology Radar “Coming Soon”
-- [ ] Empty sections remain hidden
-- [ ] Avoid dashboard aesthetics
+- [x] Stronger visual hierarchy as architecture entry point
+- [x] Published counts: Perspectives **3**, Reference Architectures **1** (derived via `isPublished`)
+- [x] Short explanation of each evidence type
+- [x] Clearer connection to Architecture Practice
+- [x] No Technology Radar “Coming Soon”
+- [x] Empty sections remain hidden
+- [x] Avoid dashboard aesthetics
 
-**Validation:** Hub visual review; confirm radar still absent when empty; build/prune behaviour unchanged.
+**Validation:**
+
+- `npm run validate` / `test:publication` / `check` / production build — PASS
+- Hub links resolve; radar route pruned (404); no radar card on hub
+- Responsive 1440–390 dark+light — no overflow
+- Performance vs pre-change: CSS **+6,159 B**, JS **0**, Hub HTML **+1,068 B**, total dist **+7,227 B**
+- No new dependencies
+
+**Commit:** `feat: strengthen Architecture Hub as evidence entry point`
 
 ---
 
@@ -537,7 +546,7 @@ COBOL / enterprise engineering → full-stack digital engineering → technical 
 
 | Field | Value |
 | --- | --- |
-| Status | NOT STARTED |
+| Status | IN PROGRESS |
 | Priority | P1 |
 | Dependencies | Soft: after TASK-02 (reuse EA diagram primitives); inspect existing diagrams first |
 | Human review required | Yes |

@@ -1777,6 +1777,108 @@
     @apply mt-1 text-sm leading-relaxed text-muted;
   }
 
+  /* —— Architecture Hub —— */
+  .arch-hub-journey {
+    @apply max-w-3xl border border-border bg-surface px-4 py-4 sm:px-5 sm:py-5;
+  }
+
+  .arch-hub-journey__eyebrow {
+    @apply m-0 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-muted;
+  }
+
+  .arch-hub-journey__list {
+    @apply mt-4 m-0 flex list-none flex-col gap-4 p-0 sm:flex-row sm:flex-wrap sm:items-start sm:gap-x-3 sm:gap-y-4;
+  }
+
+  .arch-hub-journey__item {
+    @apply flex items-start gap-3 sm:max-w-[14rem] sm:flex-1;
+  }
+
+  .arch-hub-journey__index {
+    @apply mt-0.5 font-sans text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-accent;
+  }
+
+  .arch-hub-journey__body {
+    @apply min-w-0 flex-1;
+  }
+
+  .arch-hub-journey__label {
+    @apply m-0 font-serif text-lg text-ink;
+  }
+
+  .arch-hub-journey__text {
+    @apply mt-1 m-0 text-sm leading-snug text-muted;
+  }
+
+  .arch-hub-journey__connector {
+    @apply hidden text-muted sm:mt-1 sm:inline;
+  }
+
+  .arch-hub-entries {
+    @apply flex max-w-3xl flex-col gap-5;
+  }
+
+  .arch-hub-entry {
+    @apply block border border-border bg-surface px-4 py-5 no-underline transition-colors sm:px-5 sm:py-6;
+  }
+
+  .arch-hub-entry:hover,
+  .arch-hub-entry:focus-visible {
+    @apply bg-accent-soft/35;
+  }
+
+  .arch-hub-entry--practice {
+    @apply border-l-[3px] border-l-accent px-4 py-6 sm:px-6 sm:py-7;
+  }
+
+  .arch-hub-entry--perspectives {
+    @apply sm:ml-0;
+  }
+
+  .arch-hub-entry--reference {
+    @apply border-border;
+  }
+
+  .arch-hub-entry__meta {
+    @apply flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1;
+  }
+
+  .arch-hub-entry__count {
+    @apply m-0 font-sans text-xs font-medium tracking-[0.04em] text-muted;
+  }
+
+  .arch-hub-entry__title {
+    @apply mt-2 font-serif text-2xl text-ink sm:text-3xl;
+  }
+
+  .arch-hub-entry--practice .arch-hub-entry__title {
+    @apply text-3xl sm:text-[2.15rem];
+  }
+
+  .arch-hub-entry--perspectives .arch-hub-entry__title {
+    @apply text-2xl sm:text-[1.75rem];
+  }
+
+  .arch-hub-entry--reference .arch-hub-entry__title {
+    @apply text-2xl tracking-tight sm:text-[1.7rem];
+  }
+
+  .arch-hub-entry__text {
+    @apply mt-3 max-w-2xl text-sm leading-relaxed text-muted sm:text-[0.95rem];
+  }
+
+  .arch-hub-entry--practice .arch-hub-entry__text {
+    @apply text-base text-ink/85;
+  }
+
+  .arch-hub-entry__cta {
+    @apply mt-5 inline-block font-sans text-sm font-semibold text-accent;
+  }
+
+  .arch-hub-cue {
+    @apply m-0 border-l border-border pl-4 text-sm leading-relaxed text-muted;
+  }
+
   .nav-disclosure__trigger {
     @apply inline-flex items-center gap-1.5;
   }
