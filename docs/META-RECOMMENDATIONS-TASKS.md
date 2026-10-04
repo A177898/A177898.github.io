@@ -942,36 +942,39 @@ COBOL / enterprise engineering → full-stack digital engineering → technical 
 
 | Field | Value |
 | --- | --- |
-| Status | IN PROGRESS |
+| Status | READY FOR REVIEW |
 | Priority | P1 |
 | Dependencies | **All of TASK-01 through TASK-19** |
 | Human review required | Yes |
 
-**Objective:** Portfolio-wide UX review and refinement only after earlier tasks complete.
+**Outcome:** **IMPLEMENTED** (minimal) — Portfolio-wide assess-first review after TASK-01…19. Positioning, discoverability, diagram density, terminology, publication safety, and responsive behaviour are coherent. One material refinement: dark-theme `.btn-primary` text contrast (`dark:text-ink` → `dark:text-canvas`) so primary CTAs meet readable contrast on the light accent surface. No new Perspectives/RAs/scope.
 
 **Validate achievement of:**
 
-- Stronger visual architecture communication
-- Better scanability
-- Stronger career differentiation
-- Better editorial reading
-- Stronger architecture credibility
-- No developer-portfolio drift
-- No excessive animation
-- No content duplication
-- No reduced accessibility
-- No material performance regression vs baseline in this document
+- Stronger visual architecture communication — **met**
+- Better scanability — **met**
+- Stronger career differentiation — **met**
+- Better editorial reading — **met**
+- Stronger architecture credibility — **met**
+- No developer-portfolio drift — **met**
+- No excessive animation — **met**
+- No content duplication — **met** (Practice centrepiece and EA approach share BIDAT plain-language opener by design; non-material)
+- No reduced accessibility — **met** after primary-button contrast fix
+- No material performance regression vs baseline — **met** (growth attributable to approved diagram CSS/HTML; external JS still 0)
 
-**Files likely affected:** Potentially small refinement touches across previously modified files only — no new programme scope.
+**Files modified:**
+
+- `src/styles/global.css` — dark primary button text on accent (`dark:text-canvas`)
+- `docs/META-RECOMMENDATIONS-TASKS.md` — TASK-19 APPROVED; TASK-20 status/outcome
 
 **Acceptance criteria:**
 
-- [ ] Review notes recorded against each success criterion
-- [ ] Performance compared to baseline table above
-- [ ] Only refinement fixes; no new backlog items silently expanded
-- [ ] Final validate / test:publication / check / build pass
+- [x] Review notes recorded against each success criterion
+- [x] Performance compared to baseline table above
+- [x] Only refinement fixes; no new backlog items silently expanded
+- [x] Final validate / test:publication / check / build pass
 
-**Validation:** Full page matrix (Home→404), dark/light, key breakpoints; performance deltas; quality scripts.
+**Validation:** Full page matrix (Home→404), dark/light, key breakpoints; Playwright overflow sweep (50 checks, 0 overflow); performance deltas; quality scripts.
 
 ---
 
