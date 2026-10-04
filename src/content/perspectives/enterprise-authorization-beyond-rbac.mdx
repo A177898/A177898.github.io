@@ -39,6 +39,7 @@ import ArchitectureBranch from '../../components/ArchitectureBranch.astro';
 import ArchitectureCompare from '../../components/ArchitectureCompare.astro';
 import ArchitectureDecision from '../../components/ArchitectureDecision.astro';
 import AuthorizationModelCompare from '../../components/AuthorizationModelCompare.astro';
+import AuthorizationPseudoPolicy from '../../components/AuthorizationPseudoPolicy.astro';
 import PrincipleCallout from '../../components/PrincipleCallout.astro';
 import PerspectiveChecklist from '../../components/PerspectiveChecklist.astro';
 
@@ -493,6 +494,10 @@ My principle is:
 > **Authorization should be able to express not only whether an action is permitted, but what conditions must be satisfied before it can proceed.**
 
 The exact decision model may vary by domain, but the distinction between outcome, obligation and reason is valuable.
+
+Those complementary inputs and richer outcomes can be expressed together as decision intent. For example:
+
+<AuthorizationPseudoPolicy />
 
 ## 10. Separate policy decision from enforcement
 

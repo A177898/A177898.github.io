@@ -747,14 +747,14 @@ COBOL / enterprise engineering → full-stack digital engineering → technical 
 
 | Field | Value |
 | --- | --- |
-| Status | READY FOR REVIEW |
+| Status | APPROVED |
 | Priority | P1 |
 | Dependencies | Soft: precedes TASK-14; may share compare component with TASK-18 |
 | Human review required | Yes |
 
 **Perspective:** `src/content/perspectives/enterprise-authorization-beyond-rbac.mdx`
 
-**Outcome:** **IMPLEMENTED** — Complementary authorization model comparison added in §5 after narrative model blurbs and before the existing combined `ArchitectureFlow`. Covers RBAC, ABAC, ReBAC, Policy-based authorization, and Mandates / Limits across What it expresses / Strength / Limitation / Best use. Policy framed as decision logic; Mandates / Limits as domain authority. Optional second composition model **not added** — existing combined flow already covers that. No pseudo-policy (TASK-14). Uncommitted pending human review.
+**Outcome:** **IMPLEMENTED** — Complementary authorization model comparison added in §5 after narrative model blurbs and before the existing combined `ArchitectureFlow`. Covers RBAC, ABAC, ReBAC, Policy-based authorization, and Mandates / Limits across What it expresses / Strength / Limitation / Best use. Policy framed as decision logic; Mandates / Limits as domain authority. Optional second composition model **not added** — existing combined flow already covers that. No pseudo-policy (TASK-14). **Approved 2026-10-04** — commit: `feat: add complementary authorization model comparison to Perspective 03`.
 
 **Files modified:**
 
@@ -778,27 +778,26 @@ COBOL / enterprise engineering → full-stack digital engineering → technical 
 
 | Field | Value |
 | --- | --- |
-| Status | NOT STARTED |
+| Status | READY FOR REVIEW |
 | Priority | P1 |
 | Dependencies | **After TASK-13** (or immediately paired only if separable in review) |
 | Human review required | Yes |
 
-**Objective:** Add one concrete vendor-neutral pseudo-policy example illustrating authorization as a decision, not merely a permission lookup.
+**Outcome:** **IMPLEMENTED** — Vendor-neutral illustrative pseudo-policy added at end of §9 (after complementary models in §5 and richer ALLOW/DENY/obligation semantics). Generic approval scenario combining RBAC authority, organisation scope, amount limit, mandate, separation of duties; OTHERWISE maps to DENY / REQUIRE_APPROVAL / STEP_UP_REQUIRED. Explicit non-executable disclaimer. Separate optional breakdown **not added** — OTHERWISE branch already maps condition → impact. Uncommitted pending human review.
 
-**Must not add:** OPA Rego, Cedar, proprietary policy language, vendor-specific syntax.
+**Files modified:**
 
-**Files likely affected:**
-
-- `src/content/perspectives/enterprise-authorization-beyond-rbac.mdx`
-- Optional presentational component for pseudo-policy block
-- `src/styles/global.css`
+- `src/data/authorization-pseudo-policy.ts` — example copy
+- `src/components/AuthorizationPseudoPolicy.astro` — editorial block
+- `src/content/perspectives/enterprise-authorization-beyond-rbac.mdx` — placement after §9 principle
+- `src/styles/global.css` — `.authz-pseudo*` styles
 
 **Acceptance criteria:**
 
-- [ ] Example follows SUBJECT/RESOURCE/AMOUNT/MANDATE/initiation-style logic from brief
-- [ ] Vendor-neutral pseudo syntax only
-- [ ] Reinforces “decision, not permission lookup”
-- [ ] No OpenAPI/contract implementation
+- [x] Example follows SUBJECT/RESOURCE/AMOUNT/MANDATE/initiation-style logic from brief
+- [x] Vendor-neutral pseudo syntax only
+- [x] Reinforces “decision, not permission lookup”
+- [x] No OpenAPI/contract implementation
 
 **Validation:** Content review; build; ensure no accidental vendor syntax.
 

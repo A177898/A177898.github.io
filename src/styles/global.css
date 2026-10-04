@@ -1674,6 +1674,44 @@
     }
   }
 
+  /* —— Authorization pseudo-policy (Perspective 03) ——
+     Editorial illustrative block; wraps on narrow viewports; no syntax theme. */
+  .authz-pseudo {
+    @apply my-10 border border-border bg-band/50 px-4 py-5 sm:px-6 sm:py-7;
+  }
+
+  .authz-pseudo__eyebrow {
+    @apply m-0 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-muted;
+  }
+
+  .authz-pseudo__title {
+    @apply mt-2 m-0 font-serif text-2xl text-ink sm:text-3xl;
+  }
+
+  .authz-pseudo__lead {
+    @apply mt-3 m-0 max-w-3xl text-sm leading-relaxed text-muted;
+  }
+
+  .authz-pseudo__disclaimer {
+    @apply mt-5 m-0 max-w-3xl border-l-2 border-accent pl-4 text-sm leading-relaxed text-ink/90;
+  }
+
+  .authz-pseudo__block {
+    @apply mt-6 m-0 max-w-full overflow-x-auto whitespace-pre-wrap break-words border border-border bg-surface px-4 py-4 font-mono text-[0.78rem] leading-relaxed text-ink sm:px-5 sm:text-[0.82rem];
+  }
+
+  .authz-pseudo__block code {
+    @apply font-mono text-inherit;
+  }
+
+  .authz-pseudo__caption {
+    @apply mt-5 m-0 max-w-3xl text-sm leading-relaxed text-muted;
+  }
+
+  .prose-perspective .authz-pseudo {
+    @apply text-base;
+  }
+
   .prose-perspective pre {
     @apply my-6 overflow-x-auto border border-border bg-band/70 px-4 py-4 font-mono text-[0.82rem] leading-relaxed text-ink sm:text-sm;
   }
