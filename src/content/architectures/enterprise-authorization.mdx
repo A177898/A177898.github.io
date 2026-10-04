@@ -46,6 +46,7 @@ import ArchitectureResponsibility from '../../components/ArchitectureResponsibil
 import AuthorizationLogicalModel from '../../components/AuthorizationLogicalModel.astro';
 import AuthorizationRuntimeFlow from '../../components/AuthorizationRuntimeFlow.astro';
 import AuthorizationTrustModel from '../../components/AuthorizationTrustModel.astro';
+import DeploymentPatternCompare from '../../components/DeploymentPatternCompare.astro';
 import PrincipleCallout from '../../components/PrincipleCallout.astro';
 import PerspectiveChecklist from '../../components/PerspectiveChecklist.astro';
 
@@ -760,6 +761,10 @@ Strengths: low latency, local autonomy. Trade-offs: policy distribution, drift r
 ### Hybrid
 
 Different authorization classes may use different deployment patterns.
+
+A concise trade-off comparison across the four patterns:
+
+<DeploymentPatternCompare />
 
 ### Deployment decision flow
 

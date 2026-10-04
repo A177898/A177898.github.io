@@ -887,27 +887,26 @@ COBOL / enterprise engineering → full-stack digital engineering → technical 
 
 | Field | Value |
 | --- | --- |
-| Status | IN PROGRESS |
+| Status | APPROVED |
 | Priority | P1 |
 | Dependencies | Soft: after TASK-13 compare patterns / shared matrix component; must not change ADRs |
 | Human review required | Yes |
 
-**Objective:** Visually compare Central decision service, Distributed decision nodes, Embedded evaluation, Hybrid across latency, consistency, blast radius, resilience, operational complexity. No universal winner.
+**Outcome:** **IMPLEMENTED** — Qualitative deployment-pattern matrix added after Hybrid subsection. Patterns: Central / Distributed / Embedded / Hybrid × Latency / Consistency / Blast radius / Resilience / Operational complexity. Explicit no-universal-winner + logical-vs-deployment callout. Reuses TASK-13 `.authz-compare` CSS (CSS delta ≈ +70 B). ADRs/APs unchanged. **Approved 2026-10-04** — commit: `feat: add RA01 deployment pattern comparison matrix`.
 
-**Baseline:** Section already exists as prose/ASCII under “Deployment patterns”.
+**Files modified:**
 
-**Files likely affected:**
-
-- `src/content/architectures/enterprise-authorization.mdx`
-- Comparison component / styles
-- `src/styles/global.css`
+- `src/data/deployment-pattern-compare.ts` — comparison copy
+- `src/components/DeploymentPatternCompare.astro` — matrix using shared `.authz-compare` styles
+- `src/content/architectures/enterprise-authorization.mdx` — placement under Deployment patterns
+- `src/styles/global.css` — prose-architecture hook for `.authz-compare` only
 
 **Acceptance criteria:**
 
-- [ ] Visual comparison of four patterns and dimensions
-- [ ] No ranked universal winner
-- [ ] ADR decisions unchanged
-- [ ] Vendor-neutral
+- [x] Visual comparison of four patterns and dimensions
+- [x] No ranked universal winner
+- [x] ADR decisions unchanged
+- [x] Vendor-neutral
 
 **Validation:** RA01 review; ensure ADR tables untouched in meaning; build.
 
@@ -917,7 +916,7 @@ COBOL / enterprise engineering → full-stack digital engineering → technical 
 
 | Field | Value |
 | --- | --- |
-| Status | NOT STARTED |
+| Status | IN PROGRESS |
 | Priority | P2 |
 | Dependencies | None (may be scheduled late or after TASK-01) |
 | Human review required | Yes |

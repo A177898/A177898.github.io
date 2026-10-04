@@ -1628,7 +1628,8 @@
     @apply mt-6 m-0 max-w-3xl text-sm leading-relaxed text-muted;
   }
 
-  .prose-perspective .authz-compare {
+  .prose-perspective .authz-compare,
+  .prose-architecture .authz-compare {
     @apply text-base;
   }
 
@@ -2648,7 +2649,8 @@
   .prose-architecture .arch-flow,
   .prose-architecture .perspective-checklist,
   .prose-architecture .arch-register,
-  .prose-architecture .arch-responsibility {
+  .prose-architecture .arch-responsibility,
+  .prose-architecture .authz-compare {
     @apply text-base;
   }
 }
