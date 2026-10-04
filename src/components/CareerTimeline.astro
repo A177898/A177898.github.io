@@ -1,17 +1,26 @@
 ---
 import type { TimelineItem } from '../types/experience';
+import { profile } from '../data/profile';
 
 interface Props {
   items: TimelineItem[];
 }
 
 const { items } = Astro.props;
+const scopeArc = profile.scopeArc;
 
 function summaryParagraphs(summary: string): string[] {
   return summary
     .split(/\n\s*\n/)
     .map((part) => part.replace(/\s+/g, ' ').trim())
     .filter(Boolean);
+}
+
+/** Map existing narrativeGroup cues onto the Systems→Enterprise arc for visual emphasis. */
+function activeScopeStages(narrativeGroup?: string): string[] {
+  if (!narrativeGroup) return [];
+  const text = narrativeGroup.toLowerCase();
+  return scopeArc.filter((stage) => text.includes(stage.toLowerCase()));
 }
 ---
 
@@ -23,20 +32,40 @@ function summaryParagraphs(summary: string): string[] {
         const showFocusAreas = (item.focusAreas?.length ?? 0) > 0;
         const isConcise = item.density === 'concise';
         const isDetailed = item.density === 'detailed';
+        const isModerate = item.density === 'moderate';
+        const isCurrent = /\bPresent\b/i.test(item.periodLabel);
         const hasNarrative = paragraphs.length > 0;
+        const splitNarrative = !isConcise && paragraphs.length >= 2;
+        const contributionParas = splitNarrative ? paragraphs.slice(0, -1) : paragraphs;
+        const perspectivePara = splitNarrative ? paragraphs[paragraphs.length - 1] : null;
+        const activeStages = activeScopeStages(item.narrativeGroup);
 
         return (
           <li
             class:list={[
               'experience-timeline__item',
               `experience-timeline__item--${item.density}`,
+              isCurrent && 'experience-timeline__item--current',
             ]}
           >
-            <div class="experience-timeline__marker" aria-hidden="true" />
+            <div
+              class:list={[
+                'experience-timeline__marker',
+                isDetailed && 'experience-timeline__marker--prominent',
+                isCurrent && 'experience-timeline__marker--current',
+                isConcise && 'experience-timeline__marker--concise',
+              ]}
+              aria-hidden="true"
+            />
 
             <div class="experience-timeline__body">
               <div class="experience-timeline__meta">
                 <p class="eyebrow">{item.periodLabel}</p>
+                {isCurrent && (
+                  <span class="experience-timeline__current" aria-label="Current role">
+                    Current
+                  </span>
+                )}
                 {item.showDraftIndicator && (
                   <span class="experience-timeline__draft">Draft</span>
                 )}
@@ -51,6 +80,7 @@ function summaryParagraphs(summary: string): string[] {
                 class:list={[
                   'experience-timeline__role',
                   isDetailed && 'experience-timeline__role--prominent',
+                  isCurrent && 'experience-timeline__role--current',
                   isConcise && 'experience-timeline__role--concise',
                 ]}
               >
@@ -58,16 +88,61 @@ function summaryParagraphs(summary: string): string[] {
               </h2>
               <p class="experience-timeline__org">{item.organisation}</p>
 
+              {item.narrativeGroup && (
+                <div class="experience-timeline__scope">
+                  <p class="experience-timeline__scope-label">
+                    <span class="experience-timeline__scope-kicker">Scope</span>
+                    <span class="experience-timeline__scope-value">{item.narrativeGroup}</span>
+                  </p>
+                  {activeStages.length > 0 && (
+                    <p class="experience-timeline__scope-arc" aria-label="Scope progression context">
+                      {scopeArc.map((stage, index) => (
+                        <span
+                          class:list={[
+                            'experience-timeline__scope-stage',
+                            activeStages.includes(stage) &&
+                              'experience-timeline__scope-stage--active',
+                          ]}
+                        >
+                          {stage}
+                          {index < scopeArc.length - 1 && (
+                            <span class="experience-timeline__scope-join" aria-hidden="true">
+                              →
+                            </span>
+                          )}
+                        </span>
+                      ))}
+                    </p>
+                  )}
+                </div>
+              )}
+
               {hasNarrative && (
                 <div
                   class:list={[
                     'experience-timeline__summary',
-                    isConcise ? 'experience-timeline__summary--concise' : undefined,
+                    isConcise && 'experience-timeline__summary--concise',
+                    isModerate && 'experience-timeline__summary--moderate',
                   ]}
                 >
-                  {paragraphs.map((paragraph) => (
-                    <p>{paragraph}</p>
-                  ))}
+                  {splitNarrative ? (
+                    <>
+                      <div class="experience-timeline__block">
+                        <p class="experience-timeline__block-label">Contribution</p>
+                        {contributionParas.map((paragraph) => (
+                          <p>{paragraph}</p>
+                        ))}
+                      </div>
+                      {perspectivePara && (
+                        <div class="experience-timeline__block experience-timeline__block--perspective">
+                          <p class="experience-timeline__block-label">Perspective</p>
+                          <p>{perspectivePara}</p>
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    contributionParas.map((paragraph) => <p>{paragraph}</p>)
+                  )}
                 </div>
               )}
 

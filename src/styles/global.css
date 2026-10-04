@@ -814,12 +814,24 @@
   }
 
   /* —— Career rail —— */
+  .career-rail {
+    @apply max-w-3xl border border-border bg-surface px-4 py-4 sm:px-5 sm:py-5;
+  }
+
+  .career-rail__eyebrow {
+    @apply m-0 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-muted;
+  }
+
   .career-rail__list {
-    @apply m-0 flex list-none flex-wrap items-center gap-x-2 gap-y-2 p-0;
+    @apply mt-3 m-0 flex list-none flex-wrap items-center gap-x-2 gap-y-2 p-0;
   }
 
   .career-rail__item {
     @apply flex items-center gap-2;
+  }
+
+  .career-rail__index {
+    @apply font-sans text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-accent;
   }
 
   .career-rail__label {
@@ -828,6 +840,10 @@
 
   .career-rail__connector {
     @apply text-muted;
+  }
+
+  .career-rail__note {
+    @apply mt-3 m-0 text-sm text-muted;
   }
 
   .progression-pair__item {
@@ -995,6 +1011,18 @@
     @apply pb-14 sm:pb-16;
   }
 
+  .experience-timeline__item--detailed .experience-timeline__body {
+    @apply border border-border bg-surface/60 px-4 py-5 sm:px-5 sm:py-6;
+  }
+
+  .experience-timeline__item--current .experience-timeline__body {
+    @apply border-l-[3px] border-l-accent;
+  }
+
+  .experience-timeline__item--moderate {
+    @apply pb-11 sm:pb-12;
+  }
+
   .experience-timeline__item--concise {
     @apply pb-8 sm:pb-10;
   }
@@ -1003,8 +1031,24 @@
     @apply absolute -left-[1.91rem] top-1.5 h-3 w-3 rounded-full border-2 border-accent bg-surface sm:-left-[2.16rem];
   }
 
+  .experience-timeline__marker--prominent {
+    @apply h-3.5 w-3.5 border-accent bg-accent-soft;
+  }
+
+  .experience-timeline__marker--current {
+    @apply bg-accent;
+  }
+
+  .experience-timeline__marker--concise {
+    @apply h-2.5 w-2.5 border-border;
+  }
+
   .experience-timeline__meta {
     @apply flex flex-wrap items-center gap-3;
+  }
+
+  .experience-timeline__current {
+    @apply font-sans text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-accent;
   }
 
   .experience-timeline__draft {
@@ -1019,6 +1063,10 @@
     @apply text-3xl sm:text-4xl;
   }
 
+  .experience-timeline__role--current {
+    @apply text-3xl sm:text-[2.5rem];
+  }
+
   .experience-timeline__role--concise {
     @apply text-xl sm:text-2xl;
   }
@@ -1027,12 +1075,60 @@
     @apply mt-1 text-sm font-medium text-muted;
   }
 
+  .experience-timeline__scope {
+    @apply mt-4 max-w-3xl;
+  }
+
+  .experience-timeline__scope-label {
+    @apply m-0 flex flex-wrap items-baseline gap-x-2 gap-y-1;
+  }
+
+  .experience-timeline__scope-kicker {
+    @apply font-sans text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-accent;
+  }
+
+  .experience-timeline__scope-value {
+    @apply font-serif text-base text-ink sm:text-lg;
+  }
+
+  .experience-timeline__scope-arc {
+    @apply mt-2 m-0 flex flex-wrap items-center gap-x-1 gap-y-1 text-sm text-muted;
+  }
+
+  .experience-timeline__scope-stage {
+    @apply inline-flex items-center gap-1;
+  }
+
+  .experience-timeline__scope-stage--active {
+    @apply font-medium text-ink;
+  }
+
+  .experience-timeline__scope-join {
+    @apply ml-1 text-muted;
+  }
+
   .experience-timeline__summary {
     @apply mt-4 max-w-3xl space-y-3 text-base leading-relaxed text-ink;
   }
 
+  .experience-timeline__summary--moderate {
+    @apply text-[0.98rem] text-ink/90;
+  }
+
   .experience-timeline__summary--concise {
     @apply mt-3 max-w-2xl text-sm text-muted sm:text-base;
+  }
+
+  .experience-timeline__block + .experience-timeline__block {
+    @apply mt-4 border-t border-border/80 pt-4;
+  }
+
+  .experience-timeline__block-label {
+    @apply m-0 mb-2 font-sans text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-muted;
+  }
+
+  .experience-timeline__block--perspective .experience-timeline__block-label {
+    @apply text-accent;
   }
 
   .experience-timeline__focus {

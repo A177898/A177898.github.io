@@ -463,32 +463,41 @@ COBOL / enterprise engineering → full-stack digital engineering → technical 
 
 | Field | Value |
 | --- | --- |
-| Status | NOT STARTED |
+| Status | APPROVED |
 | Priority | P1 |
 | Dependencies | Soft: after TASK-01; may align language with TASK-04 |
 | Human review required | Yes |
 
+**Outcome:** **IMPLEMENTED** — presentation-led differentiation on Experience only. Existing `density` + `narrativeGroup` drive visual weight and scope markers. No invented achievements; titles/dates/employers/publication metadata unchanged. Architecture & Innovation density adjusted `detailed` → `moderate` to match preferred recent-vs-earlier weighting. Review correction: Solutions Architect `narrativeGroup` `Platforms → Enterprise` → `Solutions → Platforms` so Enterprise is first reached at Enterprise Architect.
+
 **Objective:** Improve Experience so role descriptions do not blur together structurally/visually. Make Systems → Solutions → Platforms → Enterprise progression visibly apparent. Recent roles may receive more visual weight (already partly via `density`).
 
-**Suggested structure per role (adapt to design):** Scope → Architectural/technical contribution → Perspective gained — **without inventing metrics**.
+**Files modified:**
 
-**Files likely affected:**
-
-- `src/pages/experience.astro`
-- `src/components/CareerTimeline.astro`
-- `src/components/CareerProgression.astro`
-- `src/types/experience.ts` / experience content files **only if restructuring presentation fields that already exist** (do not invent new factual achievements)
-- `src/styles/global.css` (timeline weight / narrative grouping)
+- `src/pages/experience.astro` — chronology-focused lead; scope rail
+- `src/components/CareerTimeline.astro` — Scope label + active arc stages; Contribution/Perspective split for non-concise multi-paragraph roles; Current marker
+- `src/components/CareerProgression.astro` — rail variant clarification (scope progression)
+- `src/content/experience/02-solutions-architect-standard-bank.md` — `narrativeGroup` only (`Platforms → Enterprise` → `Solutions → Platforms`)
+- `src/content/experience/03-developer-ea-innovation-standard-bank.md` — density only (`detailed` → `moderate`)
+- `src/styles/global.css` — rail, timeline density, scope/block styles
+- `docs/META-RECOMMENDATIONS-TASKS.md` — status notes
 
 **Acceptance criteria:**
 
-- [ ] Roles are more distinguishable by structure/weight
-- [ ] Progression Systems → Solutions → Platforms → Enterprise is visually apparent
-- [ ] Factual chronology unchanged
-- [ ] No invented metrics/achievements
-- [ ] Concise density still used for earlier roles
+- [x] Roles are more distinguishable by structure/weight
+- [x] Progression Systems → Solutions → Platforms → Enterprise is visually apparent
+- [x] Factual chronology unchanged
+- [x] No invented metrics/achievements
+- [x] Concise density still used for earlier roles
 
-**Validation:** Experience page multi-viewport review; content diff limited to presentation unless approved micro-edits; check/build.
+**Validation:**
+
+- `npm run validate` / `test:publication` / `check` / production build — PASS
+- Responsive 1440–390 dark+light — no horizontal overflow
+- Performance vs true pre-change: CSS **+5,510 B**, JS **0**, Experience HTML **+8,732 B**, total dist **+14,242 B**
+- No new dependencies
+
+**Commit:** `feat: differentiate Experience roles by architectural scope`
 
 ---
 

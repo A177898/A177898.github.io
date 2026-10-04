@@ -14,9 +14,13 @@ const scopeArc = profile.scopeArc;
 {
   variant === 'rail' ? (
     <div class="career-rail" aria-label="Architectural scope progression">
+      <p class="career-rail__eyebrow">Scope progression</p>
       <ol class="career-rail__list">
         {scopeArc.map((stage, index) => (
           <li class="career-rail__item" style={`--rail-i: ${index}`}>
+            <span class="career-rail__index" aria-hidden="true">
+              {String(index + 1).padStart(2, '0')}
+            </span>
             <span class="career-rail__label">{stage}</span>
             {index < scopeArc.length - 1 && (
               <span class="career-rail__connector" aria-hidden="true">
@@ -26,6 +30,9 @@ const scopeArc = profile.scopeArc;
           </li>
         ))}
       </ol>
+      <p class="career-rail__note">
+        Expanding architectural horizon across the career — not a skills score.
+      </p>
     </div>
   ) : (
     <div

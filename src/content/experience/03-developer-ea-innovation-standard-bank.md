@@ -19,7 +19,7 @@ capabilitiesDeveloped: []
 technologies: []
 achievements: []
 order: 3
-density: detailed
+density: moderate
 narrativeGroup: Solutions
 status: published
 classification: amber

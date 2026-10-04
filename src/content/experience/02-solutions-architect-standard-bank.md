@@ -24,7 +24,7 @@ technologies: []
 achievements: []
 order: 2
 density: detailed
-narrativeGroup: Platforms → Enterprise
+narrativeGroup: Solutions → Platforms
 status: published
 classification: amber
 approvedForPublication: true
