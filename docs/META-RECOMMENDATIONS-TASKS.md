@@ -778,12 +778,12 @@ COBOL / enterprise engineering → full-stack digital engineering → technical 
 
 | Field | Value |
 | --- | --- |
-| Status | READY FOR REVIEW |
+| Status | APPROVED |
 | Priority | P1 |
 | Dependencies | **After TASK-13** (or immediately paired only if separable in review) |
 | Human review required | Yes |
 
-**Outcome:** **IMPLEMENTED** — Vendor-neutral illustrative pseudo-policy added at end of §9 (after complementary models in §5 and richer ALLOW/DENY/obligation semantics). Generic approval scenario combining RBAC authority, organisation scope, amount limit, mandate, separation of duties; OTHERWISE maps to DENY / REQUIRE_APPROVAL / STEP_UP_REQUIRED. Explicit non-executable disclaimer. Separate optional breakdown **not added** — OTHERWISE branch already maps condition → impact. Uncommitted pending human review.
+**Outcome:** **IMPLEMENTED** — Vendor-neutral illustrative pseudo-policy added at end of §9 (after complementary models in §5 and richer ALLOW/DENY/obligation semantics). Generic approval scenario combining RBAC authority, organisation scope, amount limit, mandate, separation of duties; OTHERWISE maps to DENY / REQUIRE_APPROVAL / STEP_UP_REQUIRED. Explicit non-executable disclaimer. Separate optional breakdown **not added** — OTHERWISE branch already maps condition → impact. **Approved 2026-10-04** — commit: `feat: add vendor-neutral pseudo-policy example to Perspective 03`.
 
 **Files modified:**
 
