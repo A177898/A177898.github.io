@@ -1,0 +1,61 @@
+---
+/**
+ * Attribute trust / provenance chain — presentation-only.
+ * Elevates RA01 ASCII provenance model without changing principles.
+ */
+import { authorizationTrustModel as model } from '../data/authorization-trust-model';
+
+interface Props {
+  id?: string;
+}
+
+const { id = model.id } = Astro.props;
+const titleId = `${id}-title`;
+const claimId = `${id}-claim`;
+---
+
+<figure class="authz-trust" aria-labelledby={titleId} id={id}>
+  <div class="authz-trust__header">
+    <p class="authz-trust__eyebrow">Trust model</p>
+    <h3 id={titleId} class="authz-trust__title">{model.title}</h3>
+    <p class="authz-trust__lead">{model.lead}</p>
+    <p class="authz-trust__framing">{model.framing}</p>
+  </div>
+
+  <aside class="authz-trust__claim" aria-labelledby={claimId}>
+    <p id={claimId} class="authz-trust__claim-title">{model.claimTitle}</p>
+    <p class="authz-trust__claim-text">{model.claimText}</p>
+  </aside>
+
+  <ol class="authz-trust__chain">
+    {
+      model.steps.map((step, index) => (
+        <li class={`authz-trust__step authz-trust__step--${step.id}`}>
+          <span class="authz-trust__box">
+            <span class="authz-trust__step-title">{step.title}</span>
+            <span class="authz-trust__step-text">{step.text}</span>
+          </span>
+          {index < model.steps.length - 1 && (
+            <span class="authz-trust__arrow" aria-hidden="true">
+              ↓
+            </span>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+
+  <div class="authz-trust__questions" role="group" aria-label={model.questionsTitle}>
+    <p class="authz-trust__plane-label">{model.questionsTitle}</p>
+    <ul class="authz-trust__question-list">
+      {model.questions.map((q) => <li>{q}</li>)}
+    </ul>
+  </div>
+
+  <div class="authz-trust__notes">
+    <p class="authz-trust__note">{model.relateCorrectness}</p>
+    <p class="authz-trust__note">{model.relateAcquisition}</p>
+  </div>
+
+  <figcaption class="authz-trust__caption">{model.caption}</figcaption>
+</figure>

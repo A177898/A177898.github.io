@@ -45,6 +45,8 @@ import ArchitectureAdrTable from '../../components/ArchitectureAdrTable.astro';
 import ArchitectureResponsibility from '../../components/ArchitectureResponsibility.astro';
 import AuthorizationLogicalModel from '../../components/AuthorizationLogicalModel.astro';
 import AuthorizationRuntimeFlow from '../../components/AuthorizationRuntimeFlow.astro';
+import AuthorizationTrustModel from '../../components/AuthorizationTrustModel.astro';
+import DeploymentPatternCompare from '../../components/DeploymentPatternCompare.astro';
 import PrincipleCallout from '../../components/PrincipleCallout.astro';
 import PerspectiveChecklist from '../../components/PerspectiveChecklist.astro';
 
@@ -478,23 +480,9 @@ No single pattern is universally preferred.
 
 ## Attribute provenance
 
+The provenance model below elevates the same conceptual chain already established for RA01. It is a logical trust model — not a prescribed payload schema and not a physical processing pipeline.
 
-```text
-Attribute
-   ├── Value
-   ├── Provenance
-   ├── Authoritative Source
-   ├── Freshness
-   └── Integrity Evidence
-              ↓
-       Trust Determination
-```
-
-```text
-Caller-supplied claim
-        ≠
-Trusted authorization attribute
-```
+<AuthorizationTrustModel />
 
 ## Attribute classification and correctness
 
@@ -773,6 +761,10 @@ Strengths: low latency, local autonomy. Trade-offs: policy distribution, drift r
 ### Hybrid
 
 Different authorization classes may use different deployment patterns.
+
+A concise trade-off comparison across the four patterns:
+
+<DeploymentPatternCompare />
 
 ### Deployment decision flow
 

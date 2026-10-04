@@ -127,6 +127,27 @@
     @apply font-sans text-xs font-semibold uppercase tracking-[0.16em] text-muted;
   }
 
+  /* —— On-brand 404 —— restrained recovery page; reuses btn/eyebrow tokens. */
+  .page-404__shell {
+    @apply max-w-2xl;
+  }
+
+  .page-404__code {
+    @apply m-0 mb-4 font-sans text-6xl font-semibold tracking-tight text-ink/15 sm:text-7xl;
+  }
+
+  .page-404__title {
+    @apply mt-3 m-0 max-w-xl font-serif text-3xl leading-tight text-ink sm:text-4xl;
+  }
+
+  .page-404__lead {
+    @apply mt-5 m-0 max-w-xl text-base leading-relaxed text-muted sm:text-lg;
+  }
+
+  .page-404__actions {
+    @apply mt-8 flex flex-wrap gap-3;
+  }
+
   .prose-portfolio {
     @apply max-w-3xl text-base leading-relaxed text-ink sm:text-lg;
   }
@@ -136,7 +157,8 @@
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-sm px-5 py-2.5 text-sm font-semibold no-underline bg-accent text-white dark:text-ink;
+    /* Dark accent is light (#7eb6d6); use canvas (near-black) text, not ink (light). */
+    @apply inline-flex items-center justify-center gap-2 rounded-sm px-5 py-2.5 text-sm font-semibold no-underline bg-accent text-white dark:text-canvas;
     transition: opacity 220ms ease, transform 220ms ease, box-shadow 220ms ease;
   }
 
@@ -151,6 +173,27 @@
 
   .btn-secondary:hover {
     @apply no-underline bg-accent-soft;
+  }
+
+  /* —— Resume utility actions —— */
+  .resume-doc__header {
+    @apply flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between;
+  }
+
+  .resume-actions {
+    @apply max-w-md sm:text-right;
+  }
+
+  .resume-actions__controls {
+    @apply flex flex-wrap gap-3 sm:justify-end;
+  }
+
+  .resume-actions__hint {
+    @apply mt-3 m-0 text-sm leading-relaxed text-muted sm:text-right;
+  }
+
+  .resume-role__header {
+    @apply flex flex-wrap items-baseline gap-x-3 gap-y-1;
   }
 
   .btn-text {
@@ -186,6 +229,11 @@
 
   .hero-block__lead {
     @apply text-base leading-relaxed sm:text-lg;
+  }
+
+  /* Restrained career credibility line — quieter than lead; not a second headline. */
+  .hero-block__credibility {
+    @apply mt-6 max-w-2xl border-t border-border/70 pt-5 text-sm leading-relaxed text-muted sm:text-[0.95rem];
   }
 
   .hero-block--split .hero-block__grid {
@@ -348,6 +396,10 @@
     @apply relative overflow-hidden border border-border bg-canvas p-4 sm:p-6 lg:p-8;
   }
 
+  .ea-framework--homepage .ea-framework__canvas {
+    @apply sm:p-7 lg:p-8;
+  }
+
   .ea-band {
     @apply border border-border bg-surface px-4 py-4 sm:px-5 sm:py-5;
   }
@@ -358,6 +410,91 @@
 
   .ea-band__role {
     @apply mr-2 inline-block text-accent;
+  }
+
+  /* Focusable layers — definitions remain readable without hover */
+  .ea-layer {
+    @apply outline-none transition-[border-color,background-color,box-shadow] duration-200;
+  }
+
+  .ea-layer:hover,
+  .ea-layer:focus-visible {
+    border-color: color-mix(in oklab, var(--yk-accent) 55%, var(--yk-border));
+    background-color: color-mix(in oklab, var(--yk-accent-soft) 55%, var(--yk-surface));
+  }
+
+  .ea-layer:focus-visible {
+    box-shadow: 0 0 0 2px color-mix(in oklab, var(--yk-accent) 45%, transparent);
+  }
+
+  .ea-layer__title {
+    @apply mt-2 m-0 font-serif text-lg text-ink sm:text-xl;
+  }
+
+  .ea-layer__title--foundation {
+    @apply text-xl sm:text-2xl;
+  }
+
+  .ea-layer__def {
+    @apply mt-2 m-0 max-w-3xl text-sm leading-relaxed text-muted;
+  }
+
+  .ea-journey {
+    @apply m-0 list-none p-0;
+  }
+
+  .ea-journey__item {
+    @apply m-0;
+  }
+
+  .ea-band--stage {
+    @apply bg-surface;
+  }
+
+  .ea-cross-compact {
+    @apply mt-3 m-0 grid list-none gap-2 p-0 sm:grid-cols-3 sm:gap-0;
+  }
+
+  .ea-cross-compact__item {
+    @apply border border-border bg-canvas px-3 py-3 sm:border-y-0 sm:border-l-0 sm:border-r sm:px-4;
+  }
+
+  .ea-cross-compact__item:first-child {
+    @apply sm:border-l;
+  }
+
+  .ea-cross-compact__item:last-child {
+    @apply sm:border-r;
+  }
+
+  .ea-cross-compact__title {
+    @apply block font-serif text-base text-ink;
+  }
+
+  .ea-cross-compact__text {
+    @apply mt-1 block text-xs leading-relaxed text-muted sm:text-sm;
+  }
+
+  .ea-feedback__cue {
+    @apply font-medium text-ink;
+  }
+
+  .ea-bidat__text--secondary {
+    @apply mt-1 text-xs text-muted;
+  }
+
+  .ea-approach--homepage .ea-spanning {
+    @apply bg-transparent;
+  }
+
+  .ea-approach--homepage .ea-band--dimensions {
+    @apply bg-band/40;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ea-layer {
+      transition: none;
+    }
   }
 
   .ea-chip-row {
@@ -657,13 +794,187 @@
     @apply mt-2 text-sm leading-relaxed text-muted sm:text-[0.95rem];
   }
 
+  /* —— Architecture beliefs / boundaries —— */
+  .beliefs-principles {
+    @apply m-0 max-w-3xl list-none border-t border-border p-0;
+  }
+
+  .beliefs-principles__item {
+    @apply grid gap-3 border-b border-border py-6 sm:grid-cols-[3rem_minmax(0,1fr)] sm:gap-6 sm:py-7;
+  }
+
+  .beliefs-principles__index {
+    @apply m-0 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-accent;
+  }
+
+  .beliefs-principles__title {
+    @apply m-0 font-serif text-xl text-ink sm:text-2xl;
+  }
+
+  .beliefs-principles__text {
+    @apply mt-2 m-0 text-base leading-relaxed text-muted;
+  }
+
+  .beliefs-boundaries {
+    @apply max-w-3xl border border-border bg-surface px-5 py-6 sm:px-7 sm:py-8;
+  }
+
+  .beliefs-boundaries__list {
+    @apply m-0 list-none space-y-4 p-0;
+  }
+
+  .beliefs-boundaries__item {
+    @apply border-l-2 border-accent/50 pl-4 text-base leading-relaxed text-ink;
+  }
+
+  /* —— Architecture sequence models (governance / engagement) ——
+     Reuses beliefs/lifecycle rhythm: numbered stages, serif titles, ea-feedback note. */
+  .arch-sequence__progression {
+    @apply m-0 max-w-3xl font-sans text-sm leading-relaxed text-muted;
+  }
+
+  .arch-sequence__list {
+    @apply m-0 grid list-none gap-0 border-t border-border p-0 sm:grid-cols-2 lg:grid-cols-3;
+  }
+
+  .arch-sequence__item {
+    @apply relative border-b border-border px-0 py-6 sm:border-r sm:px-4 lg:px-5;
+  }
+
+  .arch-sequence__item:nth-child(2n) {
+    @apply sm:border-r-0 lg:border-r;
+  }
+
+  .arch-sequence__item:nth-child(3n) {
+    @apply lg:border-r-0;
+  }
+
+  .arch-sequence__index {
+    @apply m-0 font-sans text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-accent;
+  }
+
+  .arch-sequence__title {
+    @apply mt-2 m-0 font-serif text-xl text-ink sm:text-[1.35rem];
+  }
+
+  .arch-sequence__text {
+    @apply mt-2 m-0 max-w-sm text-sm leading-relaxed text-muted;
+  }
+
+  .arch-sequence__feedback {
+    @apply mt-8 flex max-w-3xl items-start gap-3 border border-border bg-surface px-4 py-3 text-sm text-muted;
+  }
+
+  .arch-sequence__feedback-marker {
+    @apply shrink-0 font-serif text-lg text-accent;
+  }
+
+  .arch-sequence__feedback-cue {
+    @apply font-medium text-ink;
+  }
+
+  /* —— Operating boundaries (Practice) ——
+     Extends arch-compare / beliefs list rhythm; no good/bad colour coding. */
+  .operating-boundaries__compare {
+    @apply grid gap-6 sm:grid-cols-2 sm:gap-8;
+  }
+
+  .operating-boundaries__responsibility {
+    @apply grid gap-6 lg:grid-cols-3 lg:gap-6;
+  }
+
+  .operating-boundaries__panel {
+    @apply border border-border bg-surface px-4 py-5 sm:px-5 sm:py-6;
+  }
+
+  .operating-boundaries__panel--shared {
+    @apply border-l-[3px] border-l-accent;
+  }
+
+  .operating-boundaries__panel-title {
+    @apply m-0 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-muted;
+  }
+
+  .operating-boundaries__panel-lead {
+    @apply mt-3 m-0 font-serif text-lg text-ink;
+  }
+
+  .operating-boundaries__list {
+    @apply mt-4 m-0 list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted;
+  }
+
+  .operating-boundaries__list--compact {
+    @apply mt-3 sm:columns-2 sm:gap-x-8;
+  }
+
+  .operating-boundaries__panel-outcome {
+    @apply mt-4 m-0 border-t border-border/80 pt-4 text-sm leading-relaxed text-ink/85;
+  }
+
+  .operating-boundaries__nuance {
+    @apply max-w-3xl border border-border bg-band/40 px-4 py-5 sm:px-5 sm:py-6;
+  }
+
+  .operating-boundaries__nuance-title {
+    @apply m-0 font-serif text-xl text-ink;
+  }
+
+  .operating-boundaries__nuance-intro {
+    @apply mt-3 m-0 text-sm leading-relaxed text-muted;
+  }
+
+  .operating-boundaries__closing {
+    @apply m-0 border-l-2 border-accent pl-4 font-serif text-xl leading-snug text-ink;
+  }
+
+  /* —— About career story —— */
+  .about-opening {
+    @apply max-w-2xl;
+  }
+
+  .about-story {
+    @apply m-0 list-none border-t border-border p-0;
+  }
+
+  .about-story__item {
+    @apply grid gap-3 border-b border-border py-6 sm:grid-cols-[3rem_minmax(0,1fr)] sm:gap-6 sm:py-7;
+  }
+
+  .about-story__index {
+    @apply m-0 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-accent;
+  }
+
+  .about-story__title {
+    @apply m-0 font-serif text-xl text-ink sm:text-2xl;
+  }
+
+  .about-story__text {
+    @apply mt-2 m-0 text-base leading-relaxed text-muted;
+  }
+
+  .about-closing {
+    @apply border-l-2 border-accent pl-4;
+  }
+
   /* —— Career rail —— */
+  .career-rail {
+    @apply max-w-3xl border border-border bg-surface px-4 py-4 sm:px-5 sm:py-5;
+  }
+
+  .career-rail__eyebrow {
+    @apply m-0 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-muted;
+  }
+
   .career-rail__list {
-    @apply m-0 flex list-none flex-wrap items-center gap-x-2 gap-y-2 p-0;
+    @apply mt-3 m-0 flex list-none flex-wrap items-center gap-x-2 gap-y-2 p-0;
   }
 
   .career-rail__item {
     @apply flex items-center gap-2;
+  }
+
+  .career-rail__index {
+    @apply font-sans text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-accent;
   }
 
   .career-rail__label {
@@ -672,6 +983,10 @@
 
   .career-rail__connector {
     @apply text-muted;
+  }
+
+  .career-rail__note {
+    @apply mt-3 m-0 text-sm text-muted;
   }
 
   .progression-pair__item {
@@ -839,6 +1154,18 @@
     @apply pb-14 sm:pb-16;
   }
 
+  .experience-timeline__item--detailed .experience-timeline__body {
+    @apply border border-border bg-surface/60 px-4 py-5 sm:px-5 sm:py-6;
+  }
+
+  .experience-timeline__item--current .experience-timeline__body {
+    @apply border-l-[3px] border-l-accent;
+  }
+
+  .experience-timeline__item--moderate {
+    @apply pb-11 sm:pb-12;
+  }
+
   .experience-timeline__item--concise {
     @apply pb-8 sm:pb-10;
   }
@@ -847,8 +1174,24 @@
     @apply absolute -left-[1.91rem] top-1.5 h-3 w-3 rounded-full border-2 border-accent bg-surface sm:-left-[2.16rem];
   }
 
+  .experience-timeline__marker--prominent {
+    @apply h-3.5 w-3.5 border-accent bg-accent-soft;
+  }
+
+  .experience-timeline__marker--current {
+    @apply bg-accent;
+  }
+
+  .experience-timeline__marker--concise {
+    @apply h-2.5 w-2.5 border-border;
+  }
+
   .experience-timeline__meta {
     @apply flex flex-wrap items-center gap-3;
+  }
+
+  .experience-timeline__current {
+    @apply font-sans text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-accent;
   }
 
   .experience-timeline__draft {
@@ -863,6 +1206,10 @@
     @apply text-3xl sm:text-4xl;
   }
 
+  .experience-timeline__role--current {
+    @apply text-3xl sm:text-[2.5rem];
+  }
+
   .experience-timeline__role--concise {
     @apply text-xl sm:text-2xl;
   }
@@ -871,12 +1218,60 @@
     @apply mt-1 text-sm font-medium text-muted;
   }
 
+  .experience-timeline__scope {
+    @apply mt-4 max-w-3xl;
+  }
+
+  .experience-timeline__scope-label {
+    @apply m-0 flex flex-wrap items-baseline gap-x-2 gap-y-1;
+  }
+
+  .experience-timeline__scope-kicker {
+    @apply font-sans text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-accent;
+  }
+
+  .experience-timeline__scope-value {
+    @apply font-serif text-base text-ink sm:text-lg;
+  }
+
+  .experience-timeline__scope-arc {
+    @apply mt-2 m-0 flex flex-wrap items-center gap-x-1 gap-y-1 text-sm text-muted;
+  }
+
+  .experience-timeline__scope-stage {
+    @apply inline-flex items-center gap-1;
+  }
+
+  .experience-timeline__scope-stage--active {
+    @apply font-medium text-ink;
+  }
+
+  .experience-timeline__scope-join {
+    @apply ml-1 text-muted;
+  }
+
   .experience-timeline__summary {
     @apply mt-4 max-w-3xl space-y-3 text-base leading-relaxed text-ink;
   }
 
+  .experience-timeline__summary--moderate {
+    @apply text-[0.98rem] text-ink/90;
+  }
+
   .experience-timeline__summary--concise {
     @apply mt-3 max-w-2xl text-sm text-muted sm:text-base;
+  }
+
+  .experience-timeline__block + .experience-timeline__block {
+    @apply mt-4 border-t border-border/80 pt-4;
+  }
+
+  .experience-timeline__block-label {
+    @apply m-0 mb-2 font-sans text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-muted;
+  }
+
+  .experience-timeline__block--perspective .experience-timeline__block-label {
+    @apply text-accent;
   }
 
   .experience-timeline__focus {
@@ -1034,6 +1429,310 @@
 
   .arch-flow__sources-label {
     @apply mb-3 font-sans text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-muted;
+  }
+
+  /* —— Perspective: coexistence + dependency models ——
+     Extends arch-flow borders/labels; editorial, not dashboard. */
+  .arch-coexist,
+  .arch-depend {
+    @apply my-8 border border-border bg-band/60 px-4 py-5 sm:px-6 sm:py-6;
+  }
+
+  .arch-coexist__title,
+  .arch-depend__title {
+    @apply m-0 mb-4 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-muted;
+  }
+
+  .arch-coexist__path,
+  .arch-depend__sequence {
+    @apply m-0 flex list-none flex-col items-start gap-1 p-0;
+  }
+
+  .arch-coexist__state,
+  .arch-depend__step {
+    @apply flex flex-col items-start gap-1;
+  }
+
+  .arch-coexist__state-label,
+  .arch-depend__step-label {
+    @apply inline-flex min-h-[2.5rem] items-center border border-border bg-surface px-3 py-2 font-sans text-xs font-semibold uppercase tracking-[0.08em] text-ink sm:text-[0.8rem];
+  }
+
+  .arch-coexist__state-label--transition {
+    @apply border-accent/40;
+  }
+
+  .arch-coexist__state-label--edge {
+    @apply bg-accent-soft/40;
+  }
+
+  .arch-coexist__connector,
+  .arch-depend__connector {
+    @apply ml-4 py-0.5 font-sans text-base leading-none text-muted;
+  }
+
+  .arch-coexist__band {
+    @apply mt-5 border border-border bg-surface px-4 py-4;
+  }
+
+  .arch-coexist__band-label,
+  .arch-depend__enablers-label {
+    @apply m-0 mb-3 font-sans text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-muted;
+  }
+
+  .arch-coexist__lanes {
+    @apply m-0 grid list-none gap-3 p-0 sm:grid-cols-3;
+  }
+
+  .arch-coexist__lane {
+    @apply border-l-2 border-border pl-3;
+  }
+
+  .arch-coexist__lane-title {
+    @apply block font-serif text-base text-ink;
+  }
+
+  .arch-coexist__lane-text {
+    @apply mt-1 block text-sm leading-relaxed text-muted;
+  }
+
+  .arch-coexist__converge {
+    @apply mt-4 m-0 text-center font-sans text-sm text-muted;
+  }
+
+  .arch-coexist__converge-text,
+  .arch-coexist__caption,
+  .arch-depend__caption {
+    @apply mt-3 m-0 text-sm leading-relaxed text-muted;
+  }
+
+  .arch-depend__enablers {
+    @apply mt-5 border-t border-border/80 pt-4;
+  }
+
+  .arch-depend__enabler-list {
+    @apply m-0 flex list-none flex-wrap gap-2 p-0;
+  }
+
+  .arch-depend__enabler {
+    @apply border border-border bg-surface px-3 py-2 font-sans text-xs font-semibold uppercase tracking-[0.08em] text-ink;
+  }
+
+  /* —— Platform Capability Canvas (Perspective 02) ——
+     Editorial canvas; semantic groups; not a KPI/scorecard grid. */
+  .platform-canvas {
+    @apply my-10 border border-border bg-band/50 px-4 py-5 sm:px-6 sm:py-7;
+  }
+
+  .platform-canvas__eyebrow {
+    @apply m-0 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-muted;
+  }
+
+  .platform-canvas__title {
+    @apply mt-2 m-0 font-serif text-2xl text-ink sm:text-3xl;
+  }
+
+  .platform-canvas__framing,
+  .platform-canvas__purpose {
+    @apply mt-3 m-0 max-w-3xl text-sm leading-relaxed text-muted;
+  }
+
+  .platform-canvas__purpose {
+    @apply mt-2;
+  }
+
+  .platform-canvas__groups {
+    @apply mt-8 grid gap-6 lg:grid-cols-2;
+  }
+
+  .platform-canvas__group {
+    @apply border border-border bg-surface px-4 py-4 sm:px-5 sm:py-5;
+  }
+
+  .platform-canvas__group-title {
+    @apply m-0 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-accent;
+  }
+
+  .platform-canvas__dimensions {
+    @apply mt-4 m-0 list-none space-y-4 p-0;
+  }
+
+  .platform-canvas__dimension {
+    @apply border-t border-border/80 pt-3 first:border-t-0 first:pt-0;
+  }
+
+  .platform-canvas__dimension-title {
+    @apply m-0 font-serif text-lg text-ink;
+  }
+
+  .platform-canvas__dimension-prompt {
+    @apply mt-1 m-0 text-sm leading-relaxed text-muted;
+  }
+
+  .platform-canvas__caption {
+    @apply mt-6 m-0 max-w-3xl border-l-2 border-accent pl-4 text-sm leading-relaxed text-ink/90;
+  }
+
+  /* —— Authorization model comparison (Perspective 03) ——
+     Complementary responsibilities, not a winner matrix.
+     One semantic table: matrix on lg+, stacked labelled cells below. */
+  .authz-compare {
+    @apply my-10 border border-border bg-band/50 px-4 py-5 sm:px-6 sm:py-7;
+  }
+
+  .authz-compare__eyebrow {
+    @apply m-0 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-muted;
+  }
+
+  .authz-compare__title {
+    @apply mt-2 m-0 font-serif text-2xl text-ink sm:text-3xl;
+  }
+
+  .authz-compare__lead {
+    @apply mt-3 m-0 max-w-3xl text-sm leading-relaxed text-muted;
+  }
+
+  .authz-compare__table-wrap {
+    @apply mt-8 min-w-0;
+  }
+
+  .authz-compare__table {
+    @apply w-full border-collapse text-left text-sm leading-relaxed;
+  }
+
+  .authz-compare__table thead th {
+    @apply border-b border-border px-3 py-3 font-sans text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-muted;
+  }
+
+  .authz-compare__table tbody th,
+  .authz-compare__table tbody td {
+    @apply border-b border-border/80 px-3 py-4 align-top text-ink/90;
+  }
+
+  .authz-compare__table tbody tr:last-child th,
+  .authz-compare__table tbody tr:last-child td {
+    @apply border-b-0;
+  }
+
+  .authz-compare__model {
+    @apply font-normal;
+  }
+
+  .authz-compare__model-name {
+    @apply block font-serif text-base text-ink;
+  }
+
+  .authz-compare__model-meta {
+    @apply mt-1 flex flex-col gap-0.5;
+  }
+
+  .authz-compare__kind {
+    @apply font-sans text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-accent;
+  }
+
+  .authz-compare__short {
+    @apply text-xs leading-snug text-muted;
+  }
+
+  .authz-compare__callout {
+    @apply mt-8 border-l-2 border-accent bg-surface/80 px-4 py-4 sm:px-5;
+  }
+
+  .authz-compare__callout-title {
+    @apply m-0 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-muted;
+  }
+
+  .authz-compare__callout-text {
+    @apply mt-3 m-0 max-w-3xl text-sm leading-relaxed text-ink/90;
+  }
+
+  .authz-compare__caption {
+    @apply mt-6 m-0 max-w-3xl text-sm leading-relaxed text-muted;
+  }
+
+  .prose-perspective .authz-compare,
+  .prose-architecture .authz-compare {
+    @apply text-base;
+  }
+
+  /* Stack below xl so five columns stay readable at 1024/768/390. */
+  @media (max-width: 1279px) {
+    .authz-compare__table thead {
+      @apply absolute -m-px h-px w-px overflow-hidden whitespace-nowrap border-0 p-0;
+      clip: rect(0 0 0 0);
+    }
+
+    .authz-compare__table,
+    .authz-compare__table tbody,
+    .authz-compare__table tr,
+    .authz-compare__table th,
+    .authz-compare__table td {
+      @apply block;
+    }
+
+    .authz-compare__table tbody {
+      @apply space-y-4;
+    }
+
+    .authz-compare__table tr {
+      @apply border border-border bg-surface px-4 py-4;
+    }
+
+    .authz-compare__table tbody th,
+    .authz-compare__table tbody td {
+      @apply border-0 border-t border-border/80 px-0 py-3;
+    }
+
+    .authz-compare__table tbody th {
+      @apply border-t-0 pb-3 pt-0;
+    }
+
+    .authz-compare__table tbody td::before {
+      content: attr(data-label);
+      @apply mb-1 block font-sans text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-muted;
+    }
+
+    .authz-compare__model-name {
+      @apply text-xl;
+    }
+  }
+
+  /* —— Authorization pseudo-policy (Perspective 03) ——
+     Editorial illustrative block; wraps on narrow viewports; no syntax theme. */
+  .authz-pseudo {
+    @apply my-10 border border-border bg-band/50 px-4 py-5 sm:px-6 sm:py-7;
+  }
+
+  .authz-pseudo__eyebrow {
+    @apply m-0 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-muted;
+  }
+
+  .authz-pseudo__title {
+    @apply mt-2 m-0 font-serif text-2xl text-ink sm:text-3xl;
+  }
+
+  .authz-pseudo__lead {
+    @apply mt-3 m-0 max-w-3xl text-sm leading-relaxed text-muted;
+  }
+
+  .authz-pseudo__disclaimer {
+    @apply mt-5 m-0 max-w-3xl border-l-2 border-accent pl-4 text-sm leading-relaxed text-ink/90;
+  }
+
+  .authz-pseudo__block {
+    @apply mt-6 m-0 max-w-full overflow-x-auto whitespace-pre-wrap break-words border border-border bg-surface px-4 py-4 font-mono text-[0.78rem] leading-relaxed text-ink sm:px-5 sm:text-[0.82rem];
+  }
+
+  .authz-pseudo__block code {
+    @apply font-mono text-inherit;
+  }
+
+  .authz-pseudo__caption {
+    @apply mt-5 m-0 max-w-3xl text-sm leading-relaxed text-muted;
+  }
+
+  .prose-perspective .authz-pseudo {
+    @apply text-base;
   }
 
   .prose-perspective pre {
@@ -1412,6 +2111,22 @@
     @apply m-0 list-disc space-y-1 pl-5 text-sm text-muted;
   }
 
+  .authz-runtime__header {
+    @apply mb-6;
+  }
+
+  .authz-runtime__eyebrow {
+    @apply m-0 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-muted;
+  }
+
+  .authz-runtime__title {
+    @apply mt-2 m-0 font-serif text-2xl text-ink sm:text-3xl;
+  }
+
+  .authz-runtime__lead {
+    @apply mt-3 m-0 max-w-3xl text-sm leading-relaxed text-muted;
+  }
+
   .authz-runtime__trunk {
     @apply m-0 flex list-none flex-col p-0;
   }
@@ -1428,12 +2143,20 @@
     @apply border border-border bg-surface px-4 py-4;
   }
 
+  .authz-runtime__branch--deny {
+    @apply border-l-2 border-l-border;
+  }
+
   .authz-runtime__split {
     @apply mt-3 grid gap-4 lg:grid-cols-2;
   }
 
   .authz-runtime__path {
     @apply border border-border/80 bg-band/40 px-3 py-3;
+  }
+
+  .authz-runtime__path-intro {
+    @apply m-0 mt-2 text-sm leading-relaxed text-muted;
   }
 
   .authz-runtime__path-steps {
@@ -1456,12 +2179,105 @@
     @apply text-base leading-none;
   }
 
+  .authz-runtime__return-note {
+    @apply m-0 max-w-xl text-sm leading-relaxed text-ink/90;
+  }
+
   .authz-runtime__return-link {
     @apply font-sans text-sm text-ink underline decoration-border underline-offset-2 hover:decoration-ink;
   }
 
   .authz-runtime__rules {
     @apply mt-5 list-disc space-y-2 border-t border-border/80 pt-4 pl-5;
+  }
+
+  .authz-runtime__caption {
+    @apply mt-5 m-0 max-w-3xl border-l-2 border-accent pl-4 text-sm leading-relaxed text-ink/90;
+  }
+
+  /* —— Attribute trust / provenance (RA01) ——
+     Logical trust chain; not a scorecard or physical pipeline. */
+  .authz-trust {
+    @apply my-10 border border-border bg-band/50 px-4 py-5 sm:px-6 sm:py-7;
+  }
+
+  .authz-trust__eyebrow,
+  .authz-trust__plane-label {
+    @apply m-0 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-muted;
+  }
+
+  .authz-trust__title {
+    @apply mt-2 m-0 font-serif text-2xl text-ink sm:text-3xl;
+  }
+
+  .authz-trust__lead,
+  .authz-trust__framing {
+    @apply mt-3 m-0 max-w-3xl text-sm leading-relaxed text-muted;
+  }
+
+  .authz-trust__framing {
+    @apply mt-2;
+  }
+
+  .authz-trust__claim {
+    @apply mt-6 border-l-2 border-accent bg-surface/80 px-4 py-4 sm:px-5;
+  }
+
+  .authz-trust__claim-title {
+    @apply m-0 font-serif text-lg text-ink sm:text-xl;
+  }
+
+  .authz-trust__claim-text {
+    @apply mt-2 m-0 max-w-3xl text-sm leading-relaxed text-ink/90;
+  }
+
+  .authz-trust__chain {
+    @apply mt-8 m-0 flex list-none flex-col p-0;
+  }
+
+  .authz-trust__step {
+    @apply flex flex-col;
+  }
+
+  .authz-trust__box {
+    @apply block border border-border bg-surface px-4 py-3;
+  }
+
+  .authz-trust__step--determination .authz-trust__box,
+  .authz-trust__step--context .authz-trust__box {
+    @apply border-accent/40 bg-accent-soft/40;
+  }
+
+  .authz-trust__step-title {
+    @apply block font-sans text-xs font-semibold uppercase tracking-[0.08em] text-ink sm:text-[0.8rem];
+  }
+
+  .authz-trust__step-text {
+    @apply mt-1 block text-sm font-normal normal-case tracking-normal leading-relaxed text-muted;
+  }
+
+  .authz-trust__arrow {
+    @apply my-1 ml-3 text-base leading-none text-muted;
+  }
+
+  .authz-trust__questions {
+    @apply mt-8 border-t border-border/80 pt-4;
+  }
+
+  .authz-trust__question-list {
+    @apply mt-3 m-0 list-disc space-y-2 pl-5 text-sm leading-relaxed text-ink/90;
+  }
+
+  .authz-trust__notes {
+    @apply mt-6 space-y-3;
+  }
+
+  .authz-trust__note {
+    @apply m-0 max-w-3xl text-sm leading-relaxed text-muted;
+  }
+
+  .authz-trust__caption {
+    @apply mt-6 m-0 max-w-3xl border-l-2 border-accent pl-4 text-sm leading-relaxed text-ink/90;
   }
 
   .related-artifacts {
@@ -1523,6 +2339,108 @@
 
   .evidence-flow__text {
     @apply mt-1 text-sm leading-relaxed text-muted;
+  }
+
+  /* —— Architecture Hub —— */
+  .arch-hub-journey {
+    @apply max-w-3xl border border-border bg-surface px-4 py-4 sm:px-5 sm:py-5;
+  }
+
+  .arch-hub-journey__eyebrow {
+    @apply m-0 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-muted;
+  }
+
+  .arch-hub-journey__list {
+    @apply mt-4 m-0 flex list-none flex-col gap-4 p-0 sm:flex-row sm:flex-wrap sm:items-start sm:gap-x-3 sm:gap-y-4;
+  }
+
+  .arch-hub-journey__item {
+    @apply flex items-start gap-3 sm:max-w-[14rem] sm:flex-1;
+  }
+
+  .arch-hub-journey__index {
+    @apply mt-0.5 font-sans text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-accent;
+  }
+
+  .arch-hub-journey__body {
+    @apply min-w-0 flex-1;
+  }
+
+  .arch-hub-journey__label {
+    @apply m-0 font-serif text-lg text-ink;
+  }
+
+  .arch-hub-journey__text {
+    @apply mt-1 m-0 text-sm leading-snug text-muted;
+  }
+
+  .arch-hub-journey__connector {
+    @apply hidden text-muted sm:mt-1 sm:inline;
+  }
+
+  .arch-hub-entries {
+    @apply flex max-w-3xl flex-col gap-5;
+  }
+
+  .arch-hub-entry {
+    @apply block border border-border bg-surface px-4 py-5 no-underline transition-colors sm:px-5 sm:py-6;
+  }
+
+  .arch-hub-entry:hover,
+  .arch-hub-entry:focus-visible {
+    @apply bg-accent-soft/35;
+  }
+
+  .arch-hub-entry--practice {
+    @apply border-l-[3px] border-l-accent px-4 py-6 sm:px-6 sm:py-7;
+  }
+
+  .arch-hub-entry--perspectives {
+    @apply sm:ml-0;
+  }
+
+  .arch-hub-entry--reference {
+    @apply border-border;
+  }
+
+  .arch-hub-entry__meta {
+    @apply flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1;
+  }
+
+  .arch-hub-entry__count {
+    @apply m-0 font-sans text-xs font-medium tracking-[0.04em] text-muted;
+  }
+
+  .arch-hub-entry__title {
+    @apply mt-2 font-serif text-2xl text-ink sm:text-3xl;
+  }
+
+  .arch-hub-entry--practice .arch-hub-entry__title {
+    @apply text-3xl sm:text-[2.15rem];
+  }
+
+  .arch-hub-entry--perspectives .arch-hub-entry__title {
+    @apply text-2xl sm:text-[1.75rem];
+  }
+
+  .arch-hub-entry--reference .arch-hub-entry__title {
+    @apply text-2xl tracking-tight sm:text-[1.7rem];
+  }
+
+  .arch-hub-entry__text {
+    @apply mt-3 max-w-2xl text-sm leading-relaxed text-muted sm:text-[0.95rem];
+  }
+
+  .arch-hub-entry--practice .arch-hub-entry__text {
+    @apply text-base text-ink/85;
+  }
+
+  .arch-hub-entry__cta {
+    @apply mt-5 inline-block font-sans text-sm font-semibold text-accent;
+  }
+
+  .arch-hub-cue {
+    @apply m-0 border-l border-border pl-4 text-sm leading-relaxed text-muted;
   }
 
   .nav-disclosure__trigger {
@@ -1753,7 +2671,8 @@
   .prose-architecture .arch-flow,
   .prose-architecture .perspective-checklist,
   .prose-architecture .arch-register,
-  .prose-architecture .arch-responsibility {
+  .prose-architecture .arch-responsibility,
+  .prose-architecture .authz-compare {
     @apply text-base;
   }
 }

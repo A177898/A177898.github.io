@@ -1,0 +1,74 @@
+---
+/**
+ * Deployment pattern comparison — presentation-only.
+ * Reuses .authz-compare responsive table styles (TASK-13). No universal winner.
+ */
+import { deploymentPatternCompare as compare } from '../data/deployment-pattern-compare';
+
+interface Props {
+  id?: string;
+}
+
+const { id = compare.id } = Astro.props;
+const titleId = `${id}-title`;
+const neutralityId = `${id}-neutrality`;
+const { columns, rows } = compare;
+---
+
+<figure class="authz-compare" aria-labelledby={titleId} id={id}>
+  <div class="authz-compare__header">
+    <p class="authz-compare__eyebrow">Comparison</p>
+    <h3 id={titleId} class="authz-compare__title">{compare.title}</h3>
+    <p class="authz-compare__lead">{compare.lead}</p>
+  </div>
+
+  <div class="authz-compare__table-wrap">
+    <table class="authz-compare__table">
+      <caption class="sr-only">
+        Qualitative comparison of central decision service, distributed decision nodes, embedded
+        evaluation and hybrid deployment patterns across latency, consistency, blast radius,
+        resilience and operational complexity. No universal winner.
+      </caption>
+      <thead>
+        <tr>
+          <th scope="col">{columns.pattern}</th>
+          <th scope="col">{columns.latency}</th>
+          <th scope="col">{columns.consistency}</th>
+          <th scope="col">{columns.blastRadius}</th>
+          <th scope="col">{columns.resilience}</th>
+          <th scope="col">{columns.operationalComplexity}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          rows.map((row) => (
+            <tr class="authz-compare__row">
+              <th scope="row" class="authz-compare__model" data-label={columns.pattern}>
+                <span class="authz-compare__model-name">{row.pattern}</span>
+                <span class="authz-compare__model-meta">
+                  <span class="authz-compare__kind">{row.framing}</span>
+                  <span class="authz-compare__short">{row.shortName}</span>
+                </span>
+              </th>
+              <td data-label={columns.latency}>{row.latency}</td>
+              <td data-label={columns.consistency}>{row.consistency}</td>
+              <td data-label={columns.blastRadius}>{row.blastRadius}</td>
+              <td data-label={columns.resilience}>{row.resilience}</td>
+              <td data-label={columns.operationalComplexity}>{row.operationalComplexity}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <aside class="authz-compare__callout" aria-labelledby={neutralityId}>
+    <p id={neutralityId} class="authz-compare__callout-title">
+      No universal winner
+    </p>
+    <p class="authz-compare__callout-text">{compare.neutrality}</p>
+    <p class="authz-compare__callout-text">{compare.logicalNote}</p>
+  </aside>
+
+  <figcaption class="authz-compare__caption">{compare.caption}</figcaption>
+</figure>

@@ -14,18 +14,34 @@ const perspectives = (await getCollection('perspectives')).filter((entry) =>
 const architectures = (await getCollection('architectures')).filter((entry) =>
   isVisibleForReview(entry.data, { allowDrafts }),
 );
-const publishedPerspectives = perspectives.filter((entry) => isPublished(entry.data));
-const publishedArchitectures = architectures.filter((entry) => isPublished(entry.data));
+/** Production-visible counts only — never include drafts or unapproved entries. */
+const publishedPerspectiveCount = perspectives.filter((entry) => isPublished(entry.data)).length;
+const publishedArchitectureCount = architectures.filter((entry) => isPublished(entry.data)).length;
 const showPerspectives =
-  publishedPerspectives.length > 0 || (allowDrafts && perspectives.length > 0);
+  publishedPerspectiveCount > 0 || (allowDrafts && perspectives.length > 0);
 const showReference =
-  publishedArchitectures.length > 0 || (allowDrafts && architectures.length > 0);
+  publishedArchitectureCount > 0 || (allowDrafts && architectures.length > 0);
 const showRadar = hasPublishedRadarEntries();
+
+const evidenceJourney = [
+  {
+    label: 'Practice',
+    text: 'How I approach architecture',
+  },
+  {
+    label: 'Perspectives',
+    text: 'How I reason about recurring architecture challenges',
+  },
+  {
+    label: 'Reference Architectures',
+    text: 'How architectural principles are expressed as structured models',
+  },
+] as const;
 ---
 
 <PageLayout
   title={pageTitle('Architecture')}
-  description="Architecture Practice, Perspectives and Reference Architectures — how architectural disciplines, thinking and structured models connect."
+  description="Architecture Practice, Perspectives and Reference Architectures — how architectural practice, thinking and structured models connect."
 >
   <Breadcrumb
     items={[
@@ -39,57 +55,71 @@ const showRadar = hasPublishedRadarEntries();
       <p class="eyebrow">Architecture</p>
       <h1 class="mt-3 text-4xl sm:text-5xl">Architecture</h1>
       <p class="mt-4 max-w-2xl text-lg text-muted">
-        Capability-led practice is the centrepiece — Enterprise Architecture as the parent
-        discipline, with Business Architecture establishing direction within EA, connected to how
-        architectural problems are framed and how principles become structured reference models.
+        This section presents architectural practice, independently developed thinking, and
+        structured reference work — from how architecture is practised, to how problems are
+        reasoned through, to how principles become reusable models.
       </p>
 
-      <ol class="evidence-flow mt-10 max-w-2xl" aria-label="Architecture evidence progression">
-        <li class="evidence-flow__item">
-          <p class="evidence-flow__label">Architecture Practice</p>
-          <p class="evidence-flow__text">
-            Enterprise Architecture spanning the BIDAT domains, with Business Architecture
-            establishing business direction before technology architecture decisions, plus
-            supporting platform, cloud, integration, security and emerging technology depth.
-          </p>
-        </li>
-        <li class="evidence-flow__item">
-          <p class="evidence-flow__label">Perspectives</p>
-          <p class="evidence-flow__text">
-            How architectural problems are framed, evaluated and translated into principles and
-            decisions.
-          </p>
-        </li>
-        <li class="evidence-flow__item">
-          <p class="evidence-flow__label">Reference Architectures</p>
-          <p class="evidence-flow__text">
-            How those principles are structured into reusable logical architecture models.
-          </p>
-        </li>
-      </ol>
+      <div class="arch-hub-journey mt-10" aria-label="Architecture evidence journey">
+        <p class="arch-hub-journey__eyebrow">Evidence journey</p>
+        <ol class="arch-hub-journey__list">
+          {
+            evidenceJourney.map((stage, index) => (
+              <li class="arch-hub-journey__item">
+                <span class="arch-hub-journey__index" aria-hidden="true">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <div class="arch-hub-journey__body">
+                  <p class="arch-hub-journey__label">{stage.label}</p>
+                  <p class="arch-hub-journey__text">{stage.text}</p>
+                </div>
+                {index < evidenceJourney.length - 1 && (
+                  <span class="arch-hub-journey__connector" aria-hidden="true">
+                    →
+                  </span>
+                )}
+              </li>
+            ))
+          }
+        </ol>
+      </div>
 
-      <div class="mt-12 grid gap-6 md:grid-cols-2">
-        <a href={withBase('/architecture/practice')} class="card-quiet block no-underline transition-colors hover:bg-accent-soft/40">
-          <p class="eyebrow">Centrepiece</p>
-          <h2 class="mt-2 text-2xl text-ink">Architecture Practice</h2>
-          <p class="mt-3 text-sm text-muted">
-            Enterprise Architecture with BIDAT domains — Business Architecture establishing
-            direction within EA — plus supporting technology depth.
+      <div class="arch-hub-entries mt-12">
+        <a
+          href={withBase('/architecture/practice')}
+          class="arch-hub-entry arch-hub-entry--practice"
+        >
+          <div class="arch-hub-entry__meta">
+            <p class="eyebrow">Foundation</p>
+          </div>
+          <h2 class="arch-hub-entry__title">Architecture Practice</h2>
+          <p class="arch-hub-entry__text">
+            The centrepiece of this section — Enterprise Architecture across the BIDAT domains,
+            with Business Architecture establishing direction, plus governance posture, capability
+            domains and the working principles that shape architectural decisions.
           </p>
+          <span class="arch-hub-entry__cta">Explore Architecture Practice</span>
         </a>
 
         {
           showPerspectives && (
-            <a
-              href={withBase('/research')}
-              class="card-quiet block no-underline transition-colors hover:bg-accent-soft/40"
-            >
-              <p class="eyebrow">Thinking</p>
-              <h2 class="mt-2 text-2xl text-ink">Perspectives</h2>
-              <p class="mt-3 text-sm text-muted">
-                Independent architecture perspectives on framing problems, trade-offs and
+            <a href={withBase('/research')} class="arch-hub-entry arch-hub-entry--perspectives">
+              <div class="arch-hub-entry__meta">
+                <p class="eyebrow">Thinking</p>
+                {publishedPerspectiveCount > 0 && (
+                  <p class="arch-hub-entry__count">
+                    Perspectives · {publishedPerspectiveCount}
+                    <span class="sr-only"> published</span>
+                  </p>
+                )}
+              </div>
+              <h2 class="arch-hub-entry__title">Perspectives</h2>
+              <p class="arch-hub-entry__text">
+                Independently developed architectural thinking on recurring challenges — framing
+                problems, weighing trade-offs and translating judgment into principles and
                 decisions.
               </p>
+              <span class="arch-hub-entry__cta">Explore Perspectives</span>
             </a>
           )
         }
@@ -98,33 +128,51 @@ const showRadar = hasPublishedRadarEntries();
           showReference && (
             <a
               href={withBase('/architecture/reference')}
-              class="card-quiet block no-underline transition-colors hover:bg-accent-soft/40"
+              class="arch-hub-entry arch-hub-entry--reference"
             >
-              <p class="eyebrow">Structured models</p>
-              <h2 class="mt-2 text-2xl text-ink">Reference Architectures</h2>
-              <p class="mt-3 text-sm text-muted">
-                Vendor-neutral reference architectures that turn principles into reusable logical
-                models.
+              <div class="arch-hub-entry__meta">
+                <p class="eyebrow">Structured models</p>
+                {publishedArchitectureCount > 0 && (
+                  <p class="arch-hub-entry__count">
+                    Reference Architectures · {publishedArchitectureCount}
+                    <span class="sr-only"> published</span>
+                  </p>
+                )}
+              </div>
+              <h2 class="arch-hub-entry__title">Reference Architectures</h2>
+              <p class="arch-hub-entry__text">
+                More formal architectural artefacts than Perspectives — vendor-neutral logical
+                models that express principles as structured, reusable design.
               </p>
+              <span class="arch-hub-entry__cta">Explore Reference Architectures</span>
             </a>
           )
         }
 
         {
           showRadar && (
-            <a
-              href={withBase('/architecture/radar')}
-              class="card-quiet block no-underline transition-colors hover:bg-accent-soft/40"
-            >
-              <p class="eyebrow">Independent assessment</p>
-              <h2 class="mt-2 text-2xl text-ink">Technology Radar</h2>
-              <p class="mt-3 text-sm text-muted">
+            <a href={withBase('/architecture/radar')} class="arch-hub-entry arch-hub-entry--radar">
+              <div class="arch-hub-entry__meta">
+                <p class="eyebrow">Independent assessment</p>
+              </div>
+              <h2 class="arch-hub-entry__title">Technology Radar</h2>
+              <p class="arch-hub-entry__text">
                 Published radar classifications representing independent professional assessment.
               </p>
+              <span class="arch-hub-entry__cta">Explore Technology Radar</span>
             </a>
           )
         }
       </div>
+
+      {
+        (showPerspectives || showReference) && (
+          <p class="arch-hub-cue mt-10 max-w-2xl">
+            Practice establishes the approach. Perspectives explain the reasoning. Reference
+            Architectures demonstrate the design.
+          </p>
+        )
+      }
     </div>
   </section>
 </PageLayout>

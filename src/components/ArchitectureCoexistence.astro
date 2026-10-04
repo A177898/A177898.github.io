@@ -1,0 +1,73 @@
+---
+/**
+ * Transition path with coexistence — shows interim architectural states
+ * where legacy, new capability and temporary integration operate together.
+ * Presentation-only; organisation-neutral labels.
+ */
+interface Props {
+  label?: string;
+  caption?: string;
+  /** Illustrative transition labels (defaults to three example states). */
+  transitions?: string[];
+}
+
+const {
+  label = 'Transition architecture with coexistence',
+  caption = 'Transition states are operable architectures. During each state, legacy capability, new capability and interim integration may coexist intentionally until exit criteria allow retirement.',
+  transitions = ['Transition State 1', 'Transition State 2', 'Transition State n'],
+} = Astro.props;
+
+const states = ['Current State', ...transitions, 'Target State'];
+---
+
+<figure class="arch-coexist" aria-label={label}>
+  <p class="arch-coexist__title">{label}</p>
+
+  <ol class="arch-coexist__path" aria-label="Illustrative architecture states along the transition">
+    {
+      states.map((state, index) => (
+        <li class="arch-coexist__state">
+          <span
+            class:list={[
+              'arch-coexist__state-label',
+              index === 0 && 'arch-coexist__state-label--edge',
+              index === states.length - 1 && 'arch-coexist__state-label--edge',
+              index > 0 && index < states.length - 1 && 'arch-coexist__state-label--transition',
+            ]}
+          >
+            {state}
+          </span>
+          {index < states.length - 1 && (
+            <span class="arch-coexist__connector" aria-hidden="true">
+              ↓
+            </span>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+
+  <div class="arch-coexist__band" aria-label="Coexistence during transition states">
+    <p class="arch-coexist__band-label">During transition states</p>
+    <ul class="arch-coexist__lanes">
+      <li class="arch-coexist__lane">
+        <span class="arch-coexist__lane-title">Legacy capability</span>
+        <span class="arch-coexist__lane-text">Continues to operate where still required</span>
+      </li>
+      <li class="arch-coexist__lane">
+        <span class="arch-coexist__lane-title">New capability</span>
+        <span class="arch-coexist__lane-text">Is introduced and progressively adopted</span>
+      </li>
+      <li class="arch-coexist__lane">
+        <span class="arch-coexist__lane-title">Interim integration</span>
+        <span class="arch-coexist__lane-text">Temporary bridges — designed, not accidental</span>
+      </li>
+    </ul>
+    <p class="arch-coexist__converge" aria-hidden="true">↘  → Target  ←  ↙</p>
+    <p class="arch-coexist__converge-text">
+      Coexistence converges toward the target as exit criteria are met and legacy can be retired.
+    </p>
+  </div>
+
+  <figcaption class="arch-coexist__caption">{caption}</figcaption>
+</figure>

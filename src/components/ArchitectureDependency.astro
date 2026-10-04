@@ -1,0 +1,54 @@
+---
+/**
+ * Generic transition dependency map — sequencing chain + enabling concerns.
+ * Presentation-only; no employer systems or programmes.
+ */
+interface Props {
+  label?: string;
+  caption?: string;
+  sequence?: string[];
+  enablers?: string[];
+}
+
+const {
+  label = 'Generic transition dependency map',
+  caption = 'Transition sequencing is constrained by dependencies. Enabling concerns such as identity, data, security and infrastructure often determine what can move when.',
+  sequence = [
+    'Capability A',
+    'Shared Platform',
+    'Integration Capability',
+    'Capability B',
+  ],
+  enablers = ['Identity', 'Data', 'Security', 'Infrastructure'],
+} = Astro.props;
+---
+
+<figure class="arch-depend" aria-label={label}>
+  <p class="arch-depend__title">{label}</p>
+
+  <ol class="arch-depend__sequence" aria-label="Sequencing dependency chain">
+    {
+      sequence.map((step, index) => (
+        <li class="arch-depend__step">
+          <span class="arch-depend__step-label">{step}</span>
+          {index < sequence.length - 1 && (
+            <span class="arch-depend__connector" aria-hidden="true">
+              ↓
+            </span>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+
+  <div class="arch-depend__enablers" aria-label="Enabling dependencies">
+    <p class="arch-depend__enablers-label">Enabling dependencies</p>
+    <ul class="arch-depend__enabler-list">
+      {enablers.map((item) => (
+        <li class="arch-depend__enabler">{item}</li>
+      ))}
+    </ul>
+  </div>
+
+  <figcaption class="arch-depend__caption">{caption}</figcaption>
+</figure>

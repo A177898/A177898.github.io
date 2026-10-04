@@ -35,6 +35,7 @@ relatedArchitectures: []
 import ArchitectureFlow from '../../components/ArchitectureFlow.astro';
 import ArchitectureBranch from '../../components/ArchitectureBranch.astro';
 import ArchitectureBalance from '../../components/ArchitectureBalance.astro';
+import PlatformCapabilityCanvas from '../../components/PlatformCapabilityCanvas.astro';
 import PrincipleCallout from '../../components/PrincipleCallout.astro';
 import PerspectiveChecklist from '../../components/PerspectiveChecklist.astro';
 
@@ -244,6 +245,10 @@ It is to establish a coherent ecosystem of capabilities with clear responsibilit
 <PrincipleCallout>
   A platform should reduce coupling for its consumers, not concentrate coupling inside a new enterprise bottleneck.
 </PrincipleCallout>
+
+Once that boundary discipline is clear, the remaining question is whether the capability is designed to behave as a platform in practice. I use the following canvas as a framing aid — alongside the article's core question of leverage versus dependency.
+
+<PlatformCapabilityCanvas />
 
 ## 6. The consumer is part of the architecture
 

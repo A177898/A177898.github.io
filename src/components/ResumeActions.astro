@@ -1,0 +1,40 @@
+---
+/**
+ * Resume utility actions — Print / Save as PDF via native browser print.
+ * No downloadable PDF artefact is shipped; the HTML résumé remains authoritative.
+ */
+import { withBase } from '../utils/urls';
+
+interface Props {
+  /** Optional experience link; defaults to the Experience page. */
+  experienceHref?: string;
+}
+
+const { experienceHref = withBase('/experience') } = Astro.props;
+---
+
+<div class="resume-actions no-print">
+  <div class="resume-actions__controls">
+    <button
+      type="button"
+      class="btn-secondary"
+      aria-label="Print résumé or save as PDF using the browser print dialog"
+      data-resume-print
+    >
+      Print / Save as PDF
+    </button>
+    <a class="btn-secondary" href={experienceHref}>View Experience</a>
+  </div>
+  <p class="resume-actions__hint">
+    The web résumé is the authoritative source. Use your browser&apos;s print dialog to print or
+    save this résumé as PDF.
+  </p>
+</div>
+
+<script is:inline>
+  document.querySelectorAll('[data-resume-print]').forEach((button) => {
+    button.addEventListener('click', () => {
+      window.print();
+    });
+  });
+</script>

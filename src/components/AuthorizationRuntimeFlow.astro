@@ -2,22 +2,38 @@
 /**
  * Runtime authorization decision flow with DENY termination,
  * blocking-obligation fulfilment, and an explicit re-evaluation return path.
+ * Presentation-only — does not alter RA01 decision or obligation semantics.
  */
 interface Props {
   label?: string;
 }
 
 const { label = 'Runtime authorization decision flow' } = Astro.props;
+const titleId = 'runtime-authorization-flow-title';
 ---
 
-<figure class="arch-flow authz-runtime" aria-label={label}>
+<figure class="arch-flow authz-runtime" aria-labelledby={titleId} id="runtime-authorization-flow">
+  <div class="authz-runtime__header">
+    <p class="authz-runtime__eyebrow">Runtime sequence</p>
+    <h3 id={titleId} class="authz-runtime__title">{label}</h3>
+    <p class="authz-runtime__lead">
+      How one authorization decision executes: interception, evaluation, enforcement, blocking
+      obligations with re-evaluation, then domain validity checks before the protected action.
+    </p>
+  </div>
+
   <ol class="authz-runtime__trunk">
     <li class="authz-runtime__node">
       <span class="authz-runtime__box">Consumer — protected action intent</span>
       <span class="authz-runtime__arrow" aria-hidden="true">↓</span>
     </li>
     <li class="authz-runtime__node">
-      <span class="authz-runtime__box">PEP</span>
+      <span class="authz-runtime__box">
+        PEP — intercepts protected action
+        <span class="authz-runtime__hint"
+          >Requests a decision and enforces the outcome. Does not evaluate policy.</span
+        >
+      </span>
       <span class="authz-runtime__arrow" aria-hidden="true">↓</span>
     </li>
     <li class="authz-runtime__node">
@@ -28,8 +44,9 @@ const { label = 'Runtime authorization decision flow' } = Astro.props;
       <span class="authz-runtime__box authz-runtime__box--emphasis">
         PDP — policy evaluation
         <span class="authz-runtime__hint"
-          >Assigned authority · Authorization Context / PIP · Published policy. The PDP evaluates; it
-          does not execute authentication, approval workflows or business transactions.</span
+          >Evaluates assigned authority, trusted authorization context and published policy. May
+          consume relevant domain information via PIP / projection. Does not execute authentication,
+          approval workflows, business transactions or domain invariants.</span
         >
       </span>
       <span class="authz-runtime__arrow" aria-hidden="true">↓</span>
@@ -44,15 +61,23 @@ const { label = 'Runtime authorization decision flow' } = Astro.props;
       <span class="authz-runtime__arrow" aria-hidden="true">↓</span>
     </li>
     <li class="authz-runtime__node">
-      <span class="authz-runtime__box">PEP — interpret and enforce</span>
+      <span class="authz-runtime__box">
+        PEP — interpret and enforce
+        <span class="authz-runtime__hint"
+          >Applies the returned decision and any blocking obligations. Prevents unauthorized
+          continuation.</span
+        >
+      </span>
     </li>
   </ol>
 
-  <div class="authz-runtime__branches" role="group" aria-label="Decision branches">
+  <div class="authz-runtime__branches" role="group" aria-label="Decision branches after PEP enforcement">
     <div class="authz-runtime__branch authz-runtime__branch--deny">
-      <p class="authz-runtime__branch-title">DENY</p>
+      <p class="authz-runtime__branch-title">DENY — terminal</p>
       <p class="authz-runtime__branch-text">
-        Terminates the protected-action path. Execution does not continue.
+        The protected-action path ends. Execution does not continue and does not re-enter the flow.
+        A DENY is not converted into progression by step-up or approval; those outcomes appear only
+        when returned as obligations on an ALLOW path.
       </p>
       <span class="authz-runtime__box authz-runtime__box--terminal">Reject / stop</span>
     </div>
@@ -62,23 +87,33 @@ const { label = 'Runtime authorization decision flow' } = Astro.props;
       <div class="authz-runtime__split">
         <div class="authz-runtime__path">
           <p class="authz-runtime__path-label">Blocking obligation unmet</p>
+          <p class="authz-runtime__path-intro">
+            Illustrative blocking obligations include STEP_UP, REQUIRE_APPROVAL and
+            REQUIRE_SECOND_AUTHORIZER. Fulfilment is coordinated by the responsible capability — it
+            is not itself final authorization.
+          </p>
           <ol class="authz-runtime__path-steps">
-            <li>Do not permit execution</li>
-            <li>PEP coordinates fulfilment by the responsible capability</li>
+            <li>Do not permit the protected action yet</li>
+            <li>PEP coordinates obligation fulfilment by the responsible capability</li>
             <li>Failed or incomplete fulfilment cannot reach the protected action</li>
             <li>
               If fulfilment materially changes authorization context →
-              <a href="#runtime-evaluation">return to evaluation</a>
+              <a href="#runtime-evaluation">return to PDP evaluation</a>
             </li>
           </ol>
           <div class="authz-runtime__return" aria-label="Return path to evaluation">
             <span class="authz-runtime__box authz-runtime__box--loop"
-              >Re-evaluate (context changed)</span
+              >Re-evaluate — new decision for PEP</span
             >
             <span class="authz-runtime__return-connector" aria-hidden="true">
               <span class="authz-runtime__return-label">return to evaluation</span>
               <span class="authz-runtime__return-arrow">↑</span>
             </span>
+            <p class="authz-runtime__return-note">
+              Satisfying an obligation does not automatically become ALLOW. The PDP re-evaluates and
+              returns a new decision for the PEP to enforce — which may still be DENY, ALLOW with
+              further obligations, or effective ALLOW.
+            </p>
             <a class="authz-runtime__return-link" href="#runtime-evaluation"
               >Return to PDP evaluation</a
             >
@@ -87,6 +122,10 @@ const { label = 'Runtime authorization decision flow' } = Astro.props;
         <div class="authz-runtime__path authz-runtime__path--continue">
           <p class="authz-runtime__path-label">
             Effective ALLOW — blocking obligations satisfied; decision validity preserved
+          </p>
+          <p class="authz-runtime__path-intro">
+            Enterprise authorization established authority to attempt. Domain checks still decide
+            whether the action is valid.
           </p>
           <ol class="authz-runtime__path-steps">
             <li>Domain authorization</li>
@@ -100,20 +139,30 @@ const { label = 'Runtime authorization decision flow' } = Astro.props;
   </div>
 
   <ul class="authz-runtime__rules">
-    <li>Decision taxonomy remains <strong>ALLOW | DENY</strong>. Reasons and obligations stay distinct.</li>
+    <li>
+      Decision taxonomy remains <strong>ALLOW | DENY</strong>. Reasons and obligations stay distinct.
+    </li>
+    <li>DENY is terminal for the protected-action path.</li>
     <li>ALLOW with an unmet blocking obligation does not permit execution.</li>
+    <li>
+      Obligation fulfilment is not final authorization — re-evaluation may still DENY or impose
+      further obligations.
+    </li>
     <li>
       Only an effective ALLOW with required blocking obligations satisfied and applicable decision
       validity preserved may continue to domain checks.
     </li>
+    <li>
+      Authority to attempt (enterprise authorization) is not the same as validity of action (domain
+      authorization / invariants).
+    </li>
   </ul>
 
-  <figcaption class="sr-only">
-    After the PEP receives ALLOW or DENY: DENY terminates the protected-action path. ALLOW with an
-    unmet blocking obligation does not permit execution; the PEP coordinates fulfilment, and if
-    context changes the flow returns to PDP evaluation via an explicit return path. Failed fulfilment
-    cannot reach the protected action. Only effective ALLOW with blocking obligations satisfied and
-    validity preserved continues to domain authorization and invariants, which may still prevent
-    execution.
+  <figcaption class="authz-runtime__caption">
+    Consumer intent is intercepted by the PEP, which requests a PDP evaluation of assigned
+    authority, trusted context and published policy. DENY terminates. ALLOW with unmet blocking
+    obligations blocks continuation until fulfilment; context change returns to PDP evaluation for a
+    new decision enforced by the PEP. Effective ALLOW continues to domain authorization and
+    invariants, which may still prevent the protected action.
   </figcaption>
 </figure>

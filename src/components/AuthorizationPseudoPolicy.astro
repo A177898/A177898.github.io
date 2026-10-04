@@ -1,0 +1,33 @@
+---
+/**
+ * Vendor-neutral illustrative pseudo-policy — presentation-only.
+ * Editorial block (not a terminal, IDE, or product policy editor). No JS.
+ */
+import { authorizationPseudoPolicy as example } from '../data/authorization-pseudo-policy';
+
+interface Props {
+  id?: string;
+}
+
+const { id = example.id } = Astro.props;
+const titleId = `${id}-title`;
+const disclaimerId = `${id}-disclaimer`;
+---
+
+<figure class="authz-pseudo" aria-labelledby={titleId} id={id}>
+  <div class="authz-pseudo__header">
+    <p class="authz-pseudo__eyebrow">Worked example</p>
+    <h3 id={titleId} class="authz-pseudo__title">{example.title}</h3>
+    <p class="authz-pseudo__lead">{example.lead}</p>
+  </div>
+
+  <p id={disclaimerId} class="authz-pseudo__disclaimer">
+    {example.disclaimer}
+  </p>
+
+  <pre class="authz-pseudo__block" tabindex="0" aria-describedby={disclaimerId}><code
+    >{example.lines.join('\n')}</code
+  ></pre>
+
+  <figcaption class="authz-pseudo__caption">{example.caption}</figcaption>
+</figure>

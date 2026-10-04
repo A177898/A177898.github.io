@@ -16,6 +16,13 @@ export const profile = {
   propositionSupport:
     'My enterprise architecture approach starts with Business Architecture: clarifying outcomes, capabilities and value streams before shaping information, data, application and technology architectures. This keeps technology decisions aligned with business priorities and translates direction into practical transition roadmaps.',
   /**
+   * Homepage hero credibility line — career progression signal, not a second headline.
+   * Distinct from Experience/About leads: domains spanned, not role/scope rails.
+   * No tenure metrics or comparative claims.
+   */
+  careerCredibility:
+    'From software engineering to enterprise architecture — experience spanning transactional systems, digital engineering, technical leadership, solution architecture and enterprise technology strategy.',
+  /**
    * Plain-language explanation of enterprise architecture (BIDAT framing).
    * Prefer on About / practice; avoid repeating verbatim beside the proposition.
    */
@@ -35,11 +42,41 @@ export const profile = {
    * Not a claim of specific job titles beyond the career arc.
    */
   scopeArc: ['Systems', 'Solutions', 'Platforms', 'Enterprise'] as const,
-  aboutSummary: [
-    'Yusuf Kader is an Enterprise Architect whose career has progressed from building systems, through designing solutions and platforms, to shaping enterprise technology direction.',
-    'Enterprise Architecture brings together Business, Information, Data, Application and Technology architectures. Within EA, Business Architecture provides the business foundation — establishing direction that informs technology architecture decisions while domains iterate together.',
-    'His work spans enterprise architecture — including Business Architecture as a critical EA domain — alongside solution architecture, technology strategy, platform and cloud architecture, integration, identity and security, and the responsible adoption of emerging technology, with an emphasis on architectural thinking, governance and clear communication.',
+  /**
+   * About page narrative — synthesises approved Experience history into stages.
+   * Not a chronology of every role; no invented achievements or metrics.
+   * Distinct from homepage BIDAT positioning and Experience timeline detail.
+   */
+  aboutOpening:
+    'I am an Enterprise Architect whose perspective was shaped through progressively broader levels of responsibility — from building enterprise systems to shaping technology direction across solutions, platforms and the enterprise.',
+  aboutStory: [
+    {
+      title: 'Engineering foundations',
+      text: 'Enterprise software engineering in transactional environments established discipline in structured development, systems thinking, integration and the practical consequences of change in large technology estates.',
+    },
+    {
+      title: 'Broader digital delivery',
+      text: 'Full-stack digital engineering and DevOps work expanded that view across user-facing applications, backend services, integrations and operational concerns — showing how delivery realities shape complete digital solutions.',
+    },
+    {
+      title: 'Technical leadership',
+      text: 'Technical leadership shifted the question from how to implement a component toward how a solution should be designed, governed and delivered coherently across engineers and solution parts.',
+    },
+    {
+      title: 'Architecture and innovation',
+      text: 'Architecture and innovation work widened the lens from individual applications toward technology patterns, emerging capabilities and the enterprise context in which those choices must be evaluated.',
+    },
+    {
+      title: 'Solution architecture',
+      text: 'Solution architecture broadened responsibility across interconnected capabilities and platforms — integrating cloud, identity, security and target-state direction so decisions were made in context rather than in isolation.',
+    },
+    {
+      title: 'Enterprise architecture',
+      text: 'Enterprise architecture extends that scope toward strategy, capabilities, target states, transition architectures, roadmaps and governance — translating strategic intent into coherent and executable technology direction.',
+    },
   ] as const,
+  aboutClosing:
+    'That progression — from systems through solutions and platforms to enterprise — is what informs how I connect business strategy, people, process and technology today.',
 } as const;
 
 /**

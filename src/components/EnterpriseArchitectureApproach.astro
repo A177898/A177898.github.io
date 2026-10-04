@@ -3,6 +3,9 @@
  * Personal EA approach — semantic HTML diagram + supporting explanation.
  * EA is the enclosing discipline; BIDAT domains sit inside it.
  * Business Architecture establishes business direction within EA.
+ *
+ * homepage: focused, high-scan lifecycle model
+ * full: richer Practice variant with Q&A, outputs, frameworks
  */
 import { eaApproach } from '../data/ea-approach';
 
@@ -19,7 +22,11 @@ const diagramId = `${id}-diagram`;
 ---
 
 <section
-  class:list={['ea-approach', 'section-band', isFull && 'ea-approach--full']}
+  class:list={[
+    'ea-approach',
+    'section-band',
+    isFull ? 'ea-approach--full' : 'ea-approach--homepage',
+  ]}
   aria-labelledby={headingId}
   data-reveal
   id={id}
@@ -41,16 +48,20 @@ const diagramId = `${id}-diagram`;
       </p>
     </div>
 
-    <figure class="ea-framework mt-12" aria-labelledby={diagramId}>
+    <figure
+      class:list={['ea-framework', 'mt-12', !isFull && 'ea-framework--homepage']}
+      aria-labelledby={diagramId}
+    >
       <figcaption id={diagramId} class="sr-only">
-        Diagram of a personal enterprise architecture approach. Business strategy and intended
-        outcomes sit above an Enterprise Architecture boundary. Inside that boundary, Business
-        Architecture provides the business foundation and establishes business direction that
-        informs Information Architecture, Data Architecture, Application Architecture and
-        Technology Architecture. People, process and technology alignment cut across those domains.
-        Governance, principles, security and risk span the model. Below the boundary: target
-        states, transition roadmaps and delivery alignment, then business outcomes with feedback
-        to business direction. Domains iterate; the model is not a one-way waterfall.
+        Diagram of a personal enterprise architecture approach. Strategy sits above an Enterprise
+        Architecture boundary. Inside that boundary, Business Architecture provides the business
+        foundation and establishes business direction that informs Information, Data, Application
+        and Technology architectures. People, process and technology alignment cut across those
+        domains. Governance, principles, security and risk span the model. Below the boundary:
+        Target Architecture, Transition Architecture and Roadmap, then Delivery, then Outcomes
+        with feedback to strategy and architecture. Domains iterate; the model is not a one-way
+        waterfall. BIDAT is used here as a clear domain framing for this approach — not as a claim
+        that every EA standard uses identical domain labels.
       </figcaption>
 
       <div
@@ -58,18 +69,30 @@ const diagramId = `${id}-diagram`;
         role="group"
         aria-label="Enterprise architecture approach model"
       >
-        {/* TOP — Business strategy / outcomes */}
-        <div class="ea-band ea-band--intent">
+        {/* STRATEGY */}
+        <article
+          class="ea-layer ea-band ea-band--intent"
+          tabindex="0"
+          data-ea-layer="strategy"
+          aria-label={`${eaApproach.businessIntent.label}: ${eaApproach.businessIntent.definition}`}
+        >
           <p class="ea-band__label">
             <span class="ea-band__role">Above EA</span>
+            <span aria-hidden="true"> · </span>
             {eaApproach.businessIntent.label}
           </p>
-          <ul class="ea-chip-row">
-            {eaApproach.businessIntent.items.map((item) => (
-              <li class="ea-chip">{item}</li>
-            ))}
-          </ul>
-        </div>
+          <p class="ea-layer__title">{eaApproach.businessIntent.detail}</p>
+          <p class="ea-layer__def">{eaApproach.businessIntent.definition}</p>
+          {
+            isFull && (
+              <ul class="ea-chip-row">
+                {eaApproach.businessIntent.items.map((item) => (
+                  <li class="ea-chip">{item}</li>
+                ))}
+              </ul>
+            )
+          }
+        </article>
 
         <div class="ea-connector" aria-hidden="true">
           <span class="ea-connector__line" />
@@ -87,18 +110,32 @@ const diagramId = `${id}-diagram`;
             <p class="ea-boundary__role">{eaApproach.eaBoundary.role}</p>
           </div>
 
-          {/* Business Architecture — emphasised inside EA */}
-          <div class="ea-band ea-band--foundation">
+          {/* Business Architecture — emphasised; not an identical IDAT box */}
+          <article
+            class="ea-layer ea-band ea-band--foundation"
+            tabindex="0"
+            data-ea-layer="business-architecture"
+            aria-label={`${eaApproach.businessArchitecture.label}: ${eaApproach.businessArchitecture.definition}`}
+          >
             <p class="ea-band__label">
-              <span class="ea-band__role">{eaApproach.businessArchitecture.role}</span>
+              <span class="ea-band__role">Foundation</span>
+              <span aria-hidden="true"> · </span>
               {eaApproach.businessArchitecture.label}
             </p>
-            <ul class="ea-chip-row">
-              {eaApproach.businessArchitecture.items.map((item) => (
-                <li class="ea-chip ea-chip--emphasis">{item}</li>
-              ))}
-            </ul>
-          </div>
+            <p class="ea-layer__title ea-layer__title--foundation">
+              {eaApproach.businessArchitecture.summary}
+            </p>
+            <p class="ea-layer__def">{eaApproach.businessArchitecture.definition}</p>
+            {
+              isFull && (
+                <ul class="ea-chip-row">
+                  {eaApproach.businessArchitecture.items.map((item) => (
+                    <li class="ea-chip ea-chip--emphasis">{item}</li>
+                  ))}
+                </ul>
+              )
+            }
+          </article>
 
           <div class="ea-connector ea-connector--direction" aria-hidden="true">
             <span class="ea-connector__line" />
@@ -108,43 +145,83 @@ const diagramId = `${id}-diagram`;
             </span>
           </div>
 
-          {/* Remaining BIDAT domains */}
-          <div class="ea-band ea-band--bidat">
+          {/* IDAT — remaining BIDAT domains */}
+          <div
+            class="ea-band ea-band--bidat"
+            role="group"
+            aria-label={`BIDAT domains: ${eaApproach.idatLabel}`}
+          >
             <p class="ea-band__label">
               <span class="ea-band__role">BIDAT domains</span>
-              Information · Data · Application · Technology Architecture
+              <span aria-hidden="true"> · </span>
+              {eaApproach.idatLabel}
             </p>
             <ul class="ea-bidat">
-              {eaApproach.bidatDomains.map((domain, index) => (
-                <li class="ea-bidat__domain" data-domain={domain.id}>
-                  <h3 class="ea-bidat__title">{domain.title}</h3>
-                  <p class="ea-bidat__text">{domain.description}</p>
-                  {index < eaApproach.bidatDomains.length - 1 && (
-                    <span class="ea-bidat__join" aria-hidden="true">
-                      ↔
-                    </span>
-                  )}
-                </li>
-              ))}
+              {
+                eaApproach.bidatDomains.map((domain, index) => (
+                  <li
+                    class="ea-layer ea-bidat__domain"
+                    tabindex="0"
+                    data-domain={domain.id}
+                    data-ea-layer={domain.id}
+                    aria-label={`${domain.short}: ${domain.definition}`}
+                  >
+                    <h3 class="ea-bidat__title">{isFull ? domain.title : domain.short}</h3>
+                    <p class="ea-bidat__text">{domain.definition}</p>
+                    {
+                      isFull && (
+                        <p class="ea-bidat__text ea-bidat__text--secondary">{domain.description}</p>
+                      )
+                    }
+                    {index < eaApproach.bidatDomains.length - 1 && (
+                      <span class="ea-bidat__join" aria-hidden="true">
+                        ↔
+                      </span>
+                    )}
+                  </li>
+                ))
+              }
             </ul>
           </div>
 
-          {/* Cross-domain alignment — people / process / technology */}
-          <div class="ea-band ea-band--dimensions">
+          {/* Cross-domain alignment — subtle People · Process · Technology */}
+          <article
+            class="ea-layer ea-band ea-band--dimensions"
+            tabindex="0"
+            data-ea-layer="cross-domain"
+            aria-label={`${eaApproach.crossDomain.label}: ${eaApproach.crossDomain.definition}`}
+          >
             <p class="ea-band__label">
-              <span class="ea-band__role">Cross-domain</span>
+              <span class="ea-band__role">{eaApproach.crossDomain.role}</span>
+              <span aria-hidden="true"> · </span>
               {eaApproach.crossDomain.label}
             </p>
-            <p class="ea-cross-note">{eaApproach.crossDomain.note}</p>
-            <ul class="ea-dimensions">
-              {eaApproach.crossDomain.items.map((dim) => (
-                <li class="ea-dimension" data-dimension={dim.id}>
-                  <h3 class="ea-dimension__title">{dim.title}</h3>
-                  <p class="ea-dimension__text">{dim.description}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
+            <p class="ea-layer__def">{eaApproach.crossDomain.definition}</p>
+            {
+              isFull ? (
+                <>
+                  <p class="ea-cross-note">{eaApproach.crossDomain.note}</p>
+                  <ul class="ea-dimensions">
+                    {eaApproach.crossDomain.items.map((dim) => (
+                      <li class="ea-dimension" data-dimension={dim.id}>
+                        <h3 class="ea-dimension__title">{dim.title}</h3>
+                        <p class="ea-dimension__text">{dim.description}</p>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              ) : (
+                <ul class="ea-cross-compact" aria-label="People, process and technology">
+                  {eaApproach.crossDomain.items.map((dim) => (
+                    <li class="ea-cross-compact__item">
+                      <span class="ea-cross-compact__title">{dim.title}</span>
+                      <span class="ea-cross-compact__text">{dim.description}</span>
+                    </li>
+                  ))}
+                </ul>
+              )
+            }
+          </article>
 
           <aside class="ea-spanning" aria-label={eaApproach.spanning.label}>
             <p class="ea-spanning__label">{eaApproach.spanning.label}</p>
@@ -161,25 +238,36 @@ const diagramId = `${id}-diagram`;
           <span class="ea-connector__arrow">↓</span>
         </div>
 
-        {/* TRANSITION */}
-        <div class="ea-band ea-band--transition">
-          <p class="ea-band__label">
-            <span class="ea-band__role">Transition</span>
-            {eaApproach.transition.label}
-          </p>
-          <ol class="ea-flow">
-            {eaApproach.transition.steps.map((step, index) => (
-              <li class="ea-flow__step">
-                <span class="ea-flow__label">{step}</span>
-                {index < eaApproach.transition.steps.length - 1 && (
-                  <span class="ea-flow__arrow" aria-hidden="true">
-                    →
-                  </span>
-                )}
+        {/* Target → Transition → Delivery */}
+        <ol class="ea-journey" aria-label="From target architecture to delivery">
+          {
+            eaApproach.changeStages.map((stage, index) => (
+              <li class="ea-journey__item">
+                <article
+                  class="ea-layer ea-band ea-band--stage"
+                  tabindex="0"
+                  data-ea-layer={stage.id}
+                  aria-label={`${stage.label}: ${stage.definition}`}
+                >
+                  <p class="ea-band__label">
+                    <span class="ea-band__role">{stage.role}</span>
+                    <span aria-hidden="true"> · </span>
+                    {stage.label}
+                  </p>
+                  <p class="ea-layer__def">{stage.definition}</p>
+                </article>
+                {
+                  index < eaApproach.changeStages.length - 1 && (
+                    <div class="ea-connector" aria-hidden="true">
+                      <span class="ea-connector__line" />
+                      <span class="ea-connector__arrow">↓</span>
+                    </div>
+                  )
+                }
               </li>
-            ))}
-          </ol>
-        </div>
+            ))
+          }
+        </ol>
 
         <div class="ea-connector" aria-hidden="true">
           <span class="ea-connector__line" />
@@ -187,22 +275,36 @@ const diagramId = `${id}-diagram`;
         </div>
 
         {/* OUTCOMES + feedback */}
-        <div class="ea-band ea-band--outcomes">
+        <article
+          class="ea-layer ea-band ea-band--outcomes"
+          tabindex="0"
+          data-ea-layer="outcomes"
+          aria-label={`${eaApproach.outcomes.label}: ${eaApproach.outcomes.definition}`}
+        >
           <p class="ea-band__label">
-            <span class="ea-band__role">Base</span>
+            <span class="ea-band__role">Results</span>
+            <span aria-hidden="true"> · </span>
             {eaApproach.outcomes.label}
           </p>
+          <p class="ea-layer__def">{eaApproach.outcomes.definition}</p>
           <p class="ea-outcomes__framing">{eaApproach.outcomes.framing}</p>
-          <ul class="ea-chip-row">
-            {eaApproach.outcomes.items.map((item) => (
-              <li class="ea-chip">{item}</li>
-            ))}
-          </ul>
-        </div>
+          {
+            isFull && (
+              <ul class="ea-chip-row">
+                {eaApproach.outcomes.items.map((item) => (
+                  <li class="ea-chip">{item}</li>
+                ))}
+              </ul>
+            )
+          }
+        </article>
 
         <p class="ea-feedback" role="note">
           <span class="ea-feedback__marker" aria-hidden="true">↻</span>
-          <span>{eaApproach.outcomes.feedback}</span>
+          <span>
+            <span class="ea-feedback__cue">{eaApproach.outcomes.feedbackCue}.</span>{' '}
+            {eaApproach.outcomes.feedback}
+          </span>
         </p>
       </div>
     </figure>
@@ -211,8 +313,8 @@ const diagramId = `${id}-diagram`;
       <summary>Text equivalent of the approach model</summary>
       <div class="ea-text-equivalent__body">
         <p>
-          <strong>Business strategy and intended outcomes:</strong>{' '}
-          {eaApproach.businessIntent.items.join('; ')}.
+          <strong>Strategy:</strong> {eaApproach.businessIntent.detail}.{' '}
+          {eaApproach.businessIntent.definition}
         </p>
         <p>
           <strong>Enterprise Architecture</strong> is the overarching discipline containing the
@@ -220,39 +322,57 @@ const diagramId = `${id}-diagram`;
         </p>
         <p>
           <strong>Business Architecture</strong> ({eaApproach.businessArchitecture.role}):{' '}
-          {eaApproach.businessArchitecture.items.join('; ')}.{' '}
+          {eaApproach.businessArchitecture.summary}.{' '}
           {eaApproach.businessArchitecture.explanation}
         </p>
         <p>
-          <strong>Connected BIDAT domains:</strong>
+          <strong>Connected BIDAT domains ({eaApproach.idatLabel}):</strong>
         </p>
         <ul>
-          {eaApproach.bidatDomains.map((domain) => (
-            <li>
-              <strong>{domain.title}:</strong> {domain.description}
-            </li>
-          ))}
+          {
+            eaApproach.bidatDomains.map((domain) => (
+              <li>
+                <strong>{domain.title}:</strong> {domain.definition} {domain.description}
+              </li>
+            ))
+          }
         </ul>
         <p>
-          <strong>{eaApproach.crossDomain.label}:</strong> {eaApproach.crossDomain.note}
+          <strong>{eaApproach.crossDomain.label}:</strong> {eaApproach.crossDomain.definition}{' '}
+          {eaApproach.crossDomain.note}
         </p>
         <ul>
-          {eaApproach.crossDomain.items.map((dim) => (
-            <li>
-              <strong>{dim.title}:</strong> {dim.description}
-            </li>
-          ))}
+          {
+            eaApproach.crossDomain.items.map((dim) => (
+              <li>
+                <strong>{dim.title}:</strong> {dim.description}
+              </li>
+            ))
+          }
         </ul>
         <p>
           <strong>{eaApproach.spanning.label}:</strong>{' '}
           {eaApproach.spanning.items.join('; ')}.
         </p>
         <p>
-          <strong>Transition:</strong> {eaApproach.transition.steps.join(' → ')}.
+          <strong>Change journey:</strong>{' '}
+          {eaApproach.changeStages.map((stage) => stage.label).join(' → ')}.
+        </p>
+        <ul>
+          {
+            eaApproach.changeStages.map((stage) => (
+              <li>
+                <strong>{stage.label}:</strong> {stage.definition}
+              </li>
+            ))
+          }
+        </ul>
+        <p>
+          <strong>Outcomes:</strong> {eaApproach.outcomes.definition}{' '}
+          {eaApproach.outcomes.feedbackCue}. {eaApproach.outcomes.feedback}
         </p>
         <p>
-          <strong>Intended outcomes:</strong> {eaApproach.outcomes.items.join('; ')}.{' '}
-          {eaApproach.outcomes.feedback}
+          <strong>Framing note:</strong> {eaApproach.synthesisNote}
         </p>
       </div>
     </details>
@@ -271,12 +391,14 @@ const diagramId = `${id}-diagram`;
           <div class="ea-supports mt-14">
             <h3 class="text-2xl">How the model answers executive questions</h3>
             <dl class="ea-supports__list mt-6">
-              {eaApproach.supportsDecisions.map((item) => (
-                <div class="ea-supports__item">
-                  <dt>{item.question}</dt>
-                  <dd>{item.answer}</dd>
-                </div>
-              ))}
+              {
+                eaApproach.supportsDecisions.map((item) => (
+                  <div class="ea-supports__item">
+                    <dt>{item.question}</dt>
+                    <dd>{item.answer}</dd>
+                  </div>
+                ))
+              }
             </dl>
           </div>
 
