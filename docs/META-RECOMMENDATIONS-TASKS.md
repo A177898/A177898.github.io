@@ -859,26 +859,25 @@ COBOL / enterprise engineering → full-stack digital engineering → technical 
 
 | Field | Value |
 | --- | --- |
-| Status | IN PROGRESS |
+| Status | APPROVED |
 | Priority | P1 |
 | Dependencies | Soft: after TASK-15/16 styling conventions |
 | Human review required | Yes |
 
-**Objective:** Create or refine trust model: Attribute → Value → Provenance → Authoritative Source → Freshness → Integrity Evidence → Trust Determination → Authorization Context. Reinforce: caller-supplied claim ≠ trusted authorization attribute.
+**Outcome:** **IMPLEMENTED** — Elevated Attribute provenance ASCII into `AuthorizationTrustModel`: Attribute → Value → Provenance → Authoritative source → Freshness → Integrity evidence → Trust determination → Authorization context. Explicit callout: caller-supplied claim ≠ trusted authorization attribute. Notes keep correctness classes and acquisition patterns distinct; domain ownership preserved. Correctness classes / acquisition patterns / AP/ADR unchanged. **Approved 2026-10-04** — commit: `feat: add RA01 attribute trust and provenance visual`.
 
-**Baseline:** RA01 already has provenance prose/ASCII — elevate to clear visual without changing principles.
+**Files modified:**
 
-**Files likely affected:**
-
-- `src/content/architectures/enterprise-authorization.mdx`
-- New or extended diagram component
-- `src/styles/global.css`
+- `src/data/authorization-trust-model.ts` — trust model copy
+- `src/components/AuthorizationTrustModel.astro` — visual component
+- `src/content/architectures/enterprise-authorization.mdx` — placement in Attribute provenance
+- `src/styles/global.css` — `.authz-trust*` styles
 
 **Acceptance criteria:**
 
-- [ ] Trust/provenance chain is visually clear
-- [ ] Reinforces non-equivalence of caller claims and trusted attributes
-- [ ] Vendor-neutral; conceptual not payload-schema-prescriptive
+- [x] Trust/provenance chain is visually clear
+- [x] Reinforces non-equivalence of caller claims and trusted attributes
+- [x] Vendor-neutral; conceptual not payload-schema-prescriptive
 
 **Validation:** RA01 review; check/build.
 
@@ -888,7 +887,7 @@ COBOL / enterprise engineering → full-stack digital engineering → technical 
 
 | Field | Value |
 | --- | --- |
-| Status | NOT STARTED |
+| Status | IN PROGRESS |
 | Priority | P1 |
 | Dependencies | Soft: after TASK-13 compare patterns / shared matrix component; must not change ADRs |
 | Human review required | Yes |

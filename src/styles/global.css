@@ -2172,6 +2172,91 @@
     @apply mt-5 m-0 max-w-3xl border-l-2 border-accent pl-4 text-sm leading-relaxed text-ink/90;
   }
 
+  /* —— Attribute trust / provenance (RA01) ——
+     Logical trust chain; not a scorecard or physical pipeline. */
+  .authz-trust {
+    @apply my-10 border border-border bg-band/50 px-4 py-5 sm:px-6 sm:py-7;
+  }
+
+  .authz-trust__eyebrow,
+  .authz-trust__plane-label {
+    @apply m-0 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-muted;
+  }
+
+  .authz-trust__title {
+    @apply mt-2 m-0 font-serif text-2xl text-ink sm:text-3xl;
+  }
+
+  .authz-trust__lead,
+  .authz-trust__framing {
+    @apply mt-3 m-0 max-w-3xl text-sm leading-relaxed text-muted;
+  }
+
+  .authz-trust__framing {
+    @apply mt-2;
+  }
+
+  .authz-trust__claim {
+    @apply mt-6 border-l-2 border-accent bg-surface/80 px-4 py-4 sm:px-5;
+  }
+
+  .authz-trust__claim-title {
+    @apply m-0 font-serif text-lg text-ink sm:text-xl;
+  }
+
+  .authz-trust__claim-text {
+    @apply mt-2 m-0 max-w-3xl text-sm leading-relaxed text-ink/90;
+  }
+
+  .authz-trust__chain {
+    @apply mt-8 m-0 flex list-none flex-col p-0;
+  }
+
+  .authz-trust__step {
+    @apply flex flex-col;
+  }
+
+  .authz-trust__box {
+    @apply block border border-border bg-surface px-4 py-3;
+  }
+
+  .authz-trust__step--determination .authz-trust__box,
+  .authz-trust__step--context .authz-trust__box {
+    @apply border-accent/40 bg-accent-soft/40;
+  }
+
+  .authz-trust__step-title {
+    @apply block font-sans text-xs font-semibold uppercase tracking-[0.08em] text-ink sm:text-[0.8rem];
+  }
+
+  .authz-trust__step-text {
+    @apply mt-1 block text-sm font-normal normal-case tracking-normal leading-relaxed text-muted;
+  }
+
+  .authz-trust__arrow {
+    @apply my-1 ml-3 text-base leading-none text-muted;
+  }
+
+  .authz-trust__questions {
+    @apply mt-8 border-t border-border/80 pt-4;
+  }
+
+  .authz-trust__question-list {
+    @apply mt-3 m-0 list-disc space-y-2 pl-5 text-sm leading-relaxed text-ink/90;
+  }
+
+  .authz-trust__notes {
+    @apply mt-6 space-y-3;
+  }
+
+  .authz-trust__note {
+    @apply m-0 max-w-3xl text-sm leading-relaxed text-muted;
+  }
+
+  .authz-trust__caption {
+    @apply mt-6 m-0 max-w-3xl border-l-2 border-accent pl-4 text-sm leading-relaxed text-ink/90;
+  }
+
   .related-artifacts {
     @apply my-10 border-t border-border pt-8;
   }
