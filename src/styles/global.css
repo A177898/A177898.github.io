@@ -153,6 +153,27 @@
     @apply no-underline bg-accent-soft;
   }
 
+  /* —— Resume utility actions —— */
+  .resume-doc__header {
+    @apply flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between;
+  }
+
+  .resume-actions {
+    @apply max-w-md sm:text-right;
+  }
+
+  .resume-actions__controls {
+    @apply flex flex-wrap gap-3 sm:justify-end;
+  }
+
+  .resume-actions__hint {
+    @apply mt-3 m-0 text-sm leading-relaxed text-muted sm:text-right;
+  }
+
+  .resume-role__header {
+    @apply flex flex-wrap items-baseline gap-x-3 gap-y-1;
+  }
+
   .btn-text {
     @apply inline-flex items-center gap-1 text-sm font-semibold text-ink no-underline;
     transition: color 200ms ease;

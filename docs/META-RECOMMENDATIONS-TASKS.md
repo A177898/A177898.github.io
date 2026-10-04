@@ -588,7 +588,7 @@ COBOL / enterprise engineering → full-stack digital engineering → technical 
 
 | Field | Value |
 | --- | --- |
-| Status | READY FOR REVIEW |
+| Status | APPROVED |
 | Priority | P1 |
 | Dependencies | Soft: after TASK-05; can share section with TASK-08 model C |
 | Human review required | Yes |
@@ -619,7 +619,7 @@ COBOL / enterprise engineering → full-stack digital engineering → technical 
 - Performance vs true pre-change: CSS **+4,341 B**, JS **0**, Practice HTML **+5,209 B**, total dist **+9,550 B**
 - No new dependencies
 
-**Commit:** not created — awaiting human approval.
+**Commit:** `feat: clarify architecture operating boundaries on Practice`
 
 ---
 
@@ -627,43 +627,44 @@ COBOL / enterprise engineering → full-stack digital engineering → technical 
 
 | Field | Value |
 | --- | --- |
-| Status | NOT STARTED |
+| Status | APPROVED |
 | Priority | P1 |
 | Dependencies | Soft: after TASK-01 so period labels are final |
 | Human review required | Yes — **implementation recommendation required before coding if new dependencies are proposed** |
 
-**Baseline:**
+**Outcome:** **IMPLEMENTED** — Recommendation **OPTION B** (Print / Save as PDF). Option A rejected: no existing PDF toolchain; would require browser binaries / CI complexity / duplicate artefact sync. Web résumé remains authoritative.
 
-- Authoritative resume is `/resume` with Print / Save as PDF (`window.print()` + `src/styles/print.css`)
-- `DownloadResume.astro` exists but is unused; `public/resume/` has no PDF
-- Zero-cost constraint forbids paid/backend PDF services
+**UX:** `ResumeActions` utility — Print / Save as PDF (`window.print()`), View Experience, authoritative-source hint. Misleading unused `DownloadResume.astro` removed (no PDF file exists).
 
-**Preferred outcomes (clarified):**
+**Print:** A4, ~14/12mm margins, white/light forced, nav/footer/actions hidden, role break-inside avoid. Measured print PDF ≈ **2 pages**.
 
-1. **B (default preference).** Polish the existing static **Print / Save as PDF** experience (`window.print()` + `print.css`) unless option A can be demonstrated to add **negligible** dependency, CI and maintenance cost.
-2. **A (only if negligible cost).** Lightweight static PDF generated at build time without runtime infrastructure.
+**Files modified:**
 
-**Do not** add heavyweight browser/PDF tooling merely to create a downloadable file.
-
-**Files likely affected:**
-
-- `src/pages/resume.astro`
-- `src/components/DownloadResume.astro`
-- `src/styles/print.css`
-- `package.json` / build scripts **only if** a negligible-cost build-time PDF path is proven and approved
-- `public/resume/` if a generated artefact is committed or emitted at build
-- CI workflow under `.github/workflows/` only if build steps change
+- `src/components/ResumeActions.astro` — new utility actions
+- `src/components/DownloadResume.astro` — removed (unused / misleading)
+- `src/pages/resume.astro` — wire ResumeActions; role header markup for print grouping
+- `src/styles/print.css` — resume print polish
+- `src/styles/global.css` — resume utility screen styles
+- `docs/META-RECOMMENDATIONS-TASKS.md` — status notes
 
 **Acceptance criteria:**
 
-- [ ] Explicit recommendation recorded (default B unless A is demonstrably negligible-cost)
-- [ ] Print resume remains authoritative
-- [ ] No paid/backend/runtime PDF services
-- [ ] No heavyweight browser/PDF tooling added without clear justification
-- [ ] Target 2 pages ideally, 3 max where required — not forced to 1 page
-- [ ] Zero-cost static architecture preserved
+- [x] Explicit recommendation recorded (OPTION B)
+- [x] Print resume remains authoritative
+- [x] No paid/backend/runtime PDF services
+- [x] No heavyweight browser/PDF tooling added
+- [x] Target 2 pages ideally, 3 max where required — not forced to 1 page
+- [x] Zero-cost static architecture preserved
 
-**Validation:** Print preview to PDF page count; build size impact; dependency/CI/maintenance audit if A chosen.
+**Validation:**
+
+- `npm run validate` / `test:publication` / `check` / production build — PASS
+- Responsive 1440–390 dark+light — no overflow
+- Print PDF (A4 via existing env browser tooling) ≈ **2 pages**
+- Performance vs true pre-change: CSS **+1,083 B**, JS **0**, Resume HTML **+548 B**, total dist **+1,631 B**
+- Dependencies added: **0** (`package.json` unchanged)
+
+**Commit:** not created — awaiting human approval.
 
 ---
 

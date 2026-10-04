@@ -6,6 +6,7 @@
  */
 import PageLayout from '../layouts/PageLayout.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
+import ResumeActions from '../components/ResumeActions.astro';
 import { profile } from '../data/profile';
 import { pageTitle } from '../data/seo';
 import { getCollection } from 'astro:content';
@@ -67,17 +68,13 @@ const draftCount = showDraftIndicators
 
   <section class="section-space resume-doc">
     <div class="site-shell max-w-3xl">
-      <div class="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+      <div class="resume-doc__header">
         <div>
           <p class="eyebrow no-print">Resume</p>
           <h1 class="mt-3 text-4xl sm:text-5xl">{profile.fullName}</h1>
           <p class="mt-3 text-xl text-muted">{profile.headline}</p>
         </div>
-        <div class="flex flex-wrap gap-3 no-print">
-          <button type="button" class="btn-secondary" onclick="window.print()">
-            Print / Save as PDF
-          </button>
-        </div>
+        <ResumeActions />
       </div>
 
       {
@@ -128,8 +125,8 @@ const draftCount = showDraftIndicators
                   .map((part) => part.replace(/\s+/g, ' ').trim())
                   .filter(Boolean)[0];
                 return (
-                  <li>
-                    <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                  <li class="resume-role">
+                    <div class="resume-role__header">
                       <p class="font-semibold text-ink">{entry.data.role}</p>
                       {showDraftIndicators && entry.data.status === 'draft' && (
                         <span class="experience-timeline__draft no-print">Draft</span>
@@ -140,7 +137,7 @@ const draftCount = showDraftIndicators
                         </span>
                       )}
                     </div>
-                    <p class="text-sm text-muted">
+                    <p class="resume-role__meta text-sm text-muted">
                       {entry.data.organisation}
                       <span aria-hidden="true"> · </span>
                       {periodLabel}
@@ -173,14 +170,14 @@ const draftCount = showDraftIndicators
                   pendingAppointment: entry.data.pendingAppointment === true,
                 });
                 return (
-                  <li>
-                    <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                  <li class="resume-role">
+                    <div class="resume-role__header">
                       <p class="font-semibold text-ink">{entry.data.role}</p>
                       {showDraftIndicators && entry.data.status === 'draft' && (
                         <span class="experience-timeline__draft no-print">Draft</span>
                       )}
                     </div>
-                    <p class="text-sm text-muted">
+                    <p class="resume-role__meta text-sm text-muted">
                       {entry.data.organisation}
                       <span aria-hidden="true"> · </span>
                       {periodLabel}
